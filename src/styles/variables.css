@@ -1,0 +1,26 @@
+:root {
+  /* Default to dark theme initally or will be overridden by JS */
+  --color-primary: #60A5FA;
+  --color-primary-hover: #93C5FD;
+  --color-primary-active: #BFDBFE;
+  
+  --color-secondary: #A78BFA;
+  
+  --color-background: #0F172A;
+  --color-surface: #1E293B;
+  --color-surface-hover: #334155;
+  
+  --color-text-primary: #F1F5F9;
+  --color-text-secondary: #CBD5E1;
+  --color-text-tertiary: #94A3B8;
+  
+  --color-border: #334155;
+  --color-divider: #1E293B;
+  
+  --color-success: #34D399;
+  --color-warning: #FBBF24;
+  --color-error: #F87171;
+  --color-info: #60A5FA;
+  
+  --color-blur: rgba(15, 23, 42, 0.8);
+}

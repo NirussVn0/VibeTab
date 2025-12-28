@@ -1,0 +1,33 @@
+.animate-load {
+  animation: fadeInScale 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-appear {
+  animation: slideUpFade 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.animate-delete {
+  animation: slideOutDelete 0.3s cubic-bezier(0.6, 0, 0.84, 0);
+}
+
+.animate-hover {
+  animation: hoverGlow 0.3s ease;
+}
+
+.animate-selected {
+  animation: pulseRing 0.6s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.glass-panel {
+  background: var(--color-blur);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
