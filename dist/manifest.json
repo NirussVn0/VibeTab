@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "VibeTab",
+  "description": "A clean and modern new tab extension for pro developers.",
+  "version": "0.0.0",
+  "version_name": "0.0.0",
+  "permissions": [
+    "storage",
+    "bookmarks",
+    "history",
+    "tabs",
+    "topSites"
+  ],
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "icons": {
+    "128": "public/icons/icon-128.png"
+  }
+}

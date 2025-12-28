@@ -17,6 +17,7 @@
     <CommandPalette />
     <LoadingOverlay />
     <ToastNotification />
+    <Footer />
   </div>
 </template>
 
@@ -28,6 +29,7 @@ import ToastNotification from './components/Effects/ToastNotification.vue'
 import TopBar from './components/Layout/TopBar.vue'
 import MainGrid from './components/Layout/MainGrid.vue'
 import SettingsPanel from './components/Layout/SettingsPanel.vue'
+import Footer from './components/Layout/Footer.vue'
 import CommandPalette from './components/Widgets/CommandPalette.vue'
 import { useUIStore } from './stores/ui.store'
 import { useCommandPalette } from './composables/useCommandPalette'

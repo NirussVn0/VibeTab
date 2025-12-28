@@ -14,7 +14,7 @@
       >
         <!-- Dynamic Component loader -->
         <component 
-          :is="getComponent(widget.type)"
+          :is="WidgetFactory.getComponent(widget.type)"
           v-bind="widget.props"
         />
       </BlockWrapper>
@@ -40,21 +40,12 @@
 import { useUIStore } from '../../stores/ui.store'
 import { useGridStore } from '../../stores/grid.store'
 import BlockWrapper from './BlockWrapper.vue'
-import ClockWidget from '../Widgets/ClockWidget.vue'
-import SearchBar from '../Widgets/SearchBar.vue'
+import { WidgetFactory } from '../../utils/widgetFactory'
 import { useCommandPaletteStore } from '../../stores/commandPalette.store'
 
 const uiStore = useUIStore()
 const gridStore = useGridStore()
 const commandStore = useCommandPaletteStore()
-
-const getComponent = (type: string) => {
-  switch (type) {
-    case 'clock': return ClockWidget
-    case 'search': return SearchBar
-    default: return 'div'
-  }
-}
 
 const openAddWidget = () => {
     // Open command palette filtered to "Widgets" (future improvement)
