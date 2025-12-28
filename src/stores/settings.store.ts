@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { useStorage } from '../composables/useStorage'
 
 export const useSettingsStore = defineStore('settings', () => {
-  // Placeholder for general settings
-  const general = ref({
+  // Persist general settings
+  const general = useStorage('vibetab_settings_general', {
     showClock: true,
     showWeather: true,
     showGreeting: true
