@@ -15,10 +15,15 @@ export default defineManifest({
     "bookmarks",
     "history",
     "tabs",
-    "topSites"
+    "topSites",
+    "alarms"
   ],
   chrome_url_overrides: {
     "newtab": "index.html"
+  },
+  background: {
+    service_worker: "src/background.ts",
+    type: "module"
   },
   icons: {
     "128": "public/icons/icon-128.png"
