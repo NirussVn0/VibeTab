@@ -1,0 +1,70 @@
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
+
+export interface Toast {
+  id: string
+  message: string
+  type: 'success' | 'error' | 'info' | 'warning'
+  duration?: number
+}
+
+export const useUIStore = defineStore('ui', () => {
+  // Loading State
+  const isLoading = ref(false)
+  const loadingMessage = ref('')
+
+  const startLoading = (msg = '') => {
+    isLoading.value = true
+    loadingMessage.value = msg
+  }
+
+  const stopLoading = () => {
+    isLoading.value = false
+    loadingMessage.value = ''
+  }
+
+  // Toasts
+  const toasts = ref<Toast[]>([])
+
+  const addToast = (toast: Omit<Toast, 'id'>) => {
+    const id = Date.now().toString()
+    const newToast = { ...toast, id }
+    toasts.value.push(newToast)
+
+    if (toast.duration !== 0) {
+      setTimeout(() => {
+        removeToast(id)
+      }, toast.duration || 3000)
+    }
+  }
+
+  const removeToast = (id: string) => {
+    toasts.value = toasts.value.filter(t => t.id !== id)
+  }
+
+  // Settings Panel State
+  const isSettingsOpen = ref(false)
+  const toggleSettings = () => isSettingsOpen.value = !isSettingsOpen.value
+  const openSettings = () => isSettingsOpen.value = true
+  const closeSettings = () => isSettingsOpen.value = false
+
+  // Edit Mode (for grid customization)
+  const isEditMode = ref(false)
+  const toggleEditMode = () => isEditMode.value = !isEditMode.value
+
+  return {
+    isLoading,
+    loadingMessage,
+    startLoading,
+    stopLoading,
+    toasts,
+    addToast,
+    removeToast,
+    isSettingsOpen,
+    toggleSettings,
+    openSettings,
+    closeSettings,
+    isEditMode,
+    toggleEditMode
+  }
+})
