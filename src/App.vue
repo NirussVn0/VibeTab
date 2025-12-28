@@ -14,6 +14,7 @@
 
     <!-- Overlays -->
     <SettingsPanel />
+    <CommandPalette />
     <LoadingOverlay />
     <ToastNotification />
   </div>
@@ -27,9 +28,12 @@ import ToastNotification from './components/Effects/ToastNotification.vue'
 import TopBar from './components/Layout/TopBar.vue'
 import MainGrid from './components/Layout/MainGrid.vue'
 import SettingsPanel from './components/Layout/SettingsPanel.vue'
+import CommandPalette from './components/Widgets/CommandPalette.vue'
 import { useUIStore } from './stores/ui.store'
+import { useCommandPalette } from './composables/useCommandPalette'
 
 const uiStore = useUIStore()
+useCommandPalette() // Initialize shortcuts
 
 onMounted(() => {
   // Simulate initial load
