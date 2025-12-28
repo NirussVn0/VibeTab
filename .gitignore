@@ -9,4 +9,5 @@ build
 .vscode
 
 # Misc
-.DS_Store
+.DS_StoreTASK.md
+REQUIREMENTS.md

@@ -68,6 +68,50 @@
             </div>
           </section>
 
+          <!-- Widget Settings -->
+          <section>
+            <h3 class="text-xs font-bold text-white/40 uppercase tracking-widest mb-4">Widgets</h3>
+            <div class="space-y-4">
+              <div class="space-y-2">
+                <span class="text-sm text-white/80 block">Weather Location</span>
+                <select 
+                  v-model="settingsStore.general.weatherLocation"
+                  class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-primary-500 outline-none"
+                >
+                  <option value="New York">New York</option>
+                  <option value="London">London</option>
+                  <option value="Tokyo">Tokyo</option>
+                  <option value="San Francisco">San Francisco</option>
+                  <option value="Sydney">Sydney</option>
+                  <option value="Hanoi">Hanoi</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <!-- Keyboard Shortcuts -->
+          <section>
+            <h3 class="text-xs font-bold text-white/40 uppercase tracking-widest mb-4">Keyboard Shortcuts</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-white/5 p-3 rounded-lg flex justify-between items-center text-xs">
+                <span class="text-white/60">Command Palette</span>
+                <kbd class="bg-white/10 px-2 py-1 rounded text-white font-mono">Cmd+K</kbd>
+              </div>
+              <div class="bg-white/5 p-3 rounded-lg flex justify-between items-center text-xs">
+                <span class="text-white/60">Close Modal</span>
+                <kbd class="bg-white/10 px-2 py-1 rounded text-white font-mono">Esc</kbd>
+              </div>
+              <div class="bg-white/5 p-3 rounded-lg flex justify-between items-center text-xs">
+                <span class="text-white/60">Search</span>
+                <kbd class="bg-white/10 px-2 py-1 rounded text-white font-mono">Enter</kbd>
+              </div>
+              <div class="bg-white/5 p-3 rounded-lg flex justify-between items-center text-xs">
+                <span class="text-white/60">Navigate</span>
+                <kbd class="bg-white/10 px-2 py-1 rounded text-white font-mono">↑ / ↓</kbd>
+              </div>
+            </div>
+          </section>
+
           <!-- About -->
           <section>
             <h3 class="text-xs font-bold text-white/40 uppercase tracking-widest mb-4">About</h3>

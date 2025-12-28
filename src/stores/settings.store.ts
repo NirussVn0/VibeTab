@@ -6,7 +6,8 @@ export const useSettingsStore = defineStore('settings', () => {
   const general = useStorage('vibetab_settings_general', {
     showClock: true,
     showWeather: true,
-    showGreeting: true
+    showGreeting: true,
+    weatherLocation: 'New York'
   })
 
   return {
