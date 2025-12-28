@@ -3,11 +3,14 @@ node_modules
 
 # Build
 build
+dist
 
 # Editor
 .idea
 .vscode
 
 # Misc
-.DS_StoreTASK.md
-REQUIREMENTS.md
+.DS_Store
+
+docs/*
+
