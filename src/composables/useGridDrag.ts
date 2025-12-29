@@ -15,8 +15,8 @@ export interface DragState {
 }
 
 export function useGridDrag(
-  gridCellSize: number, 
-  gridGap: number,
+  gridCellSize: number = 64, // Default fallback
+  gridGap: number = 8,
   onDrop: (id: string, newPos: { x: number; y: number }) => void
 ) {
   const dragState = ref<DragState | null>(null)

@@ -28,33 +28,53 @@ export const useBackgroundStore = defineStore('background', () => {
   // --- Actions ---
   const loadBackgrounds = async () => {
     for (const bg of state.value.backgrounds) {
-      const stored = await mediaDB.get(bg.id)
-      if (stored?.blob) {
-        bg.source = URL.createObjectURL(stored.blob)
+      try {
+        const stored = await mediaDB.get(bg.id)
+        if (stored?.blob) {
+          // Revoke old URL if it exists to prevent memory leaks
+          if (bg.source && bg.source.startsWith('blob:')) {
+            URL.revokeObjectURL(bg.source)
+          }
+          bg.source = URL.createObjectURL(stored.blob)
+        }
+      } catch (err) {
+        console.error(`Failed to load background ${bg.id}:`, err)
       }
     }
   }
 
   const addBackground = async (file: File) => {
-    const id = crypto.randomUUID()
-    const type = file.type.startsWith('video') ? 'video' : 'image'
-    const blob = new Blob([file], { type: file.type })
+    try {
+      if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+        throw new Error('Unsupported file type')
+      }
 
-    // Save to IndexedDB
-    await mediaDB.save(id, blob)
+      const id = crypto.randomUUID()
+      const type = file.type.startsWith('video/') ? 'video' : 'image'
+      const blob = new Blob([file], { type: file.type })
 
-    // Save metadata to Store (LocalStorage)
-    // We create a "Blob URL" temporarily for display, but real source is DB
-    state.value.backgrounds.push({
-      id,
-      name: file.name,
-      type: type as 'image' | 'video',
-      source: URL.createObjectURL(blob), // ephemeral URL
-      addedAt: Date.now(),
-      position: 'cover',
-      isDefault: false,
-      createdAt: Date.now()
-    })
+      // Save to IndexedDB
+      await mediaDB.save(id, blob)
+
+      // Generate Blob URL
+      const source = URL.createObjectURL(blob)
+
+      state.value.backgrounds.push({
+        id,
+        name: file.name,
+        type: type as 'image' | 'video',
+        source, 
+        addedAt: Date.now(),
+        position: 'cover',
+        isDefault: false,
+        createdAt: Date.now()
+      })
+      
+      return id
+    } catch (err) {
+      console.error('Failed to add background:', err)
+      throw err
+    }
   }
 
   const removeBackground = async (id: string) => {

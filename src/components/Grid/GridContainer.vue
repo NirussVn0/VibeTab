@@ -81,12 +81,11 @@ const menuItems = [
 
     <!-- Grid Area -->
     <div 
-      class="grid gap-2 w-full h-full relative transition-all"
+      class="grid gap-2 w-full h-full relative transition-all content-start"
       :style="{ 
-        gridTemplateColumns: 'repeat(auto-fill, 48px)',
-        gridAutoRows: '48px'
+        gridTemplateColumns: 'repeat(auto-fill, minmax(4rem, 1fr))',
+        gridAutoRows: 'auto'
       }"
-      :class="{ 'ring-1 ring-border/30 rounded-xl bg-surface/5': isEditMode }"
       role="grid"
       aria-label="Widget Grid"
     >
@@ -95,6 +94,7 @@ const menuItems = [
         :key="block.id" 
         :block="block"
         :is-dragging="draggedId === block.id"
+        class="aspect-square"
         @drag-start="(e: MouseEvent) => isEditMode && handleMouseDown(e, block.id, { x: block.x, y: block.y }, { w: block.w, h: block.h })"
         @contextmenu="(e: MouseEvent) => onContextMenu(e, block.id)"
       />
