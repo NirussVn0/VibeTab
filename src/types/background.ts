@@ -9,6 +9,7 @@ export interface Background {
   name: string;
   type: BackgroundType;
   source: string; // URL or base64
+  addedAt?: number;
   size?: number; // bytes
   position: BackgroundPosition;
   isDefault: boolean;
