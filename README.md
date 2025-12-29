@@ -1,89 +1,139 @@
-# ⚡ VibeTab
+<div align="center">
+  <br />
+  <img src="https://placehold.co/128x128/2dd4bf/ffffff?text=V" alt="VibeTab Logo" width="100" style="border-radius: 20px"/>
+  <br />
+  <h1>VibeTab</h1>
+  <p>
+    <strong>Next-gen browser dashboard for minimalists & builders.</strong>
+    <br />
+    Built with Vue 3. Engineered for speed. Designed for vibe.
+  </p>
 
-> **A clean, modern, and aesthetically pleasing new tab extension for pro developers.**
-> Built with Vue 3, TypeScript, and a focus on performance and visual "vibe".
+  <!-- BADGES -->
+  <p>
+    <a href="https://github.com/sabiofvibelab/vibetab/stargazers">
+      <img src="https://img.shields.io/github/stars/sabiofvibelab/vibetab?style=for-the-badge&logo=star&color=facc15" alt="Stars" />
+    </a>
+    <a href="https://github.com/sabiofvibelab/vibetab/network/members">
+      <img src="https://img.shields.io/github/forks/sabiofvibelab/vibetab?style=for-the-badge&logo=git&color=cbd5e1" alt="Forks" />
+    </a>
+    <a href="https://github.com/sabiofvibelab/vibetab/issues">
+      <img src="https://img.shields.io/github/issues/sabiofvibelab/vibetab?style=for-the-badge&logo=github&color=f43f5e" alt="Issues" />
+    </a>
+    <a href="./LICENSE">
+      <img src="https://img.shields.io/github/license/sabiofvibelab/vibetab?style=for-the-badge&logo=balance-scale&color=3b82f6" alt="License" />
+    </a>
+  </p>
 
-![VibeTab Banner](https://placehold.co/1200x400/0f172a/60a5fa?text=VibeTab+Preview)
-
-## ✨ Features
-
-- **🎨 Modern Aesthetics**: Glassmorphism UI, smooth animations, and dynamic backgrounds.
-- **⚡ Super Fast**: Built on Vite with zero-runtime CSS overhead (Tailwind).
-- **🔋 Battery Efficient**: Optimized background video/image loading.
-- **🧩 Widgets**:
-    - **Clock**: Customizable minimal clock.
-    - **Search**: Focused search bar.
-    - **Grid**: Drag-and-drop widget layout (In Progress).
-- **⌨️ Command Palette**: `Cmd+K` access to everything (Search, Tabs, Bookmarks).
-- **💾 Persistence**: Instant state saving via local storage & Chrome Sync.
-
-## 🛠️ Tech Stack
-
-- **Framework**: [Vue 3](https://vuejs.org/) (Composition API)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **State Management**: [Pinia](https://pinia.vuejs.org/)
-- **Build Tool**: [Vite](https://vitejs.dev/) + [CRXJS](https://crxjs.dev/vite-plugin)
-- **Storage**: IndexedDB & Chrome Storage API
-
-## 🧑‍💻 Architecture
-
-The project follows a strict feature-based architecture:
-
-```
-src/
-├── components/     # UI Components (Presentational)
-│   ├── Effects/    # Visual effects (Background, Toasts)
-│   ├── Layout/     # Structural components (Grid, Shell)
-│   └── Widgets/    # Proper widgets (Clock, Search)
-├── composables/    # Logic & State Composables (useStorage, useCommandPalette)
-├── stores/         # Global State (Pinia)
-├── services/       # External Integrations (IndexedDB, Chrome API)
-└── utils/          # Helpers & Factories
-```
-
-## 🚀 Getting Started
-
-1.  **Clone the repository**:
-    ```bash
-    git clone https://github.com/sabiofvibelab/vibetab.git
-    cd vibetab
-    ```
-
-2.  **Install dependencies**:
-    ```bash
-    npm install
-    ```
-
-3.  **Run Development Server**:
-    ```bash
-    npm run dev
-    ```
-
-4.  **Build for Production**:
-    ```bash
-    npm run build
-    ```
-    To load in Chrome: Go to `chrome://extensions`, enable **Developer Mode**, click **Load Unpacked**, and select the `dist` folder.
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow the code style (ESLint/Prettier configured).
-
-1.  Fork the Project
-2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your Changes (`git commit -m 'feat: Add some AmazingFeature'`)
-4.  Push to the Branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
-
-## 📄 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
----
-
-<p align="center">
-  <span style="color: #64748b; font-size: 0.8rem;">
-    © 2025 SabiOfVibe Lab.
-  </span>
+  <p align="center">
+  <img src="https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+  <img src="https://img.shields.io/badge/Pinia-State-FFD258?style=for-the-badge&logo=pinia&logoColor=black" />
+  <img src="https://img.shields.io/badge/Chrome_Ext-V3-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white" />
 </p>
+</div>
+
+
+
+<br />
+
+<!-- HERO IMAGE -->
+<div align="center">
+  <img src="https://placehold.co/1200x500/0f172a/38bdf8?text=VibeTab+Dashboard+Preview" alt="VibeTab Hero" style="border-radius: 10px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);" />
+</div>
+
+<br />
+<br />
+
+## ⚡ The Experience
+
+VibeTab isn't just a new tab. It's an operating system for your browser. Glassmorphism UI, zero-runtime overhead, and buttery smooth 60fps animations.
+
+<table>
+  <tr>
+    <td width="50%">
+      <h3 align="center">🎨 Dynamic Theming</h3>
+      <img src="https://placehold.co/600x350/1e293b/a5f3fc?text=Dark+%26+Light+Mode" alt="Theming" style="border-radius: 8px" />
+      <p align="center">Adapts to your system with fluid transitions.</p>
+    </td>
+    <td width="50%">
+      <h3 align="center">⌨️ Command Palette</h3>
+      <img src="https://placehold.co/600x350/1e293b/fbcfe8?text=Cmd+%2B+K+Menu" alt="Command Palette" style="border-radius: 8px" />
+      <p align="center">Navigate tabs and bookmarks without touching the mouse.</p>
+    </td>
+  </tr>
+   <tr>
+    <td width="50%">
+      <h3 align="center">🧩 Grid System</h3>
+      <img src="https://placehold.co/600x350/1e293b/bef264?text=Drag+%26+Drop+Grid" alt="Grid System" style="border-radius: 8px" />
+      <p align="center">Draggable, resizable widgets tailored to your workflow.</p>
+    </td>
+    <td width="50%">
+      <h3 align="center">🌊 Motion & Sound</h3>
+      <img src="https://placehold.co/600x350/1e293b/c4b5fd?text=Live+Backgrounds" alt="Motion" style="border-radius: 8px" />
+      <p align="center">Cinematic backgrounds and subtle sound design.</p>
+    </td>
+  </tr>
+</table>
+
+<br />
+
+## 📦 Installation (For Users)
+
+Not a developer? No problem. Install VibeTab manually in seconds.
+
+1.  **Download**: Get the latest `vibetab-vX.Y.Z.zip` from [**Releases**](https://github.com/sabiofvibelab/vibetab/releases).
+2.  **Unzip**: Extract the downloaded file to a folder.
+3.  **Open Extensions**: Go to `chrome://extensions` in your browser.
+4.  **Dev Mode**: Toggle <img src="https://placehold.co/80x20/e2e8f0/475569?text=Developer+Mode" height="16" /> **Developer Mode** on (top right corner).
+5.  **Load**: Click **Load Unpacked** button.
+6.  **Select**: Choose the unzipped folder (usually named `dist`).
+
+> ✨ **Done!** Open a new tab to see the vibe.
+
+<br />
+
+## 🚀 Developer Setup
+
+One command to rule them all.
+
+Clone
+```
+git clone https://github.com/sabiofvibelab/vibetab.git
+```
+
+Install & Run
+```
+npm install && npm run dev
+```
+
+Build
+```
+npm run build
+```
+
+> Load the `dist` folder via `chrome://extensions` > **Load Unpacked**.
+
+<br />
+
+## 👥 Contributors
+
+Built by the vibe, for the vibe.
+
+| Role | User | Contribution |
+| :--- | :--- | :--- |
+| **Lead Dev** | **NirussVnO** | DEV |
+
+<br />
+
+### Hall of Fame
+<a href="https://github.com/sabiofvibelab/vibetab/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=sabiofvibelab/vibetab" alt="Contributors" />
+</a>
+
+<div align="center">
+  <p>Distributed under the MIT License.</p>
+  <p style="color: #94a3b8">© 2025 SabiOfVibe Lab.</p>
+</div>
