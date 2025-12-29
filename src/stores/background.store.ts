@@ -61,8 +61,19 @@ export const useBackgroundStore = defineStore('background', () => {
     }
   }
 
-  const setBackground = (id: string) => {
-    state.value.currentBackgroundId = id
+  const setBackground = async (input: string | File) => {
+    if (typeof input === 'string') {
+        state.value.currentBackgroundId = input
+    } else {
+        // Handle File upload directly to active
+        await addBackground(input)
+        const newBg = state.value.backgrounds[state.value.backgrounds.length - 1]
+        if (newBg) state.value.currentBackgroundId = newBg.id
+    }
+  }
+
+  const resetBackground = () => {
+    state.value.currentBackgroundId = null
   }
 
   // --- Rotation Logic ---
@@ -115,6 +126,7 @@ export const useBackgroundStore = defineStore('background', () => {
     addBackground,
     removeBackground,
     setBackground,
+    resetBackground,
     rotateNext
   }
 })

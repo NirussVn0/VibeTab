@@ -95,6 +95,32 @@
             </div>
           </section>
 
+          <!-- Tab: Backgrounds -->
+          <section v-if="activeTab === 'backgrounds'" class="space-y-6">
+            <div class="bg-white/5 rounded-xl p-4 border border-white/5 space-y-4">
+              <h3 class="text-xs font-bold text-white/40 uppercase tracking-widest">Custom Background</h3>
+              
+              <div class="space-y-3">
+                 <!-- Upload -->
+                 <label class="block w-full cursor-pointer">
+                    <div class="w-full h-32 rounded-lg border-2 border-dashed border-white/10 hover:border-primary-500/50 hover:bg-white/5 flex flex-col items-center justify-center transition-all">
+                       <span class="text-2xl mb-2">🖼️</span>
+                       <span class="text-xs text-white/60">Click to upload image</span>
+                    </div>
+                    <input type="file" accept="image/*" class="hidden" @change="handleBackgroundUpload" />
+                 </label>
+
+                 <!-- Clear -->
+                 <button 
+                   @click="clearBackground"
+                   class="w-full px-3 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-xs text-red-400 border border-red-500/20"
+                 >
+                   Reset to Default Background
+                 </button>
+              </div>
+            </div>
+          </section>
+
           <!-- Tab: Advanced -->
           <section v-if="activeTab === 'advanced'" class="space-y-6">
             <div class="bg-white/5 rounded-xl p-4 border border-white/5 space-y-4">
@@ -114,6 +140,14 @@
                    <input type="file" accept=".json" class="hidden" @change="importSettings" />
                 </label>
               </div>
+
+              <!-- Clear All Data -->
+               <button 
+                  @click="clearAllData"
+                  class="w-full px-3 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-xs text-red-400 border border-red-500/20 mt-2"
+                >
+                   ⚠️ Clear All Data
+                </button>
             </div>
 
             <div class="bg-white/5 rounded-xl p-4 border border-white/5">
@@ -136,18 +170,44 @@ import { ref } from 'vue'
 import { useUIStore } from '../../stores/ui.store'
 import { useSettingsStore } from '../../stores/settings.store'
 import { useThemeStore } from '../../stores/theme.store'
+import { useBackgroundStore } from '../../stores/background.store'
 import ToggleSwitch from '../Base/ToggleSwitch.vue'
 
 const uiStore = useUIStore()
 const settingsStore = useSettingsStore()
 const themeStore = useThemeStore()
+const backgroundStore = useBackgroundStore()
 
 const tabs = [
   { id: 'general', label: 'General' },
   { id: 'appearance', label: 'Theme' },
+  { id: 'backgrounds', label: 'Background' },
   { id: 'advanced', label: 'Advanced' }
 ]
 const activeTab = ref('general')
+
+// Background Logic
+const handleBackgroundUpload = async (event: Event) => {
+  const file = (event.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  
+  // Use background store to handle upload (assuming it has a method, or implementing basic blob url here)
+  // For V1, we previously implemented IndexedDB in background store.
+  await backgroundStore.setBackground(file) 
+}
+
+const clearBackground = () => {
+    backgroundStore.resetBackground()
+}
+
+// Clear All Data
+const clearAllData = () => {
+  if (confirm('Are you sure? This will reset all widgets, settings, and backgrounds. This action cannot be undone.')) {
+    localStorage.clear()
+    // Optionally clear IndexedDB if applicable
+    window.location.reload()
+  }
+}
 
 // Export
 const exportSettings = () => {

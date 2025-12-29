@@ -59,30 +59,30 @@ export const colorPalette = {
   
   // Grayscale Theme
   gray: {
-    primary: '#64748B',
-    primaryHover: '#475569',
-    primaryActive: '#1E293B',
+    primary: '#71717A',      // Neural Zinc
+    primaryHover: '#52525B', 
+    primaryActive: '#3F3F46',
     
-    secondary: '#78716C',
+    secondary: '#A1A1AA',
     
-    background: '#FAFAF9',
-    surface: '#F5F5F4',
-    surfaceHover: '#E7E5E4',
+    background: '#18181B',   // Dark Zinc
+    surface: '#27272A',      // Slightly lighter
+    surfaceHover: '#3F3F46',
     
     text: {
-      primary: '#1C1917',
-      secondary: '#78716C',
-      tertiary: '#A8A29E',
+      primary: '#F4F4F5',
+      secondary: '#A1A1AA',
+      tertiary: '#71717A',
     },
     
-    border: '#E7E5E4',
-    divider: '#F5F5F4',
+    border: '#3F3F46',
+    divider: '#27272A',
     
-    success: '#6B7280',
-    warning: '#9CA3AF',
-    error: '#6B7280',
-    info: '#64748B',
+    success: '#10B981',
+    warning: '#F59E0B',
+    error: '#EF4444',
+    info: '#71717A',
     
-    blur: 'rgba(250, 250, 249, 0.8)',
+    blur: 'rgba(24, 24, 27, 0.85)',
   },
 };

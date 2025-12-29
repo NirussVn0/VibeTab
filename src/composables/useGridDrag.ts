@@ -58,7 +58,7 @@ export function useGridDrag(
     dragState.value.dropTarget = { x: newX, y: newY }
   }
 
-  const handleMouseUp = (e: MouseEvent) => {
+  const handleMouseUp = () => {
     if (!dragState.value || !draggedId.value) return
 
     if (dragState.value.dropTarget) {
