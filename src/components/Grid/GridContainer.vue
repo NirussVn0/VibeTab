@@ -95,17 +95,35 @@ const menuItems = [
         @contextmenu="(e: MouseEvent) => onContextMenu(e, block.id)"
       />
 
-      <!-- Ghost Element -->
+      <!-- DROP SHADOW (Ghost) -->
+      <div 
+        v-if="dragState && dragState.dropTarget"
+        class="pointer-events-none rounded-lg bg-text-primary/10 border-2 border-dashed border-text-primary/20 transition-all duration-100 ease-out"
+        :style="{
+          gridColumnStart: dragState.dropTarget.x + 1,
+          gridColumnEnd: `span ${widgets.find(w => w.id === draggedId)?.w || 1}`,
+          gridRowStart: dragState.dropTarget.y + 1,
+          gridRowEnd: `span ${widgets.find(w => w.id === draggedId)?.h || 1}`,
+        }"
+      ></div>
+
+      <!-- DRAGGING PREVIEW (Flying Widget) -->
       <div 
         v-if="dragState && dragState.isDragging"
-        class="fixed pointer-events-none z-[100] rounded-lg bg-primary/20 border-2 border-primary backdrop-blur-sm shadow-2xl"
+        class="fixed pointer-events-none z-[100] origin-top-left"
         :style="{
           left: `${dragState.current.x - dragState.offset.x}px`,
           top: `${dragState.current.y - dragState.offset.y}px`,
-          width: '200px', 
-          height: '200px'
+          width: 'calc(100% / 12 * ' + (widgets.find(w => w.id === draggedId)?.w || 1) + ')', 
+          height: (widgets.find(w => w.id === draggedId)?.h || 1) * 120 + 'px',
+          transform: 'scale(1.05) rotate(2deg)',
         }"
-      ></div>
+      >
+        <div class="w-full h-full rounded-lg bg-surface/90 backdrop-blur-md border border-primary shadow-2xl flex items-center justify-center text-text-primary">
+            <!-- Simple preview content since we can't easily clone the full component state here without slots -->
+            <span class="font-bold text-lg">Active Widget</span>
+        </div>
+      </div>
     </div>
 
     <!-- Context Menu -->
