@@ -37,6 +37,20 @@ export default {
         lg: 'var(--radius-lg)',
         full: 'var(--radius-full)',
       },
+      zIndex: {
+        'background': '-1',
+        'grid': '10',
+        'modal': '50',
+        'toast': '100',
+        'context-menu': '60',
+      },
+      transitionDuration: {
+        '0': '0ms',
+        '200': '200ms',
+        '300': '300ms',
+        '400': '400ms',
+        '500': '500ms',
+      }
     },
   },
   plugins: [],

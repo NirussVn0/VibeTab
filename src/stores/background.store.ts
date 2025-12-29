@@ -1,43 +1,33 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
-
-export type BackgroundType = 'image' | 'video' | 'color'
-
-export interface BackgroundConfig {
-  type: BackgroundType
-  src: string
-  overlayOpacity: number
-  blur: number
-}
+import { computed } from 'vue'
+import { useStorage } from '../composables/useStorage'
+import type { Background, BackgroundState } from '../types/background'
 
 export const useBackgroundStore = defineStore('background', () => {
-  const config = ref<BackgroundConfig>({
-    type: 'color',
-    src: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
-    overlayOpacity: 0.1,
-    blur: 0
+  const backgrounds = useStorage<Background[]>('vibetab_backgrounds', [])
+  
+  const state = useStorage<BackgroundState>('vibetab_background_state', {
+    backgrounds: [],
+    currentBackgroundId: null,
+    rotationMode: 'random',
+    rotationInterval: 60,
+    rotationEnabled: false,
+    blur: 0,
+    brightness: 100
   })
 
-  const setBackground = (newConfig: Partial<BackgroundConfig>) => {
-    config.value = { ...config.value, ...newConfig }
-  }
+  // Default gradients if no background set
+  const defaultGradient = 'linear-gradient(135deg, #218085 0%, #1a6872 100%)' // Teal theme gradient
 
-  const backgroundStyle = computed(() => {
-    return {
-      filter: `blur(${config.value.blur}px)`
-    }
-  })
-
-  const overlayStyle = computed(() => {
-    return {
-      backgroundColor: `rgba(0,0,0,${config.value.overlayOpacity})`
-    }
+  const currentBackground = computed(() => {
+    if (!state.value.currentBackgroundId) return null
+    return backgrounds.value.find(b => b.id === state.value.currentBackgroundId) || null
   })
 
   return {
-    config,
-    setBackground,
-    backgroundStyle,
-    overlayStyle
+    state,
+    backgrounds,
+    currentBackground,
+    defaultGradient
   }
 })
