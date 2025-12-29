@@ -66,7 +66,7 @@ const menuItems = [
 </script>
 
 <template>
-  <div class="container mx-auto px-4 h-full flex items-center justify-center select-none relative">
+  <div class="w-screen h-full flex items-center justify-center select-none relative px-4 md:px-8 lg:px-12">
     
     <!-- Edit Mode Toggle -->
     <div class="absolute top-4 right-4 z-50">
@@ -81,7 +81,7 @@ const menuItems = [
 
     <!-- Grid Area -->
     <div 
-      class="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 xl:grid-cols-16 2xl:grid-cols-20 gap-4 w-full h-full max-w-none px-4 md:px-8 lg:px-12 auto-rows-[120px] relative transition-all"
+      class="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 xl:grid-cols-16 2xl:grid-cols-20 gap-4 w-full h-full auto-rows-[120px] relative transition-all"
       :class="{ 'ring-1 ring-border/30 rounded-xl bg-surface/5': isEditMode }"
       role="grid"
       aria-label="Widget Grid"
