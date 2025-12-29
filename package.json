@@ -9,22 +9,28 @@
     "preview": "vite preview",
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
-    "test": "vitest"
+    "test": "vitest",
+    "package": "npm run build && node scripts/package.js"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
-    "@vueuse/core": "^12.0.0",
+    "@heroicons/vue": "^2.2.0",
+    "@vueuse/core": "^12.8.2",
     "framer-motion": "^11.0.0",
+    "fuse.js": "^7.1.0",
     "gsap": "^3.12.5",
+    "idb": "^8.0.3",
     "pinia": "^2.3.0",
     "vue": "^3.5.0"
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^2.0.0-beta.28",
     "@eslint/js": "^9.39.2",
+    "@playwright/test": "^1.57.0",
     "@types/chrome": "^0.0.280",
     "@types/node": "^22.0.0",
     "@vitejs/plugin-vue": "^5.2.0",
+    "archiver": "^7.0.1",
     "autoprefixer": "^10.4.0",
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^10.1.8",

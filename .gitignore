@@ -12,5 +12,5 @@ dist
 # Misc
 .DS_Store
 
-docs/*
+local/*
 

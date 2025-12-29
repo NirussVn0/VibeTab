@@ -1,6 +1,6 @@
 <div align="center">
   <br />
-  <img src="https://placehold.co/128x128/2dd4bf/ffffff?text=V" alt="VibeTab Logo" width="100" style="border-radius: 20px"/>
+  <img src="public/icons/icon-128.png" alt="VibeTab Logo" width="100" style="border-radius: 20px"/>
   <br />
   <h1>VibeTab</h1>
   <p>
@@ -135,5 +135,5 @@ Built by the vibe, for the vibe.
 
 <div align="center">
   <p>Distributed under the MIT License.</p>
-  <p style="color: #94a3b8">© 2025 SabiOfVibe Lab.</p>
+  <p style="color: #94a3b8">© 2026 SabiOfVibe Lab.</p>
 </div>
