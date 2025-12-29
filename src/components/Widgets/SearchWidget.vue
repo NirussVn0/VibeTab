@@ -40,7 +40,7 @@ const handleSearch = () => {
         v-model="query"
         type="text"
         placeholder="Search..."
-        class="w-full pl-11 pr-4 py-3 bg-surface/40 backdrop-blur-md rounded-xl border border-border/10 outline-none text-text-primary placeholder:text-text-secondary/50 focus:bg-surface/60 focus:ring-2 focus:ring-primary/20 transition-all shadow-lg"
+        class="w-full pl-11 pr-4 py-3 bg-surface/80 backdrop-blur-md rounded-xl outline-none text-text-primary placeholder:text-text-secondary/60 focus:bg-surface transition-all shadow-lg"
         @keydown.enter="handleSearch"
       />
       

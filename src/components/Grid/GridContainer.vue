@@ -81,7 +81,7 @@ const menuItems = [
 
     <!-- Grid Area -->
     <div 
-      class="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-4 w-full max-w-[1280px] auto-rows-[120px] relative transition-all"
+      class="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-4 w-full h-full max-w-none px-4 md:px-8 lg:px-12 auto-rows-[120px] relative transition-all"
       :class="{ 'ring-1 ring-border/30 rounded-xl bg-surface/5': isEditMode }"
       role="grid"
       aria-label="Widget Grid"

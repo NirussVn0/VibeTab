@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { useThemeStore } from './stores/theme.store'
 import BackgroundLayer from './components/Background/BackgroundLayer.vue'
 import GridContainer from './components/Grid/GridContainer.vue'
 import SettingsPanel from './components/Layout/SettingsPanel.vue'
@@ -7,7 +8,17 @@ import CommandPalette from './components/Overlay/CommandPalette.vue'
 import OnboardingTour from './components/Overlay/OnboardingTour.vue'
 import ErrorBoundary from './components/Base/ErrorBoundary.vue'
 
+const themeStore = useThemeStore()
+
 onMounted(() => {
+  themeStore.applyTheme()
+  // Watch for external storage changes (e.g. multi-tab)
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'vibetab-theme-mode') {
+      themeStore.mode = e.newValue as any
+      themeStore.applyTheme()
+    }
+  })
   console.log('VibeTab Initialized')
 })
 </script>
