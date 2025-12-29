@@ -2,9 +2,16 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import type { ClockConfig } from '../../types/widget'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   config: ClockConfig
-}>()
+}>(), {
+  config: () => ({
+    style: 'digital',
+    format: '24h',
+    showSeconds: false,
+    timezone: undefined
+  })
+})
 
 const time = ref(new Date())
 let timer: ReturnType<typeof setInterval> | null = null
@@ -22,7 +29,6 @@ onUnmounted(() => {
   if (timer) clearInterval(timer)
 })
 
-// Digital Format
 const formattedTime = computed(() => {
   const options: Intl.DateTimeFormatOptions = {
     hour: 'numeric',

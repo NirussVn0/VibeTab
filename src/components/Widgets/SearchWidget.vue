@@ -3,9 +3,14 @@ import { ref } from 'vue'
 import type { SearchConfig } from '../../types/widget'
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   config: SearchConfig
-}>()
+}>(), {
+  config: () => ({
+    provider: 'google',
+    aiMode: false
+  })
+})
 
 const query = ref('')
 
