@@ -22,7 +22,7 @@ export const useBackgroundStore = defineStore('background', () => {
 
   const currentBackground = computed(() => {
     if (!state.value.currentBackgroundId) return null
-    return backgrounds.value.find(b => b.id === state.value.currentBackgroundId) || null
+    return state.value.backgrounds.find(b => b.id === state.value.currentBackgroundId) || null
   })
 
   // --- Actions ---

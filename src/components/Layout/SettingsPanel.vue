@@ -22,7 +22,7 @@
             @click="uiStore.closeSettings"
             class="p-2 text-white/50 hover:text-white transition-colors"
           >
-            ✕
+          <XMarkIcon class="w-5 h-5" />
           </button>
         </div>
 
@@ -104,7 +104,7 @@
                  <!-- Upload -->
                  <label class="block w-full cursor-pointer">
                     <div class="w-full h-32 rounded-lg border-2 border-dashed border-white/10 hover:border-primary-500/50 hover:bg-white/5 flex flex-col items-center justify-center transition-all">
-                       <span class="text-2xl mb-2">🖼️</span>
+                       <PhotoIcon class="w-8 h-8 text-white/40 mb-2" />
                        <span class="text-xs text-white/60">Click to upload image</span>
                     </div>
                     <input type="file" accept="image/*" class="hidden" @change="handleBackgroundUpload" />
@@ -146,7 +146,7 @@
                   @click="clearAllData"
                   class="w-full px-3 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-xs text-red-400 border border-red-500/20 mt-2"
                 >
-                   ⚠️ Clear All Data
+                   <ExclamationTriangleIcon class="w-3 h-3 inline mr-1" /> Clear All Data
                 </button>
             </div>
 
@@ -172,6 +172,7 @@ import { useSettingsStore } from '../../stores/settings.store'
 import { useThemeStore } from '../../stores/theme.store'
 import { useBackgroundStore } from '../../stores/background.store'
 import ToggleSwitch from '../Base/ToggleSwitch.vue'
+import { XMarkIcon, PhotoIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 
 const uiStore = useUIStore()
 const settingsStore = useSettingsStore()

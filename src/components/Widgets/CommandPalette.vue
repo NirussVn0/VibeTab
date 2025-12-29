@@ -110,7 +110,6 @@ import { useCommandPaletteStore, type Command } from '../../stores/commandPalett
 const store = useCommandPaletteStore()
 const inputRef = ref<HTMLInputElement | null>(null)
 
-// Focus input when opened
 watch(() => store.isOpen, async (val) => {
   if (val) {
     await nextTick()

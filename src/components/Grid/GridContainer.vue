@@ -16,7 +16,7 @@ const contextMenu = ref<{ x: number; y: number; blockId: string } | null>(null)
 
 // --- Drag & Drop ---
 // 120px cell + 16px gap
-const { handleMouseDown, dragState, draggedId } = useGridDrag(120, 16, (id, newPos) => {
+const { handleMouseDown, dragState, draggedId } = useGridDrag(64, 12, (id, newPos) => {
   gridStore.updateWidgetPosition(id, newPos)
 })
 
@@ -81,7 +81,7 @@ const menuItems = [
 
     <!-- Grid Area -->
     <div 
-      class="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 xl:grid-cols-16 2xl:grid-cols-20 gap-4 w-full h-full auto-rows-[120px] relative transition-all"
+      class="grid grid-cols-6 md:grid-cols-12 lg:grid-cols-18 xl:grid-cols-24 2xl:grid-cols-32 gap-3 w-full h-full auto-rows-[64px] relative transition-all"
       :class="{ 'ring-1 ring-border/30 rounded-xl bg-surface/5': isEditMode }"
       role="grid"
       aria-label="Widget Grid"

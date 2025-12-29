@@ -11,6 +11,7 @@ dist
 
 # Misc
 .DS_Store
-
+# test
+test-results
 local/*
 

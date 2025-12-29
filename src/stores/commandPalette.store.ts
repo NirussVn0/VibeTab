@@ -63,16 +63,13 @@ export const useCommandPaletteStore = defineStore('commandPalette', () => {
       description: 'Toggle between Light/Dark modes',
       category: 'settings',
       keywords: ['dark', 'light', 'mode', 'color'],
-      action: () => { themeStore.cycleTheme() } // Assuming this exists or will exist
+      action: () => { themeStore.cycleTheme() }
     }
   ]
 
   const filteredCommands = computed(() => {
     const query = searchQuery.value.toLowerCase().trim()
-    
-    // If empty query, show "suggested" or all commands
     if (!query) return staticCommands
-
     return staticCommands.filter(cmd => {
       const titleMatch = cmd.title.toLowerCase().includes(query)
       const descMatch = cmd.description?.toLowerCase().includes(query)
@@ -81,7 +78,6 @@ export const useCommandPaletteStore = defineStore('commandPalette', () => {
     })
   })
 
-  // Group commands by category
   const groupedCommands = computed(() => {
     const groups: Record<string, Command[]> = {}
     filteredCommands.value.forEach(cmd => {
