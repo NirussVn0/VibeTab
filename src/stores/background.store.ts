@@ -12,9 +12,9 @@ export interface BackgroundConfig {
 
 export const useBackgroundStore = defineStore('background', () => {
   const config = ref<BackgroundConfig>({
-    type: 'video', // Default to video for "wow" factor
-    src: '/backgrounds/default-dynamic.mp4', 
-    overlayOpacity: 0.2,
+    type: 'color',
+    src: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
+    overlayOpacity: 0.1,
     blur: 0
   })
 

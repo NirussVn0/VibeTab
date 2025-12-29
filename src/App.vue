@@ -1,10 +1,10 @@
 <template>
-  <div class="relative w-screen h-screen overflow-hidden text-text-primary">
+  <div class="dark relative w-screen h-screen overflow-hidden bg-surface text-text-primary">
     <!-- Background Layer -->
     <AnimatedBackground />
 
     <!-- Application Shell -->
-    <div class="relative z-0 h-full flex flex-col">
+    <div class="relative z-10 h-full flex flex-col">
       <TopBar />
       
       <main class="flex-1 relative overflow-hidden">
@@ -35,17 +35,16 @@ import { useUIStore } from './stores/ui.store'
 import { useCommandPalette } from './composables/useCommandPalette'
 
 const uiStore = useUIStore()
-useCommandPalette() // Initialize shortcuts
+useCommandPalette()
 
 onMounted(() => {
-  // Simulate initial load
   uiStore.startLoading('Welcome to VibeTab')
   setTimeout(() => {
     uiStore.stopLoading()
     uiStore.addToast({
-      message: 'VibeTab Optimized & Ready',
+      message: 'VibeTab Ready',
       type: 'success'
     })
-  }, 1500)
+  }, 1000)
 })
 </script>
