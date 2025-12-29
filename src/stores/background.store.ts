@@ -27,8 +27,12 @@ export const useBackgroundStore = defineStore('background', () => {
 
   // --- Actions ---
   const loadBackgrounds = async () => {
-    // Load metadata from LocalStorage (already done by useStorage)
-    // Validate if Blobs exist in IndexedDB (lazy load when needed)
+    for (const bg of state.value.backgrounds) {
+      const stored = await mediaDB.get(bg.id)
+      if (stored?.blob) {
+        bg.source = URL.createObjectURL(stored.blob)
+      }
+    }
   }
 
   const addBackground = async (file: File) => {

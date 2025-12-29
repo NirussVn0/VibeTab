@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useThemeStore } from './stores/theme.store'
+import { useBackgroundStore } from './stores/background.store'
 import BackgroundLayer from './components/Background/BackgroundLayer.vue'
 import GridContainer from './components/Grid/GridContainer.vue'
 import SettingsPanel from './components/Layout/SettingsPanel.vue'
@@ -9,17 +10,18 @@ import OnboardingTour from './components/Overlay/OnboardingTour.vue'
 import ErrorBoundary from './components/Base/ErrorBoundary.vue'
 
 const themeStore = useThemeStore()
+const backgroundStore = useBackgroundStore()
 
-onMounted(() => {
+onMounted(async () => {
   themeStore.applyTheme()
-  // Watch for external storage changes (e.g. multi-tab)
+  await backgroundStore.loadBackgrounds()
+  
   window.addEventListener('storage', (e) => {
     if (e.key === 'vibetab-theme-mode') {
       themeStore.mode = e.newValue as any
       themeStore.applyTheme()
     }
   })
-  console.log('VibeTab Initialized')
 })
 </script>
 
