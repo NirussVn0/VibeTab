@@ -1,0 +1,44 @@
+:root {
+  /* Teal/Cream Theme - Light Mode */
+  --color-primary: #218085;
+  --color-primary-hover: #1c7478;
+  --color-primary-dark: #1a6872;
+  --color-secondary: rgba(94, 82, 64, 0.12);
+  --color-background: #fcfcf9;
+  --color-surface: #fffff5;
+  --color-text-primary: #134252;
+  --color-text-secondary: #626c71;
+  --color-border: rgba(94, 82, 64, 0.2);
+  --color-error: #c0152f;
+  --color-success: #208085;
+  --color-warning: #a84b2f;
+
+  /* Typography */
+  --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --font-family-mono: 'Berkeley Mono', 'SF Mono', Monaco, Menlo, monospace;
+
+  /* Spacing */
+  --spacing-base: 8px;
+  
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-base: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+}
+
+[data-theme='dark'] {
+  /* Teal/Cream Theme - Dark Mode */
+  --color-primary: #32b8c6;
+  --color-primary-hover: #2da6b2;
+  --color-primary-dark: #1a9a88;
+  --color-background: #3f4141;
+  --color-surface: #262828;
+  --color-text-primary: #f5f5f5;
+  --color-text-secondary: #a7a9a9;
+  --color-border: rgba(119, 124, 124, 0.3);
+  --color-error: #ff5459;
+  --color-success: #32b8c6;
+  --color-warning: #e68161;
+}
