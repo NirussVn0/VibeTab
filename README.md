@@ -11,17 +11,17 @@
 
   <!-- BADGES -->
   <p>
-    <a href="https://github.com/sabiofvibelab/vibetab/stargazers">
-      <img src="https://img.shields.io/github/stars/sabiofvibelab/vibetab?style=for-the-badge&logo=star&color=facc15" alt="Stars" />
+    <a href="https://github.com/nirussvn0/vibetab/stargazers">
+      <img src="https://img.shields.io/github/stars/nirussvn0/vibetab?style=for-the-badge&logo=star&color=facc15" alt="Stars" />
     </a>
-    <a href="https://github.com/sabiofvibelab/vibetab/network/members">
-      <img src="https://img.shields.io/github/forks/sabiofvibelab/vibetab?style=for-the-badge&logo=git&color=cbd5e1" alt="Forks" />
+    <a href="https://github.com/nirussvn0/vibetab/network/members">
+      <img src="https://img.shields.io/github/forks/nirussvn0/vibetab?style=for-the-badge&logo=git&color=cbd5e1" alt="Forks" />
     </a>
-    <a href="https://github.com/sabiofvibelab/vibetab/issues">
-      <img src="https://img.shields.io/github/issues/sabiofvibelab/vibetab?style=for-the-badge&logo=github&color=f43f5e" alt="Issues" />
+    <a href="https://github.com/nirussvn0/vibetab/issues">
+      <img src="https://img.shields.io/github/issues/nirussvn0/vibetab?style=for-the-badge&logo=github&color=f43f5e" alt="Issues" />
     </a>
     <a href="./LICENSE">
-      <img src="https://img.shields.io/github/license/sabiofvibelab/vibetab?style=for-the-badge&logo=balance-scale&color=3b82f6" alt="License" />
+      <img src="https://img.shields.io/github/license/nirussvn0/vibetab?style=for-the-badge&logo=balance-scale&color=3b82f6" alt="License" />
     </a>
   </p>
 
