@@ -12,6 +12,7 @@ dist
 # Misc
 .DS_Store
 # test
+playwright-report/*
 test-results
 local/*
 
