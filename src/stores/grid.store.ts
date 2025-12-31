@@ -6,7 +6,7 @@ import { GridManager } from '../utils/GridManager'
 import { HistoryManager } from '../utils/HistoryManager'
 
 import type { GridBlock } from '../types/grid'
-
+import { WIDGET_DEFAULTS } from '../constants/widgetSizes'
 
 export const useGridStore = defineStore('grid', () => {
   // --- State ---
@@ -127,12 +127,14 @@ export const useGridStore = defineStore('grid', () => {
 
 // Helper: Default Widgets
 function getDefaultWidgets(): GridBlock[] {
-  // Use conservative defaults (will be clamped by grid on render/interaction)
   return [
     { 
       id: 'clock-1', 
       type: 'clock', 
-      x: 0, y: 0, w: 6, h: 2, // Reduced from 12 to 6 for safety on small screens
+      x: 0, 
+      y: 0, 
+      w: WIDGET_DEFAULTS.clock.w,
+      h: WIDGET_DEFAULTS.clock.h,
       config: { style: 'digital', format: '24h', showSeconds: true }, 
       isLocked: true, 
       zIndex: 10,
@@ -142,7 +144,10 @@ function getDefaultWidgets(): GridBlock[] {
     { 
       id: 'search-1', 
       type: 'search', 
-      x: 0, y: 3, w: 6, h: 1, // Reduced width, moved down
+      x: 0, 
+      y: 4, 
+      w: WIDGET_DEFAULTS.search.w,
+      h: WIDGET_DEFAULTS.search.h,
       config: { provider: 'google', aiMode: false }, 
       isLocked: false, 
       zIndex: 10,
