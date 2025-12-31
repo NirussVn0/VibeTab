@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
-import { computed } from 'vue' // Removed unused ref, watch
+import { computed, watch } from 'vue'
 import { useStorage } from '../composables/useStorage'
+import { useGridConfig } from '../composables/useGridConfig'
 import { GridManager } from '../utils/GridManager'
 import { HistoryManager } from '../utils/HistoryManager'
 
@@ -9,9 +10,15 @@ import type { GridBlock } from '../types/grid'
 
 export const useGridStore = defineStore('grid', () => {
   // --- State ---
-  const widgets = useStorage<GridBlock[]>('vibetab_widgets', getDefaultWidgets())
+  const { cols, rows } = useGridConfig()
+  const { state: widgets } = useStorage<GridBlock[]>('vibetab_widgets', getDefaultWidgets())
   const history = new HistoryManager<GridBlock[]>(20)
-  const gridManager = new GridManager(12) // Default desktop cols, should be reactive to viewport
+  const gridManager = new GridManager(cols.value, rows.value) // Init with current reactive values
+
+  // Keep GridManager updated
+  watch([cols, rows], ([newCols, newRows]) => {
+    gridManager.setDimensions(newCols, newRows)
+  })
 
   // --- Actions ---
 
@@ -22,12 +29,21 @@ export const useGridStore = defineStore('grid', () => {
   const addWidget = (widget: GridBlock) => {
     saveStateToHistory()
     
+    // Clamp size to current columns
+    widget.w = Math.min(widget.w, cols.value)
+    widget.h = Math.min(widget.h, rows.value)
+
     // Ensure valid position if colliding
     if (gridManager.findCollision(widget, widgets.value)) {
       const emptySlot = gridManager.findEmptySlot(widgets.value, widget.w, widget.h)
       widget.x = emptySlot.x
       widget.y = emptySlot.y
     }
+    
+    // Clamp again just in case findEmptySlot puts it out of bounds (unlikely but safe)
+    const clamped = gridManager.clampPosition(widget.x, widget.y, widget.w, widget.h)
+    widget.x = clamped.x
+    widget.y = clamped.y
 
     widgets.value.push(widget)
   }
@@ -46,8 +62,8 @@ export const useGridStore = defineStore('grid', () => {
     // Apply updates
     widget.x = pos.x
     widget.y = pos.y
-    if (pos.w) widget.w = pos.w
-    if (pos.h) widget.h = pos.h
+    if (pos.w) widget.w = Math.min(pos.w, cols.value) // Enforce max width
+    if (pos.h) widget.h = Math.min(pos.h, rows.value)
 
     // Validate bounds
     if (!gridManager.isValidPosition(widget)) return
@@ -67,6 +83,8 @@ export const useGridStore = defineStore('grid', () => {
     widgets.value[widgetIndex] = {
       ...widgets.value[widgetIndex],
       ...pos,
+      w: widget.w, // Ensure clamped values are saved
+      h: widget.h,
       updatedAt: Date.now()
     }
   }
@@ -109,11 +127,12 @@ export const useGridStore = defineStore('grid', () => {
 
 // Helper: Default Widgets
 function getDefaultWidgets(): GridBlock[] {
+  // Use conservative defaults (will be clamped by grid on render/interaction)
   return [
     { 
       id: 'clock-1', 
       type: 'clock', 
-      x: 0, y: 0, w: 12, h: 2, 
+      x: 0, y: 0, w: 6, h: 2, // Reduced from 12 to 6 for safety on small screens
       config: { style: 'digital', format: '24h', showSeconds: true }, 
       isLocked: true, 
       zIndex: 10,
@@ -123,7 +142,7 @@ function getDefaultWidgets(): GridBlock[] {
     { 
       id: 'search-1', 
       type: 'search', 
-      x: 2, y: 2, w: 8, h: 1, 
+      x: 0, y: 3, w: 6, h: 1, // Reduced width, moved down
       config: { provider: 'google', aiMode: false }, 
       isLocked: false, 
       zIndex: 10,

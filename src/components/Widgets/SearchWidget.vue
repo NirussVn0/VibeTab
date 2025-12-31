@@ -28,10 +28,10 @@ const handleSearch = () => {
 </script>
 
 <template>
-  <div class="w-full h-full flex items-center justify-center p-4">
-    <div class="relative w-full max-w-2xl group">
+  <div class="w-full h-full flex items-center justify-center p-2 sm:p-4">
+    <div class="relative w-full h-full max-h-[60px] group flex items-center">
       <!-- Search Icon -->
-      <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-text-secondary/50 group-focus-within:text-primary transition-colors">
+      <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-text-secondary/50 group-focus-within:text-primary transition-colors z-10">
         <MagnifyingGlassIcon class="h-5 w-5" />
       </div>
 
@@ -40,7 +40,7 @@ const handleSearch = () => {
         v-model="query"
         type="text"
         placeholder="Search..."
-        class="w-full pl-11 pr-4 py-3 bg-surface/80 backdrop-blur-md rounded-xl outline-none text-text-primary placeholder:text-text-secondary/60 focus:bg-surface transition-all shadow-lg"
+        class="w-full h-full pl-11 pr-4 bg-surface/80 backdrop-blur-md rounded-xl outline-none text-text-primary placeholder:text-text-secondary/60 focus:bg-surface transition-all shadow-lg text-sm sm:text-base"
         @keydown.enter="handleSearch"
       />
       

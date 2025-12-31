@@ -2,12 +2,11 @@ import { defineStore } from 'pinia'
 import { computed, watch } from 'vue'
 import { useStorage } from '../composables/useStorage'
 import { mediaDB } from '../utils/indexedDB'
-import type { Background, BackgroundState } from '../types/background'
+import { BackgroundService } from '../services/BackgroundService'
+import type { BackgroundState, BackgroundType } from '../types/background'
 
 export const useBackgroundStore = defineStore('background', () => {
-  const backgrounds = useStorage<Background[]>('vibetab_backgrounds', [])
-  
-  const state = useStorage<BackgroundState>('vibetab_background_state', {
+  const { state, isReady } = useStorage<BackgroundState>('vibetab_background_state', {
     backgrounds: [],
     currentBackgroundId: null,
     rotationMode: 'random',
@@ -17,91 +16,147 @@ export const useBackgroundStore = defineStore('background', () => {
     brightness: 100
   })
 
-  // Default gradients if no background set
-  const defaultGradient = 'linear-gradient(135deg, #218085 0%, #1a6872 100%)' // Teal theme gradient
+  const defaultGradient = 'linear-gradient(135deg, #218085 0%, #1a6872 100%)'
 
   const currentBackground = computed(() => {
     if (!state.value.currentBackgroundId) return null
     return state.value.backgrounds.find(b => b.id === state.value.currentBackgroundId) || null
   })
 
-  // --- Actions ---
+
+
   const loadBackgrounds = async () => {
-    for (const bg of state.value.backgrounds) {
-      try {
-        const stored = await mediaDB.get(bg.id)
-        if (stored?.blob) {
-          // Revoke old URL if it exists to prevent memory leaks
-          if (bg.source && bg.source.startsWith('blob:')) {
-            URL.revokeObjectURL(bg.source)
-          }
-          bg.source = URL.createObjectURL(stored.blob)
+    // Rehydrate blob URLs from IndexedDB
+    // Direct mutation allowed here as it's initialization
+    const newBackgrounds = [...state.value.backgrounds]
+    let changed = false
+
+    for (const bg of newBackgrounds) {
+      const stored = await mediaDB.get(bg.id)
+      if (stored?.blob) {
+        if (bg.source && bg.source.startsWith('blob:')) {
+           URL.revokeObjectURL(bg.source)
         }
-      } catch (err) {
-        console.error(`Failed to load background ${bg.id}:`, err)
+        bg.source = BackgroundService.createObjectUrl(stored.blob)
+        changed = true
       }
+    }
+    
+    if (changed) {
+        state.value.backgrounds = newBackgrounds
     }
   }
 
-  const addBackground = async (file: File) => {
-    try {
-      if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
-        throw new Error('Unsupported file type')
-      }
+  const addBackground = async (file: File): Promise<{ success: boolean; error?: string }> => {
+    const validation = BackgroundService.validateFile(file)
 
-      const id = crypto.randomUUID()
-      const type = file.type.startsWith('video/') ? 'video' : 'image'
-      const blob = new Blob([file], { type: file.type })
-
-      // Save to IndexedDB
-      await mediaDB.save(id, blob)
-
-      // Generate Blob URL
-      const source = URL.createObjectURL(blob)
-
-      state.value.backgrounds.push({
-        id,
-        name: file.name,
-        type: type as 'image' | 'video',
-        source, 
-        addedAt: Date.now(),
-        position: 'cover',
-        isDefault: false,
-        createdAt: Date.now()
-      })
-      
-      return id
-    } catch (err) {
-      console.error('Failed to add background:', err)
-      throw err
+    if (!validation.isValid) {
+      return { success: false, error: validation.error }
     }
+
+    const id = crypto.randomUUID()
+    const blob = new Blob([file], { type: file.type })
+
+    await mediaDB.save(id, blob)
+    const objectUrl = BackgroundService.createObjectUrl(blob)
+
+    const newBg = {
+      id,
+      name: file.name,
+      type: validation.type as BackgroundType,
+      source: objectUrl,
+      addedAt: Date.now(),
+      size: file.size,
+      position: 'cover',
+      isDefault: false,
+      version: 1, // Init version
+      createdAt: Date.now()
+    } as const
+
+    // Immutable update
+    state.value.backgrounds = [...state.value.backgrounds, newBg]
+    
+    return { success: true }
+  }
+
+  const addBackgroundFromUrl = async (url: string): Promise<{ success: boolean; error?: string }> => {
+    const validation = BackgroundService.validateUrl(url)
+
+    if (!validation.isValid) {
+      return { success: false, error: validation.error }
+    }
+
+    const id = crypto.randomUUID()
+
+    const newBg = {
+      id,
+      name: new URL(url).pathname.split('/').pop() || 'URL Background',
+      type: validation.type as BackgroundType,
+      source: url,
+      addedAt: Date.now(),
+      position: 'cover',
+      isDefault: false,
+      version: 1,
+      createdAt: Date.now()
+    } as const
+
+    state.value.backgrounds = [...state.value.backgrounds, newBg]
+
+    return { success: true }
   }
 
   const removeBackground = async (id: string) => {
+    const bg = state.value.backgrounds.find(b => b.id === id)
+    if (bg?.source?.startsWith('blob:')) {
+      BackgroundService.revokeObjectUrl(bg.source)
+    }
+
     await mediaDB.delete(id)
+    
+    // Immutable remove
     state.value.backgrounds = state.value.backgrounds.filter(b => b.id !== id)
+
     if (state.value.currentBackgroundId === id) {
       state.value.currentBackgroundId = null
     }
   }
 
-  const setBackground = async (input: string | File) => {
+  const setBackground = async (input: string | File): Promise<{ success: boolean; error?: string }> => {
     if (typeof input === 'string') {
+      const existingBg = state.value.backgrounds.find(b => b.id === input)
+      if (existingBg) {
+        // Just switch
         state.value.currentBackgroundId = input
-    } else {
-        // Handle File upload directly to active
-        await addBackground(input)
-        const newBg = state.value.backgrounds[state.value.backgrounds.length - 1]
-        if (newBg) state.value.currentBackgroundId = newBg.id
+        
+        // Force refresh by incrementing version
+        const bgIndex = state.value.backgrounds.findIndex(b => b.id === input)
+        if (bgIndex !== -1) {
+             const updatedBg = { ...state.value.backgrounds[bgIndex] }
+             updatedBg.version = (updatedBg.version || 0) + 1
+             const newBackgrounds = [...state.value.backgrounds]
+             newBackgrounds[bgIndex] = updatedBg
+             state.value.backgrounds = newBackgrounds
+        }
+
+        return { success: true }
+      }
+      return addBackgroundFromUrl(input)
     }
+
+    const result = await addBackground(input)
+    if (result.success) {
+      const newBg = state.value.backgrounds[state.value.backgrounds.length - 1]
+      if (newBg) state.value.currentBackgroundId = newBg.id
+    }
+    return result
   }
 
   const resetBackground = () => {
     state.value.currentBackgroundId = null
   }
-
-  // --- Rotation Logic ---
-  let rotationTimer:  ReturnType<typeof setInterval> | null = null
+  
+  // Rotation Logic
+  let rotationTimer: ReturnType<typeof setInterval> | null = null
 
   const startRotation = () => {
     if (rotationTimer) clearInterval(rotationTimer)
@@ -121,18 +176,30 @@ export const useBackgroundStore = defineStore('background', () => {
     const bgList = state.value.backgrounds
     if (bgList.length === 0) return
 
+    let nextId: string
+
     if (state.value.rotationMode === 'random') {
-       const randomIndex = Math.floor(Math.random() * bgList.length)
-       state.value.currentBackgroundId = bgList[randomIndex].id
+      const randomIndex = Math.floor(Math.random() * bgList.length)
+      nextId = bgList[randomIndex].id
     } else {
-       // Sequential
-       const currentIndex = bgList.findIndex(b => b.id === state.value.currentBackgroundId)
-       const nextIndex = (currentIndex + 1) % bgList.length
-       state.value.currentBackgroundId = bgList[nextIndex].id
+      const currentIndex = bgList.findIndex(b => b.id === state.value.currentBackgroundId)
+      const nextIndex = (currentIndex + 1) % bgList.length
+      nextId = bgList[nextIndex].id
+    }
+    
+    state.value.currentBackgroundId = nextId
+    
+    // Bump version to force refresh if it was arguably the same
+    const bgIndex = state.value.backgrounds.findIndex(b => b.id === nextId)
+    if (bgIndex !== -1) {
+        const updatedBg = { ...state.value.backgrounds[bgIndex] }
+        updatedBg.version = (updatedBg.version || 0) + 1
+        const newBackgrounds = [...state.value.backgrounds]
+        newBackgrounds[bgIndex] = updatedBg
+        state.value.backgrounds = newBackgrounds
     }
   }
 
-  // Watch for rotation settings changes
   watch(
     () => [state.value.rotationEnabled, state.value.rotationInterval, state.value.rotationMode],
     () => {
@@ -141,13 +208,18 @@ export const useBackgroundStore = defineStore('background', () => {
     }
   )
 
+  // Wait for storage ready before hydrating
+  watch(isReady, (ready) => {
+      if (ready) loadBackgrounds()
+  }, { immediate: true })
+
   return {
     state,
-    backgrounds, // Deprecated: usage moved to state.backgrounds
     currentBackground,
     defaultGradient,
     loadBackgrounds,
     addBackground,
+    addBackgroundFromUrl,
     removeBackground,
     setBackground,
     resetBackground,

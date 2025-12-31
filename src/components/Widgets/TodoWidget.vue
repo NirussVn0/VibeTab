@@ -58,7 +58,7 @@ interface Todo {
   completed: boolean
 }
 
-const todos = useStorage<Todo[]>('vibetab_todos', [
+const { state: todos } = useStorage<Todo[]>('vibetab_todos', [
   { id: '1', text: 'Install VibeTab', completed: true },
   { id: '2', text: 'Customize widgets', completed: false },
 ])

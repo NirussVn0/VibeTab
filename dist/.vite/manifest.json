@@ -6,7 +6,7 @@
     "isEntry": true
   },
   "index.html": {
-    "file": "assets/index.html-DGVr22xZ.js",
+    "file": "assets/index.html-B9Vj8jWz.js",
     "name": "index.html",
     "src": "index.html",
     "isEntry": true,
@@ -15,7 +15,7 @@
       "src/components/Widgets/SearchWidget.vue"
     ],
     "css": [
-      "assets/index-ZNQp-vU0.css"
+      "assets/index-BTrsOhFt.css"
     ]
   },
   "src/background.ts": {
@@ -25,16 +25,19 @@
     "isEntry": true
   },
   "src/components/Widgets/ClockWidget.vue": {
-    "file": "assets/ClockWidget-CuLF2LaM.js",
+    "file": "assets/ClockWidget-Buc3dJub.js",
     "name": "ClockWidget",
     "src": "src/components/Widgets/ClockWidget.vue",
     "isDynamicEntry": true,
     "imports": [
       "index.html"
+    ],
+    "css": [
+      "assets/ClockWidget-Bk9bCuP3.css"
     ]
   },
   "src/components/Widgets/SearchWidget.vue": {
-    "file": "assets/SearchWidget-BWOp3O52.js",
+    "file": "assets/SearchWidget-CuhgHsBm.js",
     "name": "SearchWidget",
     "src": "src/components/Widgets/SearchWidget.vue",
     "isDynamicEntry": true,

@@ -51,13 +51,20 @@ const dateStr = computed(() => {
 </script>
 
 <template>
-  <div class="w-full h-full flex flex-col items-center justify-center select-none text-text-primary">
+  <div class="w-full h-full flex flex-col items-center justify-center select-none text-text-primary container-type-size">
     <!-- Digital Mode -->
-    <div v-if="config.style === 'digital'" class="text-center">
-      <div class="text-[clamp(2rem,10vw,4rem)] font-bold tabular-nums leading-none tracking-tight">
+    <div v-if="config.style === 'digital'" class="text-center w-full">
+      <!-- Responsive font size relative to container height (cqh) and width (cqw) -->
+      <div 
+        class="font-bold tabular-nums leading-none tracking-tight"
+        style="font-size: clamp(1rem, 25cqw, 8rem);"
+      >
         {{ formattedTime }}
       </div>
-      <div class="text-sm md:text-base font-medium opacity-80 mt-2">
+      <div 
+        class="font-medium opacity-80 mt-[2cqh]"
+        style="font-size: clamp(0.75rem, 8cqw, 2rem);"
+      >
         {{ dateStr }}
       </div>
     </div>
@@ -68,3 +75,9 @@ const dateStr = computed(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.container-type-size {
+  container-type: size;
+}
+</style>

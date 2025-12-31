@@ -1,10 +1,10 @@
 import { ref, watch, type Ref } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
-export function useStorage<T>(key: string, initialValue: T): Ref<T> {
+export function useStorage<T>(key: string, initialValue: T) {
   const data = ref<T>(initialValue) as Ref<T>
+  const isReady = ref(false)
 
-  // Initialize
   const loadData = () => {
     // 1. Try Chrome Storage (Async)
     if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
@@ -12,6 +12,7 @@ export function useStorage<T>(key: string, initialValue: T): Ref<T> {
         if (result[key]) {
           data.value = result[key]
         }
+        isReady.value = true
       })
     } 
     // 2. Fallback to LocalStorage (Sync)
@@ -24,6 +25,7 @@ export function useStorage<T>(key: string, initialValue: T): Ref<T> {
           console.error('Failed to parse storage key:', key, e)
         }
       }
+      isReady.value = true
     }
   }
 
@@ -45,5 +47,5 @@ export function useStorage<T>(key: string, initialValue: T): Ref<T> {
     save(newValue)
   }, { deep: true })
 
-  return data
+  return { state: data, isReady }
 }

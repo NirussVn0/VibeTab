@@ -159,7 +159,12 @@ vibetab/
 │   │   ├── gridStore.ts       # Grid state management
 │   │   ├── settingsStore.ts   # Settings state
 │   │   ├── backgroundStore.ts # Backgrounds state
-│   │   └── uiStore.ts         # UI state
+│   │   ├── uiStore.ts         # UI state
+│   │
+│   ├── services/              # Pure logic services
+│   │   ├── GridConfigService.ts
+│   │   ├── BackgroundService.ts
+│   │   └── index.ts
 │   │
 │   ├── composables/
 │   │   ├── index.ts
