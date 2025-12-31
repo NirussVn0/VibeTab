@@ -9,10 +9,18 @@ import { useUIStore } from '../../stores/ui.store'
 import GridBlock from './GridBlock.vue'
 import ContextMenu from '../UI/ContextMenu.vue'
 import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
+import { WIDGET_PRESETS } from '../../constants/widgetConfig'
+import type { WidgetType } from '../../types/widget'
 
 const gridStore = useGridStore()
 const uiStore = useUIStore()
 const { widgets } = storeToRefs(gridStore)
+
+const getMinSize = (type: WidgetType) => {
+  if (type === 'clock') return WIDGET_PRESETS.CLOCK.SMALL
+  if (type === 'search') return WIDGET_PRESETS.SEARCH.DEFAULT
+  return { w: 1, h: 1 }
+}
 
 const { config, cellPx, cols, rows, gap, zoomFactor } = useGridConfig()
 
@@ -142,7 +150,7 @@ const getDraggedWidget = () => widgets.value.find(w => w.id === draggedId.value)
         :preview-w="resizingId === block.id && resizeState ? resizeState.currentDim.w : undefined"
         :preview-h="resizingId === block.id && resizeState ? resizeState.currentDim.h : undefined"
         @drag-start="(e: MouseEvent) => isEditMode && handleMouseDown(e, block.id, { x: block.x, y: block.y }, { w: block.w, h: block.h })"
-        @resize-start="(e: MouseEvent) => isEditMode && handleResizeStart(e, block.id, { w: block.w, h: block.h })"
+        @resize-start="(e: MouseEvent) => isEditMode && handleResizeStart(e, block.id, { w: block.w, h: block.h }, getMinSize(block.type))"
         @contextmenu="(e: MouseEvent) => onContextMenu(e, block.id)"
       />
 

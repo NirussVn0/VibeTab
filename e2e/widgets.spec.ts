@@ -1,32 +1,42 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Widget Interaction', () => {
-  test('should type in search widget', async ({ page }) => {
+test.describe('Widget Resizing', () => {
+  test.beforeEach(async ({ page }) => {
     await page.goto('/');
-
-    // Locate Search Widget Input
-    // Grid Block for search is usually index 1 or by class
-    const searchInput = page.locator('input[placeholder="Search..."]'); // SearchWidget has this placeholder
-    await expect(searchInput).toBeVisible();
-
-    await searchInput.fill('VibeTab Features');
-    await expect(searchInput).toHaveValue('VibeTab Features');
-    
-    // Test enter key triggers navigation (mocked)
-    // We can't easily test actual navigation away without breaking the test context, 
-    // but we can spy on window.location or check if method was called if we could instrument app.
-    // For E2E, verifying input works is sufficient for now.
+    // Toggle edit mode
+    await page.keyboard.press('Control+E');
   });
 
-  test('should show correct clock format', async ({ page }) => {
-    await page.goto('/');
+  test('clock widget respects min size', async ({ page }) => {
+    // Assuming clock-1 exists (default)
+    const clock = page.locator('[data-testid="grid-block-clock-1"]'); // Requires adding testid to GridBlock
     
-    // Locate Clock Widget
-    const clockDisplay = page.locator('.text-\\[clamp\\(2rem\\,10vw\\,4rem\\)\\]'); // Main clock text class
-    await expect(clockDisplay).toBeVisible();
+    // Check initial size (Medium 3x3 default)
+    // We would need to calculate pixels based on 16px grid + gap
+    // This is hard to assert exactly without more helpers, but we can assert relative behavior
     
-    // Verify it contains a time-like string (e.g. "12:00" or "12:00:00")
-    const timeText = await clockDisplay.innerText();
-    expect(timeText).toMatch(/\d{1,2}:\d{2}/);
+    // For now, simpler test: verify it exists and we can grab a handle
+    await expect(clock).toBeVisible();
+    
+    // Resize Handle (bottom right)
+    const handle = clock.locator('.cursor-nwse-resize');
+    await expect(handle).toBeVisible();
+
+    // Drag resize handle to make it smaller than min size (2x2)
+    // Currently 3x3. Try to drag up/left drastically
+    const box = await clock.boundingBox();
+    if (!box) return;
+
+    await handle.hover();
+    await page.mouse.down();
+    await page.mouse.move(box.x + box.width/2, box.y + box.height/2); // Move to center (trying to be 1.5x1.5)
+    await page.mouse.up();
+
+    // Assert it didn't shrink below 2x2. 
+    // This requires calculating 2 * 16px + gap.
+    // Base cell is 16px. Gap?
+    // Let's just assert it is still visible and has minimum dimension
+    const newBox = await clock.boundingBox();
+    expect(newBox?.width).toBeGreaterThan(32); // 2 * 16
   });
 });

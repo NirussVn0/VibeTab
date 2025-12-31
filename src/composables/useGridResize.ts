@@ -6,6 +6,7 @@ export interface ResizeState {
   start: { x: number; y: number }
   initialDim: { w: number; h: number }
   currentDim: { w: number; h: number } // In cells
+  minSize: { w: number; h: number }
 }
 
 export function useGridResize(
@@ -19,7 +20,8 @@ export function useGridResize(
   const handleResizeStart = (
     e: MouseEvent,
     id: string,
-    initialDim: { w: number; h: number }
+    initialDim: { w: number; h: number },
+    minSize?: { w: number; h: number }
   ) => {
     e.preventDefault()
     e.stopPropagation() // Prevent drag start
@@ -29,7 +31,8 @@ export function useGridResize(
       isResizing: true,
       start: { x: e.clientX, y: e.clientY },
       initialDim: { ...initialDim },
-      currentDim: { ...initialDim }
+      currentDim: { ...initialDim },
+      minSize: minSize || { w: 1, h: 1 }
     }
 
     window.addEventListener('mousemove', handleResizeMove)
@@ -45,9 +48,12 @@ export function useGridResize(
     const cellDeltaX = GridConfigService.pxToCells(deltaX, cellPx, gap)
     const cellDeltaY = GridConfigService.pxToCells(deltaY, cellPx, gap)
 
+    const minW = resizeState.value.minSize.w
+    const minH = resizeState.value.minSize.h
+
     resizeState.value.currentDim = {
-      w: Math.max(1, resizeState.value.initialDim.w + cellDeltaX), // Min 1x1
-      h: Math.max(1, resizeState.value.initialDim.h + cellDeltaY)
+      w: Math.max(minW, resizeState.value.initialDim.w + cellDeltaX), 
+      h: Math.max(minH, resizeState.value.initialDim.h + cellDeltaY)
     }
   }
 
