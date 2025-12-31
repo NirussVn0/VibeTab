@@ -186,6 +186,7 @@ vibetab/
 │   │
 │   ├── constants/
 │   │   ├── index.ts
+│   │   ├── widgetSizes.ts     # Widget size presets
 │   │   ├── animations.ts      # Animation timings
 │   │   ├── colors.ts          # Color palette
 │   │   ├── spacing.ts         # Spacing scale
@@ -239,7 +240,7 @@ vibetab/
 │       ├── search.spec.ts
 │       └── ...
 │
-├── .github/
+├── .github/                   # [PLANNED - NOT YET IMPLEMENTED]
 │   └── workflows/
 │       ├── lint.yml           # ESLint CI
 │       ├── test.yml           # Vitest CI

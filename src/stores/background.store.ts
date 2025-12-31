@@ -100,6 +100,9 @@ export const useBackgroundStore = defineStore('background', () => {
 
     state.value.backgrounds = [...state.value.backgrounds, newBg]
 
+    // Auto-select the newly added background
+    state.value.currentBackgroundId = id
+
     return { success: true }
   }
 
@@ -123,17 +126,19 @@ export const useBackgroundStore = defineStore('background', () => {
     if (typeof input === 'string') {
       const existingBg = state.value.backgrounds.find(b => b.id === input)
       if (existingBg) {
-        // Just switch
-        state.value.currentBackgroundId = input
+        state.value.currentBackgroundId = input;
         
-        // Force refresh by incrementing version
+        // Force refresh by incrementing version only if it's the same background being selected again
+        // This ensures UI updates even when the same background is selected again
         const bgIndex = state.value.backgrounds.findIndex(b => b.id === input)
         if (bgIndex !== -1) {
-             const updatedBg = { ...state.value.backgrounds[bgIndex] }
-             updatedBg.version = (updatedBg.version || 0) + 1
-             const newBackgrounds = [...state.value.backgrounds]
-             newBackgrounds[bgIndex] = updatedBg
-             state.value.backgrounds = newBackgrounds
+          const updatedBg = { ...state.value.backgrounds[bgIndex] }
+          updatedBg.version = (updatedBg.version || 0) + 1
+          
+          // Create a new array to ensure reactivity
+          const newBackgrounds = [...state.value.backgrounds]
+          newBackgrounds[bgIndex] = updatedBg
+          state.value.backgrounds = newBackgrounds
         }
 
         return { success: true }

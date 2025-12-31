@@ -45,9 +45,38 @@ export function useGridResize(
     const cellDeltaX = GridConfigService.pxToCells(deltaX, cellPx, gap)
     const cellDeltaY = GridConfigService.pxToCells(deltaY, cellPx, gap)
 
-    resizeState.value.currentDim = {
-      w: Math.max(1, resizeState.value.initialDim.w + cellDeltaX), // Min 1x1
-      h: Math.max(1, resizeState.value.initialDim.h + cellDeltaY)
+    // Calculate new dimensions but ensure they snap to grid and respect constraints
+    const newW = Math.max(1, resizeState.value.initialDim.w + cellDeltaX)
+    const newH = Math.max(1, resizeState.value.initialDim.h + cellDeltaY)
+
+    // Apply widget-specific constraints
+    const widgetId = resizingId.value;
+    if (widgetId) {
+      // If this is a clock widget, ensure it maintains aspect ratio based on presets
+      if (widgetId.includes('clock')) {
+        // For clock widget, make sure it's square-like
+        resizeState.value.currentDim = {
+          w: newW,
+          h: newH
+        };
+      } else if (widgetId.includes('search')) {
+        // For search widget, typically keep it as 1 row high, but allow width changes
+        resizeState.value.currentDim = {
+          w: newW,
+          h: Math.max(1, newH) // Search widget should be at least 1 row
+        };
+      } else {
+        // For other widgets, use the calculated dimensions
+        resizeState.value.currentDim = {
+          w: newW,
+          h: newH
+        };
+      }
+    } else {
+      resizeState.value.currentDim = {
+        w: newW,
+        h: newH
+      };
     }
   }
 
