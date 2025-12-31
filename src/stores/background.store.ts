@@ -6,7 +6,7 @@ import { BackgroundService } from '../services/BackgroundService'
 import type { BackgroundState, BackgroundType } from '../types/background'
 
 export const useBackgroundStore = defineStore('background', () => {
-  const { state, isReady } = useStorage<BackgroundState>('vibetab_background_state', {
+  const state = useStorage<BackgroundState>('vibetab_background_state', {
     backgrounds: [],
     currentBackgroundId: null,
     rotationMode: 'random',
@@ -22,8 +22,6 @@ export const useBackgroundStore = defineStore('background', () => {
     if (!state.value.currentBackgroundId) return null
     return state.value.backgrounds.find(b => b.id === state.value.currentBackgroundId) || null
   })
-
-
 
   const loadBackgrounds = async () => {
     // Rehydrate blob URLs from IndexedDB
@@ -207,11 +205,6 @@ export const useBackgroundStore = defineStore('background', () => {
       else stopRotation()
     }
   )
-
-  // Wait for storage ready before hydrating
-  watch(isReady, (ready) => {
-      if (ready) loadBackgrounds()
-  }, { immediate: true })
 
   return {
     state,

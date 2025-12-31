@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useBackgroundStore } from '../../stores/background.store'
 import { BackgroundService } from '../../services/BackgroundService'
@@ -34,7 +34,9 @@ const backgroundImageStyle = computed(() => {
   }
 })
 
-
+onUnmounted(() => {
+  BackgroundService.revokeAllObjectUrls()
+})
 </script>
 
 <template>

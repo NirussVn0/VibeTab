@@ -320,7 +320,9 @@ const handleUrlAdd = async () => {
   if (result.success) {
     urlInput.value = ''
     const newBg = backgroundStore.state.backgrounds[backgroundStore.state.backgrounds.length - 1]
-    if (newBg) backgroundStore.state.currentBackgroundId = newBg.id
+    if (newBg) {
+      backgroundStore.state.currentBackgroundId = newBg.id
+    }
   } else {
     uploadError.value = result.error || 'Failed to add background'
   }

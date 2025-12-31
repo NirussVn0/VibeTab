@@ -54,7 +54,7 @@ interface Bookmark {
   url: string
 }
 
-const { state: bookmarks } = useStorage<Bookmark[]>('vibetab_bookmarks', [
+const bookmarks = useStorage<Bookmark[]>('vibetab_bookmarks', [
   { id: '1', title: 'GitHub', url: 'https://github.com' },
   { id: '2', title: 'YouTube', url: 'https://youtube.com' },
   { id: '3', title: 'Gmail', url: 'https://mail.google.com' },

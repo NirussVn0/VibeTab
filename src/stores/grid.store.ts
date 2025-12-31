@@ -4,7 +4,6 @@ import { useStorage } from '../composables/useStorage'
 import { useGridConfig } from '../composables/useGridConfig'
 import { GridManager } from '../utils/GridManager'
 import { HistoryManager } from '../utils/HistoryManager'
-import { WIDGET_PRESETS, DEFAULT_WIDGET_CONFIGS } from '../constants/widgetConfig'
 
 import type { GridBlock } from '../types/grid'
 
@@ -12,7 +11,7 @@ import type { GridBlock } from '../types/grid'
 export const useGridStore = defineStore('grid', () => {
   // --- State ---
   const { cols, rows } = useGridConfig()
-  const { state: widgets } = useStorage<GridBlock[]>('vibetab_widgets', getDefaultWidgets())
+  const widgets = useStorage<GridBlock[]>('vibetab_widgets', getDefaultWidgets())
   const history = new HistoryManager<GridBlock[]>(20)
   const gridManager = new GridManager(cols.value, rows.value) // Init with current reactive values
 
@@ -133,11 +132,8 @@ function getDefaultWidgets(): GridBlock[] {
     { 
       id: 'clock-1', 
       type: 'clock', 
-      x: 0, 
-      y: 0, 
-      w: WIDGET_PRESETS.CLOCK.MEDIUM.w, // Prefer Medium as default
-      h: WIDGET_PRESETS.CLOCK.MEDIUM.h,
-      config: { ...DEFAULT_WIDGET_CONFIGS.CLOCK }, 
+      x: 0, y: 0, w: 6, h: 2, // Reduced from 12 to 6 for safety on small screens
+      config: { style: 'digital', format: '24h', showSeconds: true }, 
       isLocked: true, 
       zIndex: 10,
       createdAt: Date.now(),
@@ -146,11 +142,8 @@ function getDefaultWidgets(): GridBlock[] {
     { 
       id: 'search-1', 
       type: 'search', 
-      x: 0, 
-      y: 3, 
-      w: WIDGET_PRESETS.SEARCH.DEFAULT.w, 
-      h: WIDGET_PRESETS.SEARCH.DEFAULT.h, 
-      config: { ...DEFAULT_WIDGET_CONFIGS.SEARCH }, 
+      x: 0, y: 3, w: 6, h: 1, // Reduced width, moved down
+      config: { provider: 'google', aiMode: false }, 
       isLocked: false, 
       zIndex: 10,
       createdAt: Date.now(),

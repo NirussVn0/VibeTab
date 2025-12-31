@@ -47,7 +47,6 @@ const isOutOfBounds = computed(() => {
 <template>
   <div
     class="grid-block relative rounded-lg bg-surface/50 backdrop-blur-sm border border-border transition-all duration-200 hover:shadow-lg hover:bg-surface/80 group"
-    :data-testid="`grid-block-${block.id}`"
     :class="{
       'z-50 ring-2 ring-primary': isDragging || isResizing,
       'ring-2 ring-red-500/50': isOutOfBounds,
