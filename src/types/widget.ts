@@ -18,6 +18,7 @@ export interface SearchConfig extends BaseWidgetConfig {
 
 export interface WeatherConfig extends BaseWidgetConfig {
   unit: 'c' | 'f';
+  location?: string;
   city?: string;
   lat?: number;
   lon?: number;

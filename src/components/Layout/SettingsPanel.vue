@@ -37,35 +37,108 @@
         </div>
 
         <div class="flex-1 overflow-y-auto p-6 space-y-8">
-          <section v-if="activeTab === 'general'" class="space-y-6">
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <span class="text-sm text-white/80">Show Clock</span>
-                <ToggleSwitch v-model="settingsStore.general.showClock" />
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="text-sm text-white/80">Show Weather</span>
-                <ToggleSwitch v-model="settingsStore.general.showWeather" />
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="text-sm text-white/80">Show Greeting</span>
-                <ToggleSwitch v-model="settingsStore.general.showGreeting" />
+          <section v-if="activeTab === 'general'" class="space-y-4">
+            <!-- Clock Settings -->
+            <div class="bg-white/5 rounded-xl border border-white/5 overflow-hidden">
+              <button 
+                @click="expandedSection = expandedSection === 'clock' ? null : 'clock'"
+                class="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors"
+              >
+                <div class="flex items-center gap-3">
+                  <ClockIcon class="w-5 h-5 text-primary-400" />
+                  <span class="text-sm font-medium text-white">Clock Settings</span>
+                </div>
+                <ChevronDownIcon 
+                  class="w-4 h-4 text-white/50 transition-transform" 
+                  :class="{ 'rotate-180': expandedSection === 'clock' }"
+                />
+              </button>
+              <div v-if="expandedSection === 'clock'" class="p-4 border-t border-white/5 space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-white/80">Show Clock</span>
+                  <ToggleSwitch v-model="settingsStore.general.showClock" />
+                </div>
+                <button 
+                  @click="addClockWidget"
+                  class="w-full px-3 py-2 rounded-lg bg-primary-500/10 hover:bg-primary-500/20 text-xs text-primary-400 border border-primary-500/20 flex items-center justify-center gap-2"
+                >
+                  <PlusIcon class="w-4 h-4" /> Add Clock Widget
+                </button>
               </div>
             </div>
 
-            <div class="space-y-2 pt-4 border-t border-white/5">
-              <span class="text-sm text-white/80 block">Weather Location</span>
-              <select
-                v-model="settingsStore.general.weatherLocation"
-                class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-primary-500 outline-none"
+            <!-- Weather Settings -->
+            <div class="bg-white/5 rounded-xl border border-white/5 overflow-hidden">
+              <button 
+                @click="expandedSection = expandedSection === 'weather' ? null : 'weather'"
+                class="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors"
               >
-                <option value="New York">New York</option>
-                <option value="London">London</option>
-                <option value="Tokyo">Tokyo</option>
-                <option value="San Francisco">San Francisco</option>
-                <option value="Sydney">Sydney</option>
-                <option value="Hanoi">Hanoi</option>
-              </select>
+                <div class="flex items-center gap-3">
+                  <CloudIcon class="w-5 h-5 text-blue-400" />
+                  <span class="text-sm font-medium text-white">Weather Settings</span>
+                </div>
+                <ChevronDownIcon 
+                  class="w-4 h-4 text-white/50 transition-transform" 
+                  :class="{ 'rotate-180': expandedSection === 'weather' }"
+                />
+              </button>
+              <div v-if="expandedSection === 'weather'" class="p-4 border-t border-white/5 space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-white/80">Show Weather</span>
+                  <ToggleSwitch v-model="settingsStore.general.showWeather" />
+                </div>
+                <div class="space-y-2">
+                  <span class="text-xs text-white/60">Location</span>
+                  <select
+                    v-model="settingsStore.general.weatherLocation"
+                    class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-primary-500 outline-none"
+                  >
+                    <option value="New York">New York</option>
+                    <option value="London">London</option>
+                    <option value="Tokyo">Tokyo</option>
+                    <option value="San Francisco">San Francisco</option>
+                    <option value="Sydney">Sydney</option>
+                    <option value="Hanoi">Hanoi</option>
+                  </select>
+                </div>
+                <button 
+                  @click="addWeatherWidget"
+                  class="w-full px-3 py-2 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-xs text-blue-400 border border-blue-500/20 flex items-center justify-center gap-2"
+                >
+                  <PlusIcon class="w-4 h-4" /> Add Weather Widget
+                </button>
+              </div>
+            </div>
+
+            <!-- Search Settings -->
+            <div class="bg-white/5 rounded-xl border border-white/5 overflow-hidden">
+              <button 
+                @click="expandedSection = expandedSection === 'search' ? null : 'search'"
+                class="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors"
+              >
+                <div class="flex items-center gap-3">
+                  <MagnifyingGlassIcon class="w-5 h-5 text-green-400" />
+                  <span class="text-sm font-medium text-white">Search Settings</span>
+                </div>
+                <ChevronDownIcon 
+                  class="w-4 h-4 text-white/50 transition-transform" 
+                  :class="{ 'rotate-180': expandedSection === 'search' }"
+                />
+              </button>
+              <div v-if="expandedSection === 'search'" class="p-4 border-t border-white/5 space-y-3">
+                <button 
+                  @click="addSearchWidget"
+                  class="w-full px-3 py-2 rounded-lg bg-green-500/10 hover:bg-green-500/20 text-xs text-green-400 border border-green-500/20 flex items-center justify-center gap-2"
+                >
+                  <PlusIcon class="w-4 h-4" /> Add Search Widget
+                </button>
+              </div>
+            </div>
+
+            <!-- Show Greeting -->
+            <div class="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5">
+              <span class="text-sm text-white/80">Show Greeting</span>
+              <ToggleSwitch v-model="settingsStore.general.showGreeting" />
             </div>
           </section>
 
@@ -271,10 +344,14 @@ import { useThemeStore } from '../../stores/theme.store'
 import { useBackgroundStore } from '../../stores/background.store'
 import { BackgroundService } from '../../services/BackgroundService'
 import ToggleSwitch from '../Base/ToggleSwitch.vue'
-import { XMarkIcon, PhotoIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
+import { XMarkIcon, PhotoIcon, ExclamationTriangleIcon, ClockIcon, CloudIcon, MagnifyingGlassIcon, ChevronDownIcon, PlusIcon } from '@heroicons/vue/24/outline'
+
+import { useGridStore } from '../../stores/grid.store'
+import { getClockSize, getSearchSize } from '../../constants/widgetSizes'
 
 const uiStore = useUIStore()
 const settingsStore = useSettingsStore()
+const gridStore = useGridStore()
 const themeStore = useThemeStore()
 const backgroundStore = useBackgroundStore()
 
@@ -285,6 +362,53 @@ const tabs = [
   { id: 'advanced', label: 'Advanced' }
 ]
 const activeTab = ref('general')
+const expandedSection = ref<string | null>(null)
+
+const addClockWidget = () => {
+  const clockSize = getClockSize('medium')
+  gridStore.addWidget({
+    id: `clock-${Date.now()}`,
+    type: 'clock',
+    x: 0, y: 0,
+    w: clockSize.w,
+    h: clockSize.h,
+    config: { style: 'digital', format: '24h', showSeconds: true },
+    isLocked: false,
+    zIndex: 10,
+    createdAt: Date.now(),
+    updatedAt: Date.now()
+  })
+}
+
+const addWeatherWidget = () => {
+  gridStore.addWidget({
+    id: `weather-${Date.now()}`,
+    type: 'weather',
+    x: 0, y: 0,
+    w: 3, h: 2,
+    config: { unit: 'c', location: settingsStore.general.weatherLocation },
+    isLocked: false,
+    zIndex: 10,
+    createdAt: Date.now(),
+    updatedAt: Date.now()
+  })
+}
+
+const addSearchWidget = () => {
+  const searchSize = getSearchSize('standard')
+  gridStore.addWidget({
+    id: `search-${Date.now()}`,
+    type: 'search',
+    x: 0, y: 0,
+    w: searchSize.w,
+    h: searchSize.h,
+    config: { provider: 'google', aiMode: false },
+    isLocked: false,
+    zIndex: 10,
+    createdAt: Date.now(),
+    updatedAt: Date.now()
+  })
+}
 
 const fileInput = ref<HTMLInputElement | null>(null)
 const isDragging = ref(false)
