@@ -8,13 +8,14 @@ import { getClockSize, getSearchSize } from '../constants/widgetSizes'
 
 import type { GridBlock } from '../types/grid'
 
+export type WidgetPosition = 'center' | 'left' | 'right' | 'top' | 'bottom' | 'tl' | 'tr' | 'bl' | 'br'
 
 export const useGridStore = defineStore('grid', () => {
   // --- State ---
   const { cols, rows } = useGridConfig()
-  const widgets = useStorage<GridBlock[]>('vibetab_widgets', getDefaultWidgets())
+  const widgets = useStorage<GridBlock[]>('vibetab_widgets', getDefaultWidgets(cols.value, rows.value))
   const history = new HistoryManager<GridBlock[]>(20)
-  const gridManager = new GridManager(cols.value, rows.value) // Init with current reactive values
+  const gridManager = new GridManager(cols.value, rows.value)
 
   // Keep GridManager updated
   watch([cols, rows], ([newCols, newRows]) => {
@@ -23,25 +24,18 @@ export const useGridStore = defineStore('grid', () => {
 
   // --- Actions ---
 
-  /**
-   * Adds a generic widget to the grid.
-   * Auto-finds empty slot if no position provided.
-   */
   const addWidget = (widget: GridBlock) => {
     saveStateToHistory()
     
-    // Clamp size to current columns
     widget.w = Math.min(widget.w, cols.value)
     widget.h = Math.min(widget.h, rows.value)
 
-    // Ensure valid position if colliding
     if (gridManager.findCollision(widget, widgets.value)) {
       const emptySlot = gridManager.findEmptySlot(widgets.value, widget.w, widget.h)
       widget.x = emptySlot.x
       widget.y = emptySlot.y
     }
     
-    // Clamp again just in case findEmptySlot puts it out of bounds (unlikely but safe)
     const clamped = gridManager.clampPosition(widget.x, widget.y, widget.w, widget.h)
     widget.x = clamped.x
     widget.y = clamped.y
@@ -58,35 +52,91 @@ export const useGridStore = defineStore('grid', () => {
     const widgetIndex = widgets.value.findIndex(w => w.id === id)
     if (widgetIndex === -1) return
 
-    const widget = { ...widgets.value[widgetIndex] } // Clone for validation
+    const widget = { ...widgets.value[widgetIndex] }
     
-    // Apply updates
     widget.x = pos.x
     widget.y = pos.y
-    if (pos.w) widget.w = Math.min(pos.w, cols.value) // Enforce max width
+    if (pos.w) widget.w = Math.min(pos.w, cols.value)
     if (pos.h) widget.h = Math.min(pos.h, rows.value)
 
-    // Validate bounds
     if (!gridManager.isValidPosition(widget)) return
 
-    // Simple Collision Check (for now, just prevents overlap)
-    // Future: Implement "Push" logic
     const collision = gridManager.findCollision(widget, widgets.value)
-    if (collision) {
-      // For now, reject move if collision
-      // console.warn('Collision detected', collision)
-      return 
-    }
+    if (collision) return
 
     saveStateToHistory()
     
-    // Commit update
     widgets.value[widgetIndex] = {
       ...widgets.value[widgetIndex],
       ...pos,
-      w: widget.w, // Ensure clamped values are saved
+      w: widget.w,
       h: widget.h,
       updatedAt: Date.now()
+    }
+  }
+
+  /**
+   * Position widget to a specific alignment
+   */
+  const positionWidget = (id: string, position: WidgetPosition) => {
+    const widget = widgets.value.find(w => w.id === id)
+    if (!widget) return
+
+    let newX = widget.x
+    let newY = widget.y
+
+    const maxX = cols.value - widget.w
+    const maxY = rows.value - widget.h
+    const centerX = Math.floor((cols.value - widget.w) / 2)
+    const centerY = Math.floor((rows.value - widget.h) / 2)
+
+    switch (position) {
+      case 'center':
+        newX = centerX
+        newY = centerY
+        break
+      case 'left':
+        newX = 0
+        newY = centerY
+        break
+      case 'right':
+        newX = maxX
+        newY = centerY
+        break
+      case 'top':
+        newX = centerX
+        newY = 0
+        break
+      case 'bottom':
+        newX = centerX
+        newY = maxY
+        break
+      case 'tl': // Top-left
+        newX = 0
+        newY = 0
+        break
+      case 'tr': // Top-right
+        newX = maxX
+        newY = 0
+        break
+      case 'bl': // Bottom-left
+        newX = 0
+        newY = maxY
+        break
+      case 'br': // Bottom-right
+        newX = maxX
+        newY = maxY
+        break
+    }
+
+    // Clamp values
+    newX = Math.max(0, Math.min(newX, maxX))
+    newY = Math.max(0, Math.min(newY, maxY))
+
+    // Check collision before applying
+    const tempWidget = { ...widget, x: newX, y: newY }
+    if (!gridManager.findCollision(tempWidget, widgets.value)) {
+      updateWidgetPosition(id, { x: newX, y: newY })
     }
   }
 
@@ -113,12 +163,12 @@ export const useGridStore = defineStore('grid', () => {
   const canUndo = computed(() => history.canUndo)
   const canRedo = computed(() => history.canRedo)
 
-
   return {
     widgets,
     addWidget,
     removeWidget,
     updateWidgetPosition,
+    positionWidget,
     undo,
     redo,
     canUndo,
@@ -126,17 +176,22 @@ export const useGridStore = defineStore('grid', () => {
   }
 })
 
-// Helper: Default Widgets
-function getDefaultWidgets(): GridBlock[] {
-  // Import presets from constants to ensure consistency
-  const clockSize = getClockSize('medium') // medium preset
-  const searchSize = getSearchSize('standard') // standard preset
+// Helper: Default Widgets (centered on screen)
+function getDefaultWidgets(gridCols: number, gridRows: number): GridBlock[] {
+  const clockSize = getClockSize('medium')
+  const searchSize = getSearchSize('standard')
+
+  // Calculate centered positions
+  const clockX = Math.floor((gridCols - clockSize.w) / 2)
+  const clockY = Math.floor((gridRows - clockSize.h - searchSize.h) / 2)
+  const searchX = Math.floor((gridCols - searchSize.w) / 2)
+  const searchY = clockY + clockSize.h
 
   return [
     { 
       id: 'clock-1', 
       type: 'clock', 
-      x: 0, y: 0, 
+      x: clockX, y: clockY, 
       w: clockSize.w, 
       h: clockSize.h,
       config: { style: 'digital', format: '24h', showSeconds: true }, 
@@ -148,7 +203,7 @@ function getDefaultWidgets(): GridBlock[] {
     { 
       id: 'search-1', 
       type: 'search', 
-      x: 0, y: clockSize.h, 
+      x: searchX, y: searchY, 
       w: searchSize.w, 
       h: searchSize.h,
       config: { provider: 'google', aiMode: false }, 

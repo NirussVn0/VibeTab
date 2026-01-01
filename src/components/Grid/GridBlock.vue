@@ -3,7 +3,6 @@ import { computed, defineAsyncComponent } from 'vue'
 import type { GridBlock } from '../../types/grid'
 import type { ClockConfig, SearchConfig } from '../../types/widget'
 
-
 const ClockWidget = defineAsyncComponent(() => import('../Widgets/ClockWidget.vue'))
 const SearchWidget = defineAsyncComponent(() => import('../Widgets/SearchWidget.vue'))
 
@@ -13,14 +12,15 @@ const props = defineProps<{
   cols: number
   rows: number
   isDragging?: boolean
-  isResizing?: boolean // New prop
-  previewW?: number // Visual override during resize
+  isResizing?: boolean
+  isEditMode?: boolean // New prop for edit mode
+  previewW?: number
   previewH?: number
 }>()
 
 const emit = defineEmits<{
   (e: 'drag-start', event: MouseEvent): void
-  (e: 'resize-start', event: MouseEvent): void // New emit
+  (e: 'resize-start', event: MouseEvent): void
 }>()
 
 // Use preview dimensions if resizing, otherwise actual block dimensions
@@ -48,11 +48,16 @@ const isOutOfBounds = computed(() => {
 
 <template>
   <div
-    class="grid-block relative rounded-lg bg-surface/50 backdrop-blur-sm border border-border transition-all duration-200 hover:shadow-lg hover:bg-surface/80 group"
+    class="grid-block relative rounded-lg transition-all duration-200 group"
     :class="{
+      // Edit mode styling
+      'bg-surface/50 backdrop-blur-sm border border-border hover:shadow-lg hover:bg-surface/80': isEditMode,
+      // Dragging/resizing state
       'z-50 ring-2 ring-primary': isDragging || isResizing,
+      // Out of bounds warning
       'ring-2 ring-red-500/50': isOutOfBounds,
-      'cursor-grab active:cursor-grabbing': !isResizing
+      // Cursor handling
+      'cursor-grab active:cursor-grabbing': isEditMode && !isResizing
     }"
     :style="style"
     @mousedown="!isResizing && emit('drag-start', $event)"
@@ -75,9 +80,9 @@ const isOutOfBounds = computed(() => {
       </div>
     </div>
 
-    <!-- Resize Handle -->
+    <!-- Resize Handle (only in edit mode) -->
     <div
-      v-if="!block.isLocked"
+      v-if="isEditMode && !block.isLocked"
       class="absolute bottom-0 right-0 w-6 h-6 cursor-nwse-resize z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
       @mousedown.stop="emit('resize-start', $event)"
     >

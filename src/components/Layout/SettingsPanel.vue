@@ -204,6 +204,22 @@
             >
               Reset to Default Background
             </button>
+
+            <!-- Background Blur Setting -->
+            <div class="bg-white/5 rounded-xl p-4 border border-white/5 space-y-3 mt-4">
+              <h3 class="text-xs font-bold text-white/40 uppercase tracking-widest">Background Blur</h3>
+              <div class="flex items-center gap-4">
+                <input
+                  type="range"
+                  min="0"
+                  max="20"
+                  step="1"
+                  v-model.number="backgroundStore.state.blur"
+                  class="flex-1 h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary-500"
+                />
+                <span class="text-sm text-white/60 w-12 text-right">{{ backgroundStore.state.blur }}px</span>
+              </div>
+            </div>
           </section>
 
           <section v-if="activeTab === 'advanced'" class="space-y-6">

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import type { SearchConfig } from '../../types/widget'
-import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+import { MagnifyingGlassIcon, SparklesIcon } from '@heroicons/vue/24/outline'
 
 const props = withDefaults(defineProps<{
   config: SearchConfig
@@ -13,6 +13,7 @@ const props = withDefaults(defineProps<{
 })
 
 const query = ref('')
+const isAiMode = ref(props.config.aiMode)
 
 const searchProviders = {
   google: 'https://www.google.com/search?q=',
@@ -22,31 +23,57 @@ const searchProviders = {
 
 const handleSearch = () => {
   if (!query.value.trim()) return
-  const url = `${searchProviders[props.config.provider]}${encodeURIComponent(query.value)}`
-  window.location.href = url
+  
+  if (isAiMode.value) {
+    // AI mode - redirect to ChatGPT
+    const url = `https://chatgpt.com/?q=${encodeURIComponent(query.value)}`
+    window.open(url, '_blank')
+  } else {
+    // Regular search
+    const url = `${searchProviders[props.config.provider]}${encodeURIComponent(query.value)}`
+    window.location.href = url
+  }
 }
+
+const toggleAiMode = () => {
+  isAiMode.value = !isAiMode.value
+}
+
+const placeholderText = computed(() => 
+  isAiMode.value ? 'Ask AI...' : 'Search...'
+)
 </script>
 
 <template>
   <div class="w-full h-full flex items-center justify-center p-2 sm:p-4">
     <div class="relative w-full h-full max-h-[60px] group flex items-center">
-      <!-- Search Icon -->
-      <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-text-secondary/50 group-focus-within:text-primary transition-colors z-10">
-        <MagnifyingGlassIcon class="h-5 w-5" />
+      <!-- Search Icon (always black) -->
+      <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+        <MagnifyingGlassIcon class="h-5 w-5 text-gray-600" />
       </div>
 
-      <!-- Input -->
+      <!-- Input (always white background) -->
       <input
         v-model="query"
         type="text"
-        placeholder="Search..."
-        class="w-full h-full pl-11 pr-4 bg-surface/80 backdrop-blur-md rounded-xl outline-none text-text-primary placeholder:text-text-secondary/60 focus:bg-surface transition-all shadow-lg text-sm sm:text-base"
+        :placeholder="placeholderText"
+        class="w-full h-full pl-11 pr-20 bg-white rounded-xl outline-none text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-400 transition-all shadow-lg text-sm sm:text-base"
         @keydown.enter="handleSearch"
       />
       
-      <!-- Provider Badge (Optional visual) -->
-      <div v-if="config.aiMode" class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-         <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary text-background uppercase tracking-wider">AI</span>
+      <!-- AI Toggle Button -->
+      <button
+        @click="toggleAiMode"
+        class="absolute right-10 inset-y-0 px-2 flex items-center transition-colors"
+        :class="isAiMode ? 'text-blue-500' : 'text-gray-400 hover:text-gray-600'"
+        :title="isAiMode ? 'AI Mode ON' : 'Switch to AI Mode'"
+      >
+        <SparklesIcon class="h-5 w-5" />
+      </button>
+
+      <!-- AI Badge (when active) -->
+      <div v-if="isAiMode" class="absolute right-2 inset-y-0 flex items-center pointer-events-none">
+        <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-500 text-white uppercase tracking-wider">AI</span>
       </div>
     </div>
   </div>

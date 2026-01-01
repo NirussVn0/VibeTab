@@ -51,7 +51,14 @@ const fuse = new Fuse(actions, {
   threshold: 0.3,
 })
 
+// Check if query is AI search (starts with >)
+const isAiQuery = computed(() => query.value.startsWith('>'))
+const aiQueryText = computed(() => query.value.slice(1).trim())
+
 const filteredActions = computed(() => {
+  // If AI query, return empty to show AI prompt
+  if (isAiQuery.value) return []
+  
   return query.value === '' 
     ? actions 
     : fuse.search(query.value).map(result => result.item)
@@ -62,6 +69,15 @@ const onSelect = (action: CommandAction) => {
   isOpen.value = false
   action.perform()
   query.value = ''
+}
+
+// Handle AI search submission
+const submitAiSearch = () => {
+  if (isAiQuery.value && aiQueryText.value) {
+    const url = `https://chatgpt.com/?q=${encodeURIComponent(aiQueryText.value)}`
+    window.open(url, '_blank')
+    closeModal()
+  }
 }
 
 const closeModal = () => {
@@ -115,8 +131,9 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
                 />
                 <ComboboxInput
                   class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-white placeholder:text-gray-500 focus:ring-0 sm:text-sm"
-                  placeholder="Type a command or search..."
+                  placeholder="Type a command or > for AI..."
                   @change="query = $event.target.value"
+                  @keydown.enter="isAiQuery && submitAiSearch()"
                   :displayValue="(item: any) => item?.name"
                   autocomplete="off"
                 />
@@ -148,7 +165,14 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
                 </ComboboxOption>
               </ComboboxOptions>
 
-              <div v-if="query !== '' && filteredActions.length === 0" class="py-14 px-6 text-center text-sm sm:px-14">
+              <!-- AI Query Prompt -->
+              <div v-if="isAiQuery" class="py-6 px-6 text-center text-sm sm:px-14">
+                <div class="text-blue-400 font-medium mb-2">🤖 AI Search Mode</div>
+                <p v-if="aiQueryText" class="text-white">Press Enter to ask: "{{ aiQueryText }}"</p>
+                <p v-else class="text-gray-400">Type your question after &gt;</p>
+              </div>
+
+              <div v-else-if="query !== '' && filteredActions.length === 0" class="py-14 px-6 text-center text-sm sm:px-14">
                 <p class="mt-4 text-gray-400">No matching commands found.</p>
               </div>
             </Combobox>

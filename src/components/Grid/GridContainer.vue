@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, provide, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useGridStore } from '../../stores/grid.store'
+import { useGridStore, type WidgetPosition } from '../../stores/grid.store'
 import { useGridConfig } from '../../composables/useGridConfig'
 import { useGridDrag } from '../../composables/useGridDrag'
 import { useGridResize } from '../../composables/useGridResize'
@@ -26,7 +26,6 @@ const { handleMouseDown, dragState, draggedId } = useGridDrag(
   cellPx.value,
   gap,
   (id, newPos) => {
-    // Clamp performed in store, but good to have limits here too
     gridStore.updateWidgetPosition(id, newPos)
   }
 )
@@ -36,10 +35,9 @@ const { handleResizeStart, resizeState, resizingId } = useGridResize(
   cellPx.value,
   gap,
   (id, newDim) => {
-    // Preserve position, update dimensions
     const widget = widgets.value.find(w => w.id === id)
     if (widget) {
-        gridStore.updateWidgetPosition(id, { ...newDim, x: widget.x, y: widget.y })
+      gridStore.updateWidgetPosition(id, { ...newDim, x: widget.x, y: widget.y })
     }
   }
 )
@@ -72,19 +70,20 @@ const handleKeydown = (e: KeyboardEvent) => {
 onMounted(() => window.addEventListener('keydown', handleKeydown))
 onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 
+// Position widget helper
+const positionWidget = (position: WidgetPosition) => {
+  if (contextMenu.value) {
+    gridStore.positionWidget(contextMenu.value.blockId, position)
+    contextMenu.value = null
+  }
+}
+
 const menuItems = [
-  {
-    label: 'Edit Widget',
-    action: () => {
-      if (contextMenu.value) console.log('Edit', contextMenu.value.blockId)
-    }
-  },
-  {
-    label: 'Duplicate',
-    action: () => {
-      if (contextMenu.value) console.log('Duplicate', contextMenu.value.blockId)
-    }
-  },
+  { label: '⬛ Center', action: () => positionWidget('center') },
+  { label: '⬅️ Left', action: () => positionWidget('left') },
+  { label: '➡️ Right', action: () => positionWidget('right') },
+  { label: '⬆️ Top', action: () => positionWidget('top') },
+  { label: '⬇️ Bottom', action: () => positionWidget('bottom') },
   {
     label: 'Delete',
     destructive: true,
@@ -139,6 +138,7 @@ const getDraggedWidget = () => widgets.value.find(w => w.id === draggedId.value)
         :rows="rows"
         :is-dragging="draggedId === block.id"
         :is-resizing="resizingId === block.id"
+        :is-edit-mode="isEditMode"
         :preview-w="resizingId === block.id && resizeState ? resizeState.currentDim.w : undefined"
         :preview-h="resizingId === block.id && resizeState ? resizeState.currentDim.h : undefined"
         @drag-start="(e: MouseEvent) => isEditMode && handleMouseDown(e, block.id, { x: block.x, y: block.y }, { w: block.w, h: block.h })"
