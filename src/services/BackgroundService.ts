@@ -61,7 +61,7 @@ export class BackgroundService {
         return { isValid: true, type: 'video' }
       }
 
-      return { isValid: true, type: 'url' }
+      return { isValid: true, type: 'image' } // Default to image if unknown extension
     } catch {
       return { isValid: false, error: 'Invalid URL format' }
     }
@@ -72,7 +72,7 @@ export class BackgroundService {
   }
 
   static isImageType(type: BackgroundType): boolean {
-    return type === 'image' || type === 'gif'
+    return type === 'image' || type === 'gif' || type === 'url'
   }
 
   static createObjectUrl(blob: Blob): string {

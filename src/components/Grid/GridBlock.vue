@@ -33,7 +33,9 @@ const style = computed(() => ({
   gridColumn: `${displayX.value + 1} / span ${displayW.value}`,
   gridRow: `${displayY.value + 1} / span ${displayH.value}`,
   zIndex: props.block.zIndex,
-  opacity: props.isDragging ? 0.5 : 1
+  opacity: props.isDragging ? 0.5 : 1,
+  width: '100%',
+  height: '100%'
 }))
 
 const isOutOfBounds = computed(() => {

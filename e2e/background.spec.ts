@@ -35,7 +35,25 @@ test.describe('Background System', () => {
     const bgImage = page.getByTestId('background-image');
     await expect(bgImage).toBeVisible();
     
-    // Check if style contains the URL (handling css escaping if needed, but strict string check usually works)
+    // Check if style contains the URL
+    await expect(bgImage).toHaveCSS('background-image', /url/);
+  });
+
+  test('should allow adding a generic URL as image fallback', async ({ page }) => {
+    // Open Settings
+    await page.getByTestId('open-settings').click();
+    
+    // Switch to Background Tab
+    await page.getByTestId('settings-tab-backgrounds').click();
+    
+    // Enter Generic URL (no extension, should default to image)
+    const genericUrl = 'https://picsum.photos/1920/1080';
+    await page.getByTestId('background-url-input').fill(genericUrl);
+    await page.getByTestId('add-background-btn').click();
+
+    // Verify Background Image Appears
+    const bgImage = page.getByTestId('background-image');
+    await expect(bgImage).toBeVisible();
     await expect(bgImage).toHaveCSS('background-image', /url/);
   });
 
