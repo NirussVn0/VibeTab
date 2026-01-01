@@ -1,8 +1,12 @@
 <script setup lang="ts">
+/**
+ * GridBlock - Widget container with drag/resize/edit controls
+ * Shows settings and delete buttons on hover when in edit mode
+ */
 import { computed, defineAsyncComponent } from 'vue'
 import type { GridBlock } from '../../types/grid'
 import type { ClockConfig, SearchConfig } from '../../types/widget'
-import { TrashIcon } from '@heroicons/vue/24/outline'
+import { TrashIcon, Cog6ToothIcon } from '@heroicons/vue/24/outline'
 
 const ClockWidget = defineAsyncComponent(() => import('../Widgets/ClockWidget.vue'))
 const SearchWidget = defineAsyncComponent(() => import('../Widgets/SearchWidget.vue'))
@@ -23,9 +27,9 @@ const emit = defineEmits<{
   (e: 'drag-start', event: MouseEvent): void
   (e: 'resize-start', event: MouseEvent): void
   (e: 'delete'): void
+  (e: 'open-settings'): void
 }>()
 
-// Use preview dimensions if resizing, otherwise actual block dimensions
 const displayW = computed(() => props.previewW ?? Math.min(props.block.w, props.cols))
 const displayH = computed(() => props.previewH ?? Math.min(props.block.h, props.rows))
 const displayX = computed(() => Math.min(props.block.x, props.cols - displayW.value))
@@ -52,27 +56,31 @@ const isOutOfBounds = computed(() => {
   <div
     class="grid-block relative rounded-lg transition-all duration-200 group"
     :class="{
-      // Edit mode styling
       'bg-surface/50 backdrop-blur-sm border border-border hover:shadow-lg hover:bg-surface/80': isEditMode,
-      // Dragging/resizing state
       'z-50 ring-2 ring-primary': isDragging || isResizing,
-      // Out of bounds warning
       'ring-2 ring-red-500/50': isOutOfBounds,
-      // Cursor handling
       'cursor-grab active:cursor-grabbing': isEditMode && !isResizing
     }"
     :style="style"
     @mousedown="!isResizing && emit('drag-start', $event)"
   >
-    <!-- Delete Button (only in edit mode) -->
-    <button
-      v-if="isEditMode && !block.isLocked"
-      @click.stop="emit('delete')"
-      class="absolute top-1 right-1 p-1.5 rounded-full bg-red-500/80 hover:bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-all z-20"
-      title="Delete Widget"
-    >
-      <TrashIcon class="w-3 h-3" />
-    </button>
+    <!-- Widget Controls (only in edit mode, on hover) -->
+    <div v-if="isEditMode && !block.isLocked" class="absolute top-1 right-1 flex gap-1 opacity-0 group-hover:opacity-100 transition-all z-20">
+      <button
+        @click.stop="emit('open-settings')"
+        class="p-1.5 rounded-full bg-primary-500/80 hover:bg-primary-500 text-white"
+        title="Widget Settings"
+      >
+        <Cog6ToothIcon class="w-3 h-3" />
+      </button>
+      <button
+        @click.stop="emit('delete')"
+        class="p-1.5 rounded-full bg-red-500/80 hover:bg-red-500 text-white"
+        title="Delete Widget"
+      >
+        <TrashIcon class="w-3 h-3" />
+      </button>
+    </div>
 
     <!-- Content Container -->
     <div class="h-full w-full overflow-hidden relative">

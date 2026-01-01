@@ -156,6 +156,7 @@ const getDraggedWidget = () => widgets.value.find(w => w.id === draggedId.value)
         @resize-start="(e: MouseEvent) => isEditMode && handleResizeStart(e, block.id, { w: block.w, h: block.h })"
         @contextmenu="(e: MouseEvent) => onContextMenu(e, block.id)"
         @delete="gridStore.removeWidget(block.id)"
+        @open-settings="() => { uiStore.setActiveWidgetId(block.id); uiStore.openSettings() }"
       />
 
       <!-- Drag Preview (Placeholder) -->

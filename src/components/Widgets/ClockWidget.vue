@@ -1,4 +1,8 @@
 <script setup lang="ts">
+/**
+ * ClockWidget - Displays time and date with configurable formats
+ * Supports: 12h/24h time, MM/DD/Full date formats, custom colors
+ */
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import type { ClockConfig } from '../../types/widget'
 
@@ -8,7 +12,9 @@ const props = withDefaults(defineProps<{
   config: () => ({
     style: 'digital',
     format: '24h',
+    dateFormat: 'full',
     showSeconds: false,
+    color: undefined,
     timezone: undefined
   })
 })
@@ -41,20 +47,33 @@ const formattedTime = computed(() => {
 })
 
 const dateStr = computed(() => {
-  const options: Intl.DateTimeFormatOptions = {
-    weekday: 'long',
-    month: 'short',
-    day: 'numeric'
+  const format = props.config.dateFormat || 'full'
+  const d = time.value
+  
+  if (format === 'MM/DD') {
+    return `${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate().toString().padStart(2, '0')}`
+  } else if (format === 'DD/MM') {
+    return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`
+  } else {
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      month: 'short',
+      day: 'numeric'
+    }
+    return new Intl.DateTimeFormat('en-US', options).format(d)
   }
-  return new Intl.DateTimeFormat('en-US', options).format(time.value)
 })
+
+const textColor = computed(() => props.config.color || 'inherit')
 </script>
 
 <template>
-  <div class="w-full h-full flex flex-col items-center justify-center select-none text-text-primary container-type-size">
+  <div 
+    class="w-full h-full flex flex-col items-center justify-center select-none container-type-size"
+    :style="{ color: textColor }"
+  >
     <!-- Digital Mode -->
     <div v-if="config.style === 'digital'" class="text-center w-full">
-      <!-- Responsive font size relative to container height (cqh) and width (cqw) -->
       <div 
         class="font-bold tabular-nums leading-none tracking-tight"
         style="font-size: clamp(1rem, 25cqw, 8rem);"
@@ -71,7 +90,7 @@ const dateStr = computed(() => {
 
     <!-- Placeholder Analog Mode -->
     <div v-else class="text-center opacity-70">
-      Analog Clock Logic Pending
+      Analog Clock (Coming Soon)
     </div>
   </div>
 </template>
@@ -81,3 +100,4 @@ const dateStr = computed(() => {
   container-type: size;
 }
 </style>
+

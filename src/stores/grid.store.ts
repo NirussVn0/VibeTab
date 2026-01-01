@@ -200,7 +200,7 @@ function getDefaultWidgets(gridCols: number, gridRows: number): GridBlock[] {
       x: clockX, y: clockY, 
       w: clockSize.w, 
       h: clockSize.h,
-      config: { style: 'digital', format: '24h', showSeconds: true }, 
+      config: { style: 'digital', format: '24h', dateFormat: 'full', showSeconds: true }, 
       isLocked: false, 
       zIndex: 10,
       createdAt: Date.now(),

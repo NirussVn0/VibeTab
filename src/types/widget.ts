@@ -6,8 +6,10 @@ export interface BaseWidgetConfig {
 
 export interface ClockConfig extends BaseWidgetConfig {
   format: '12h' | '24h';
+  dateFormat: 'MM/DD' | 'DD/MM' | 'full';
   showSeconds: boolean;
   style: 'digital' | 'analog';
+  color?: string;
   timezone?: string;
 }
 

@@ -9,7 +9,6 @@ export interface Toast {
 }
 
 export const useUIStore = defineStore('ui', () => {
-  // Loading State
   const isLoading = ref(false)
   const loadingMessage = ref('')
 
@@ -23,7 +22,6 @@ export const useUIStore = defineStore('ui', () => {
     loadingMessage.value = ''
   }
 
-  // Toasts
   const toasts = ref<Toast[]>([])
 
   const addToast = (toast: Omit<Toast, 'id'>) => {
@@ -42,13 +40,18 @@ export const useUIStore = defineStore('ui', () => {
     toasts.value = toasts.value.filter(t => t.id !== id)
   }
 
-  // Settings Panel State
   const isSettingsOpen = ref(false)
+  const activeWidgetId = ref<string | null>(null)
+  
   const toggleSettings = () => isSettingsOpen.value = !isSettingsOpen.value
   const openSettings = () => isSettingsOpen.value = true
-  const closeSettings = () => isSettingsOpen.value = false
+  const closeSettings = () => {
+    isSettingsOpen.value = false
+    activeWidgetId.value = null
+  }
+  const setActiveWidgetId = (id: string) => activeWidgetId.value = id
+  const clearActiveWidgetId = () => activeWidgetId.value = null
 
-  // Edit Mode (for grid customization)
   const isEditMode = ref(false)
   const toggleEditMode = () => isEditMode.value = !isEditMode.value
 
@@ -61,10 +64,14 @@ export const useUIStore = defineStore('ui', () => {
     addToast,
     removeToast,
     isSettingsOpen,
+    activeWidgetId,
     toggleSettings,
     openSettings,
     closeSettings,
+    setActiveWidgetId,
+    clearActiveWidgetId,
     isEditMode,
     toggleEditMode
   }
 })
+
