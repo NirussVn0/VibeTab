@@ -56,7 +56,7 @@ onUnmounted(() => {
 
 <template>
   <div 
-    class="fixed inset-0 z-background overflow-hidden transition-colors duration-500 bg-background" 
+    class="fixed inset-0 z-background overflow-hidden" 
     data-testid="background-layer"
   >
     <!-- Default Gradient -->
