@@ -27,7 +27,7 @@ onMounted(async () => {
 
 <template>
   <ErrorBoundary>
-    <main class="h-screen w-screen overflow-hidden text-text-primary bg-background transition-colors duration-500 relative">
+    <main class="h-screen w-screen overflow-hidden text-text-primary transition-colors duration-500 relative">
       <CommandPalette />
       <SettingsPanel />
       <OnboardingTour />

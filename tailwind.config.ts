@@ -38,7 +38,7 @@ export default {
         full: 'var(--radius-full)',
       },
       zIndex: {
-        'background': '-1',
+        'background': '0',
         'grid': '10',
         'modal': '50',
         'toast': '100',
