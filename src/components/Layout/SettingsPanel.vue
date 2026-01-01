@@ -19,7 +19,7 @@
             @click="uiStore.closeSettings"
             class="p-2 text-white/50 hover:text-white transition-colors"
           >
-            <XMarkIcon class="w-5 h-5" />
+            <X class="w-5 h-5" />
           </button>
         </div>
 
@@ -45,10 +45,10 @@
                 class="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors"
               >
                 <div class="flex items-center gap-3">
-                  <ClockIcon class="w-5 h-5 text-primary-400" />
+                  <Clock class="w-5 h-5 text-primary-400" />
                   <span class="text-sm font-medium text-white">Clock Settings</span>
                 </div>
-                <ChevronDownIcon 
+                <ChevronDown 
                   class="w-4 h-4 text-white/50 transition-transform" 
                   :class="{ 'rotate-180': expandedSection === 'clock' }"
                 />
@@ -62,7 +62,7 @@
                   @click="addClockWidget"
                   class="w-full px-3 py-2 rounded-lg bg-primary-500/10 hover:bg-primary-500/20 text-xs text-primary-400 border border-primary-500/20 flex items-center justify-center gap-2"
                 >
-                  <PlusIcon class="w-4 h-4" /> Add Clock Widget
+                  <Plus class="w-4 h-4" /> Add Clock Widget
                 </button>
               </div>
             </div>
@@ -74,10 +74,10 @@
                 class="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors"
               >
                 <div class="flex items-center gap-3">
-                  <CloudIcon class="w-5 h-5 text-blue-400" />
+                  <Cloud class="w-5 h-5 text-blue-400" />
                   <span class="text-sm font-medium text-white">Weather Settings</span>
                 </div>
-                <ChevronDownIcon 
+                <ChevronDown 
                   class="w-4 h-4 text-white/50 transition-transform" 
                   :class="{ 'rotate-180': expandedSection === 'weather' }"
                 />
@@ -105,7 +105,7 @@
                   @click="addWeatherWidget"
                   class="w-full px-3 py-2 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-xs text-blue-400 border border-blue-500/20 flex items-center justify-center gap-2"
                 >
-                  <PlusIcon class="w-4 h-4" /> Add Weather Widget
+                  <Plus class="w-4 h-4" /> Add Weather Widget
                 </button>
               </div>
             </div>
@@ -117,10 +117,10 @@
                 class="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors"
               >
                 <div class="flex items-center gap-3">
-                  <MagnifyingGlassIcon class="w-5 h-5 text-green-400" />
+                  <Search class="w-5 h-5 text-green-400" />
                   <span class="text-sm font-medium text-white">Search Settings</span>
                 </div>
-                <ChevronDownIcon 
+                <ChevronDown 
                   class="w-4 h-4 text-white/50 transition-transform" 
                   :class="{ 'rotate-180': expandedSection === 'search' }"
                 />
@@ -130,7 +130,7 @@
                   @click="addSearchWidget"
                   class="w-full px-3 py-2 rounded-lg bg-green-500/10 hover:bg-green-500/20 text-xs text-green-400 border border-green-500/20 flex items-center justify-center gap-2"
                 >
-                  <PlusIcon class="w-4 h-4" /> Add Search Widget
+                  <Plus class="w-4 h-4" /> Add Search Widget
                 </button>
               </div>
             </div>
@@ -172,7 +172,7 @@
                 :class="isDragging ? 'border-primary-500 bg-primary-500/10' : 'border-white/10 hover:border-primary-500/50 hover:bg-white/5'"
                 @click="fileInput?.click()"
               >
-                <PhotoIcon class="w-8 h-8 text-white/40 mb-2" />
+                <Image class="w-8 h-8 text-white/40 mb-2" />
                 <span class="text-xs text-white/60">Drag & drop or click to upload</span>
                 <span class="text-[10px] text-white/30 mt-1">PNG, JPG, WebP, GIF, MP4, WebM</span>
               </div>
@@ -203,7 +203,7 @@
               </div>
 
               <div v-if="uploadError" class="flex items-center gap-2 text-xs text-red-400 bg-red-500/10 rounded-lg px-3 py-2">
-                <ExclamationTriangleIcon class="w-4 h-4" />
+                <AlertTriangle class="w-4 h-4" />
                 <span>{{ uploadError }}</span>
               </div>
 
@@ -265,7 +265,7 @@
                     @click.stop="backgroundStore.removeBackground(bg.id)"
                     class="absolute top-1 right-1 p-1 rounded bg-black/50 text-white/80 opacity-0 group-hover:opacity-100 hover:bg-red-500 transition-all"
                   >
-                    <XMarkIcon class="w-3 h-3" />
+                    <X class="w-3 h-3" />
                   </button>
                 </div>
               </div>
@@ -318,7 +318,7 @@
                 @click="clearAllData"
                 class="w-full px-3 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-xs text-red-400 border border-red-500/20 mt-2"
               >
-                <ExclamationTriangleIcon class="w-3 h-3 inline mr-1" /> Clear All Data
+                <AlertTriangle class="w-3 h-3 inline mr-1" /> Clear All Data
               </button>
             </div>
 
@@ -344,7 +344,7 @@ import { useThemeStore } from '../../stores/theme.store'
 import { useBackgroundStore } from '../../stores/background.store'
 import { BackgroundService } from '../../services/BackgroundService'
 import ToggleSwitch from '../Base/ToggleSwitch.vue'
-import { XMarkIcon, PhotoIcon, ExclamationTriangleIcon, ClockIcon, CloudIcon, MagnifyingGlassIcon, ChevronDownIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import { X, Image, AlertTriangle, Clock, Cloud, Search, ChevronDown, Plus } from 'lucide-vue-next'
 
 import { useGridStore } from '../../stores/grid.store'
 import { getClockSize, getSearchSize } from '../../constants/widgetSizes'

@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, type Component } from 'vue'
 import { 
-  ArrowsPointingInIcon, 
-  ArrowLeftIcon, 
-  ArrowRightIcon, 
-  ArrowUpIcon, 
-  ArrowDownIcon, 
-  TrashIcon,
-  Bars3Icon,
-  Bars2Icon,
-  Cog6ToothIcon
-} from '@heroicons/vue/24/outline'
+  Crosshair, 
+  AlignHorizontalJustifyCenter,
+  AlignVerticalJustifyCenter,
+  Trash2,
+  Settings
+} from 'lucide-vue-next'
 
 defineProps<{
   items: { label: string; action: () => void; icon?: string; destructive?: boolean }[]
@@ -22,16 +18,12 @@ const emit = defineEmits<{
   (e: 'close'): void
 }>()
 
-const iconComponents: Record<string, typeof ArrowsPointingInIcon> = {
-  center: ArrowsPointingInIcon,
-  centerH: Bars3Icon,
-  centerV: Bars2Icon,
-  left: ArrowLeftIcon,
-  right: ArrowRightIcon,
-  up: ArrowUpIcon,
-  down: ArrowDownIcon,
-  trash: TrashIcon,
-  settings: Cog6ToothIcon
+const iconComponents: Record<string, Component> = {
+  center: Crosshair,
+  centerH: AlignHorizontalJustifyCenter,
+  centerV: AlignVerticalJustifyCenter,
+  trash: Trash2,
+  settings: Settings
 }
 
 // Close on click outside

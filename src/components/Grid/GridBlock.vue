@@ -6,7 +6,7 @@
 import { computed, defineAsyncComponent } from 'vue'
 import type { GridBlock } from '../../types/grid'
 import type { ClockConfig, SearchConfig } from '../../types/widget'
-import { TrashIcon, Cog6ToothIcon } from '@heroicons/vue/24/outline'
+import { Trash2, Settings } from 'lucide-vue-next'
 
 const ClockWidget = defineAsyncComponent(() => import('../Widgets/ClockWidget.vue'))
 const SearchWidget = defineAsyncComponent(() => import('../Widgets/SearchWidget.vue'))
@@ -70,14 +70,14 @@ const isOutOfBounds = computed(() => {
         class="p-1.5 rounded-full bg-primary-500/80 hover:bg-primary-500 text-white"
         title="Widget Settings"
       >
-        <Cog6ToothIcon class="w-3 h-3" />
+        <Settings class="w-3 h-3" />
       </button>
       <button
         @click.stop="emit('delete')"
         class="p-1.5 rounded-full bg-red-500/80 hover:bg-red-500 text-white"
         title="Delete Widget"
       >
-        <TrashIcon class="w-3 h-3" />
+        <Trash2 class="w-3 h-3" />
       </button>
     </div>
 
