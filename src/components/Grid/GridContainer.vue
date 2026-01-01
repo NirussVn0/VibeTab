@@ -153,7 +153,7 @@ const getDraggedWidget = () => widgets.value.find(w => w.id === draggedId.value)
         :preview-w="resizingId === block.id && resizeState ? resizeState.currentDim.w : undefined"
         :preview-h="resizingId === block.id && resizeState ? resizeState.currentDim.h : undefined"
         @drag-start="(e: MouseEvent) => isEditMode && handleMouseDown(e, block.id, { x: block.x, y: block.y }, { w: block.w, h: block.h })"
-        @resize-start="(e: MouseEvent) => isEditMode && handleResizeStart(e, block.id, { w: block.w, h: block.h })"
+        @resize-start="(e: MouseEvent, corner: 'tl' | 'tr' | 'bl' | 'br') => isEditMode && handleResizeStart(e, block.id, { w: block.w, h: block.h }, corner)"
         @contextmenu="(e: MouseEvent) => onContextMenu(e, block.id)"
         @delete="gridStore.removeWidget(block.id)"
         @open-settings="() => { uiStore.setActiveWidgetId(block.id); uiStore.openSettings() }"

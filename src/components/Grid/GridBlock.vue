@@ -25,7 +25,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'drag-start', event: MouseEvent): void
-  (e: 'resize-start', event: MouseEvent): void
+  (e: 'resize-start', event: MouseEvent, corner: 'tl' | 'tr' | 'bl' | 'br'): void
   (e: 'delete'): void
   (e: 'open-settings'): void
 }>()
@@ -64,7 +64,6 @@ const isOutOfBounds = computed(() => {
     :style="style"
     @mousedown="!isResizing && emit('drag-start', $event)"
   >
-    <!-- Widget Controls (only in edit mode, on hover) -->
     <div v-if="isEditMode && !block.isLocked" class="absolute top-1 right-1 flex gap-1 opacity-0 group-hover:opacity-100 transition-all z-20">
       <button
         @click.stop="emit('open-settings')"
@@ -82,7 +81,6 @@ const isOutOfBounds = computed(() => {
       </button>
     </div>
 
-    <!-- Content Container -->
     <div class="h-full w-full overflow-hidden relative">
       <component
         v-if="block.type === 'clock'"
@@ -100,14 +98,37 @@ const isOutOfBounds = computed(() => {
       </div>
     </div>
 
-    <!-- Resize Handle (only in edit mode) -->
-    <div
-      v-if="isEditMode && !block.isLocked"
-      class="absolute bottom-0 right-0 w-6 h-6 cursor-nwse-resize z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-      @mousedown.stop="emit('resize-start', $event)"
-    >
-      <div class="w-2 h-2 bg-text-secondary/50 rounded-full"></div>
-    </div>
+    <!-- 4-Corner Resize Handles (only in edit mode, visible on hover) -->
+    <template v-if="isEditMode && !block.isLocked">
+      <!-- Top-Left -->
+      <div
+        class="absolute top-0 left-0 w-4 h-4 cursor-nwse-resize z-10 opacity-0 group-hover:opacity-100 transition-opacity"
+        @mousedown.stop="emit('resize-start', $event, 'tl')"
+      >
+        <div class="absolute top-1 left-1 w-2 h-2 bg-primary-500/80 rounded-full"></div>
+      </div>
+      <!-- Top-Right -->
+      <div
+        class="absolute top-0 right-0 w-4 h-4 cursor-nesw-resize z-10 opacity-0 group-hover:opacity-100 transition-opacity"
+        @mousedown.stop="emit('resize-start', $event, 'tr')"
+      >
+        <div class="absolute top-1 right-1 w-2 h-2 bg-primary-500/80 rounded-full"></div>
+      </div>
+      <!-- Bottom-Left -->
+      <div
+        class="absolute bottom-0 left-0 w-4 h-4 cursor-nesw-resize z-10 opacity-0 group-hover:opacity-100 transition-opacity"
+        @mousedown.stop="emit('resize-start', $event, 'bl')"
+      >
+        <div class="absolute bottom-1 left-1 w-2 h-2 bg-primary-500/80 rounded-full"></div>
+      </div>
+      <!-- Bottom-Right -->
+      <div
+        class="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize z-10 opacity-0 group-hover:opacity-100 transition-opacity"
+        @mousedown.stop="emit('resize-start', $event, 'br')"
+      >
+        <div class="absolute bottom-1 right-1 w-2 h-2 bg-primary-500/80 rounded-full"></div>
+      </div>
+    </template>
   </div>
 </template>
 

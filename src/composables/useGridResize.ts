@@ -1,11 +1,14 @@
 import { ref, onUnmounted } from 'vue'
 import { GridConfigService } from '../services/GridConfigService'
 
+export type ResizeCorner = 'tl' | 'tr' | 'bl' | 'br'
+
 export interface ResizeState {
   isResizing: boolean
+  corner: ResizeCorner
   start: { x: number; y: number }
   initialDim: { w: number; h: number }
-  currentDim: { w: number; h: number } // In cells
+  currentDim: { w: number; h: number }
 }
 
 export function useGridResize(
@@ -19,14 +22,16 @@ export function useGridResize(
   const handleResizeStart = (
     e: MouseEvent,
     id: string,
-    initialDim: { w: number; h: number }
+    initialDim: { w: number; h: number },
+    corner: ResizeCorner = 'br'
   ) => {
     e.preventDefault()
-    e.stopPropagation() // Prevent drag start
+    e.stopPropagation()
 
     resizingId.value = id
     resizeState.value = {
       isResizing: true,
+      corner,
       start: { x: e.clientX, y: e.clientY },
       initialDim: { ...initialDim },
       currentDim: { ...initialDim }
