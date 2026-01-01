@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { 
+  ArrowsPointingInIcon, 
+  ArrowLeftIcon, 
+  ArrowRightIcon, 
+  ArrowUpIcon, 
+  ArrowDownIcon, 
+  TrashIcon 
+} from '@heroicons/vue/24/outline'
 
-// props are used in template, no need to destructure if not used in script
 defineProps<{
   items: { label: string; action: () => void; icon?: string; destructive?: boolean }[]
   x: number
@@ -11,6 +18,16 @@ defineProps<{
 const emit = defineEmits<{
   (e: 'close'): void
 }>()
+
+// Icon mapping
+const iconComponents: Record<string, typeof ArrowsPointingInIcon> = {
+  center: ArrowsPointingInIcon,
+  left: ArrowLeftIcon,
+  right: ArrowRightIcon,
+  up: ArrowUpIcon,
+  down: ArrowDownIcon,
+  trash: TrashIcon
+}
 
 // Close on click outside
 const menuRef = ref<HTMLElement | null>(null)
@@ -40,7 +57,11 @@ onUnmounted(() => window.removeEventListener('click', handleClickOutside))
         class="w-full px-4 py-2 text-left text-sm hover:bg-surface transition-colors flex items-center gap-2"
         :class="item.destructive ? 'text-error hover:bg-error/10' : 'text-text-primary'"
       >
-        <span v-if="item.icon">{{ item.icon }}</span>
+        <component 
+          v-if="item.icon && iconComponents[item.icon]" 
+          :is="iconComponents[item.icon]" 
+          class="w-4 h-4" 
+        />
         {{ item.label }}
       </button>
     </div>

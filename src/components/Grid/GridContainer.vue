@@ -56,6 +56,8 @@ const toggleEditMode = () => {
 }
 
 const onContextMenu = (e: MouseEvent, blockId: string) => {
+  // Only show context menu in edit mode
+  if (!isEditMode.value) return
   e.preventDefault()
   contextMenu.value = { x: e.clientX, y: e.clientY, blockId }
 }
@@ -79,13 +81,14 @@ const positionWidget = (position: WidgetPosition) => {
 }
 
 const menuItems = [
-  { label: '⬛ Center', action: () => positionWidget('center') },
-  { label: '⬅️ Left', action: () => positionWidget('left') },
-  { label: '➡️ Right', action: () => positionWidget('right') },
-  { label: '⬆️ Top', action: () => positionWidget('top') },
-  { label: '⬇️ Bottom', action: () => positionWidget('bottom') },
+  { label: 'Center', icon: 'center', action: () => positionWidget('center') },
+  { label: 'Left', icon: 'left', action: () => positionWidget('left') },
+  { label: 'Right', icon: 'right', action: () => positionWidget('right') },
+  { label: 'Top', icon: 'up', action: () => positionWidget('top') },
+  { label: 'Bottom', icon: 'down', action: () => positionWidget('bottom') },
   {
     label: 'Delete',
+    icon: 'trash',
     destructive: true,
     action: () => {
       if (contextMenu.value?.blockId) {
@@ -144,6 +147,7 @@ const getDraggedWidget = () => widgets.value.find(w => w.id === draggedId.value)
         @drag-start="(e: MouseEvent) => isEditMode && handleMouseDown(e, block.id, { x: block.x, y: block.y }, { w: block.w, h: block.h })"
         @resize-start="(e: MouseEvent) => isEditMode && handleResizeStart(e, block.id, { w: block.w, h: block.h })"
         @contextmenu="(e: MouseEvent) => onContextMenu(e, block.id)"
+        @delete="gridStore.removeWidget(block.id)"
       />
 
       <!-- Drag Preview (Placeholder) -->

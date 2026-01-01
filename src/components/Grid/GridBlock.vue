@@ -2,6 +2,7 @@
 import { computed, defineAsyncComponent } from 'vue'
 import type { GridBlock } from '../../types/grid'
 import type { ClockConfig, SearchConfig } from '../../types/widget'
+import { TrashIcon } from '@heroicons/vue/24/outline'
 
 const ClockWidget = defineAsyncComponent(() => import('../Widgets/ClockWidget.vue'))
 const SearchWidget = defineAsyncComponent(() => import('../Widgets/SearchWidget.vue'))
@@ -13,7 +14,7 @@ const props = defineProps<{
   rows: number
   isDragging?: boolean
   isResizing?: boolean
-  isEditMode?: boolean // New prop for edit mode
+  isEditMode?: boolean
   previewW?: number
   previewH?: number
 }>()
@@ -21,6 +22,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'drag-start', event: MouseEvent): void
   (e: 'resize-start', event: MouseEvent): void
+  (e: 'delete'): void
 }>()
 
 // Use preview dimensions if resizing, otherwise actual block dimensions
@@ -62,6 +64,16 @@ const isOutOfBounds = computed(() => {
     :style="style"
     @mousedown="!isResizing && emit('drag-start', $event)"
   >
+    <!-- Delete Button (only in edit mode) -->
+    <button
+      v-if="isEditMode && !block.isLocked"
+      @click.stop="emit('delete')"
+      class="absolute top-1 right-1 p-1.5 rounded-full bg-red-500/80 hover:bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-all z-20"
+      title="Delete Widget"
+    >
+      <TrashIcon class="w-3 h-3" />
+    </button>
+
     <!-- Content Container -->
     <div class="h-full w-full overflow-hidden relative">
       <component
