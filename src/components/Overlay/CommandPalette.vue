@@ -43,6 +43,7 @@ const actions: CommandAction[] = [
   
   // Grid Actions (Future hooks)
   { id: 'edit-layout', name: 'Toggle Edit Mode', category: 'Grid', shortcut: ['Ctrl', 'E'], perform: () => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'e', ctrlKey: true })) },
+  { id: 'toggle-pomodoro', name: 'Toggle Focus Mode', category: 'Navigation', shortcut: ['Alt', 'P'], perform: () => { import('../../stores/pomodoro.store').then(m => m.usePomodoroStore().toggleView()) } },
 ]
 
 // Fuse.js Setup
