@@ -148,7 +148,7 @@ function getDefaultWidgets(): GridBlock[] {
     { 
       id: 'search-1', 
       type: 'search', 
-      x: 0, y: clockSize.h + 1, 
+      x: 0, y: clockSize.h, 
       w: searchSize.w, 
       h: searchSize.h,
       config: { provider: 'google', aiMode: false }, 

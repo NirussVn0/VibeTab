@@ -74,6 +74,9 @@ export const useBackgroundStore = defineStore('background', () => {
     // Immutable update
     state.value.backgrounds = [...state.value.backgrounds, newBg]
     
+    // Auto-select the newly added background
+    state.value.currentBackgroundId = id
+    
     return { success: true }
   }
 
