@@ -1,31 +1,46 @@
 <script setup lang="ts">
-import { computed, onUnmounted } from 'vue'
-import { storeToRefs } from 'pinia'
+import { computed, watch, onUnmounted } from 'vue'
 import { useBackgroundStore } from '../../stores/background.store'
 import { BackgroundService } from '../../services/BackgroundService'
 
 const store = useBackgroundStore()
-const { currentBackground, defaultGradient, state } = storeToRefs(store)
+
+// Access store properties directly (not through storeToRefs)
+// This ensures proper reactivity tracking
+const currentBackground = computed(() => store.currentBackground)
+const defaultGradient = computed(() => store.defaultGradient)
+const blur = computed(() => store.state.blur)
+
+// DEBUG: Watch for background changes
+watch(
+  () => store.state.currentBackgroundId,
+  (newId, oldId) => {
+    console.log('[BackgroundLayer] currentBackgroundId changed:', oldId, '->', newId)
+    console.log('[BackgroundLayer] backgrounds count:', store.state.backgrounds.length)
+    console.log('[BackgroundLayer] currentBackground:', store.currentBackground)
+  },
+  { immediate: true }
+)
 
 const isVideo = computed(() =>
   currentBackground.value && BackgroundService.isVideoType(currentBackground.value.type)
 )
 
 const isImage = computed(() =>
-  currentBackground.value && BackgroundService.isImageType(currentBackground.value.type)
+  currentBackground.value && (BackgroundService.isImageType(currentBackground.value.type) || currentBackground.value.type === 'url')
 )
 
 // Computed key for forced refresh
-// Combines ID and Version to ensure DOM replacement on logic change
 const backgroundKey = computed(() => {
-    if (!currentBackground.value) return 'default'
-    return `${currentBackground.value.id}-${currentBackground.value.version}`
+  if (!currentBackground.value) return 'default'
+  return `${currentBackground.value.id}-${currentBackground.value.version}`
 })
 
 const backgroundImageStyle = computed(() => {
   if (!currentBackground.value || isVideo.value) return {}
   
-  // Explicit properties, NO shorthand (requirement)
+  console.log('[BackgroundLayer] Building style for:', currentBackground.value.source)
+  
   return {
     backgroundImage: `url(${currentBackground.value.source})`,
     backgroundSize: currentBackground.value.position || 'cover',
@@ -40,12 +55,16 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="fixed inset-0 z-background overflow-hidden transition-colors duration-500 bg-background" data-testid="background-layer">
+  <div 
+    class="fixed inset-0 z-background overflow-hidden transition-colors duration-500 bg-background" 
+    data-testid="background-layer"
+  >
     <!-- Default Gradient -->
     <div
       v-if="!currentBackground"
       class="absolute inset-0 transition-opacity duration-700"
       :style="{ background: defaultGradient }"
+      data-testid="background-gradient"
     ></div>
 
     <!-- Active Background -->
@@ -73,20 +92,14 @@ onUnmounted(() => {
       ></div>
     </template>
 
-    <!-- Blur & Overlay Layers -->
+    <!-- Blur Overlay -->
     <div
-      class="absolute inset-0 pointer-events-none transition-backdrop duration-500"
-      :style="{
-        backdropFilter: `blur(${state.blur}px)`
-      }"
+      v-if="blur > 0"
+      class="absolute inset-0 pointer-events-none"
+      :style="{ backdropFilter: `blur(${blur}px)` }"
     ></div>
 
+    <!-- Surface Overlay -->
     <div class="absolute inset-0 bg-surface/5 opacity-50 pointer-events-none"></div>
   </div>
 </template>
-
-<style scoped>
-.from-bg {
-    /* Helper for transition-opacity from 0 to 1 if needed, though Vue transition handles enter/leave usually */
-}
-</style>

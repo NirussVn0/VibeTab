@@ -81,13 +81,17 @@ export const useBackgroundStore = defineStore('background', () => {
   }
 
   const addBackgroundFromUrl = async (url: string): Promise<{ success: boolean; error?: string }> => {
+    console.log('[BackgroundStore] addBackgroundFromUrl called with:', url)
+    
     const validation = BackgroundService.validateUrl(url)
 
     if (!validation.isValid) {
+      console.log('[BackgroundStore] Invalid URL:', validation.error)
       return { success: false, error: validation.error }
     }
 
     const id = crypto.randomUUID()
+    console.log('[BackgroundStore] Generated ID:', id, 'Type:', validation.type)
 
     const newBg = {
       id,
@@ -101,10 +105,13 @@ export const useBackgroundStore = defineStore('background', () => {
       createdAt: Date.now()
     } as const
 
+    console.log('[BackgroundStore] Before update - backgrounds:', state.value.backgrounds.length, 'currentId:', state.value.currentBackgroundId)
+    
     state.value.backgrounds = [...state.value.backgrounds, newBg]
-
-    // Auto-select the newly added background
     state.value.currentBackgroundId = id
+    
+    console.log('[BackgroundStore] After update - backgrounds:', state.value.backgrounds.length, 'currentId:', state.value.currentBackgroundId)
+    console.log('[BackgroundStore] currentBackground computed:', currentBackground.value)
 
     return { success: true }
   }
