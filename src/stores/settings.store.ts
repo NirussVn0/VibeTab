@@ -8,7 +8,10 @@ export const useSettingsStore = defineStore('settings', () => {
     showWeather: true,
     showGreeting: true,
     weatherLocation: 'New York',
-    enableSleepMode: true
+    enableSleepMode: true,
+    focusDuration: 25,
+    breakDuration: 5,
+    pomodoroDim: true
   })
 
   return {

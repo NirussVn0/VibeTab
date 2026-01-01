@@ -135,6 +135,53 @@
               </div>
             </div>
 
+            <!-- Pomodoro Settings -->
+            <div class="bg-white/5 rounded-xl border border-white/5 overflow-hidden">
+              <button
+                @click="expandedSection = expandedSection === 'pomodoro' ? null : 'pomodoro'"
+                class="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors"
+              >
+                <div class="flex items-center gap-3">
+                  <Clock class="w-5 h-5 text-rose-400" />
+                  <span class="text-sm font-medium text-white">Pomodoro Settings</span>
+                </div>
+                <ChevronDown 
+                  class="w-4 h-4 text-white/50 transition-transform" 
+                  :class="{ 'rotate-180': expandedSection === 'pomodoro' }"
+                />
+              </button>
+              <div v-if="expandedSection === 'pomodoro'" class="p-4 border-t border-white/5 space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-white/60">Focus Duration</span>
+                  <select 
+                    v-model="settingsStore.general.focusDuration"
+                    class="bg-white/10 border border-white/10 rounded px-2 py-1 text-xs text-white"
+                  >
+                    <option value="15">15 min</option>
+                    <option value="25">25 min</option>
+                    <option value="30">30 min</option>
+                    <option value="45">45 min</option>
+                    <option value="60">60 min</option>
+                  </select>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-white/60">Break Duration</span>
+                  <select 
+                    v-model="settingsStore.general.breakDuration"
+                    class="bg-white/10 border border-white/10 rounded px-2 py-1 text-xs text-white"
+                  >
+                    <option value="5">5 min</option>
+                    <option value="10">10 min</option>
+                    <option value="15">15 min</option>
+                  </select>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-white/60">Auto-dim when timer starts</span>
+                  <ToggleSwitch v-model="settingsStore.general.pomodoroDim" />
+                </div>
+              </div>
+            </div>
+
             <!-- Show Greeting -->
             <div class="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5">
               <span class="text-sm text-white/80">Show Greeting</span>

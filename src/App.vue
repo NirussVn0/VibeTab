@@ -22,7 +22,7 @@ const backgroundStore = useBackgroundStore()
 const pomodoro = usePomodoroStore()
 
 const viewTransform = computed(() => 
-  pomodoro.isPomodoroView ? 'translateX(-100%)' : 'translateX(0)'
+  pomodoro.isPomodoroView ? 'translateX(-50%)' : 'translateX(0)'
 )
 
 onMounted(async () => {
