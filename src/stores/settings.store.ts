@@ -7,7 +7,8 @@ export const useSettingsStore = defineStore('settings', () => {
     showClock: true,
     showWeather: true,
     showGreeting: true,
-    weatherLocation: 'New York'
+    weatherLocation: 'New York',
+    enableSleepMode: true
   })
 
   return {

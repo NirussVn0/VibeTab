@@ -13,6 +13,7 @@ import PomodoroContainer from './components/Pomodoro/PomodoroContainer.vue'
 import SettingsPanel from './components/Layout/SettingsPanel.vue'
 import CommandPalette from './components/Overlay/CommandPalette.vue'
 import OnboardingTour from './components/Overlay/OnboardingTour.vue'
+import SleepOverlay from './components/Overlay/SleepOverlay.vue'
 import ErrorBoundary from './components/Base/ErrorBoundary.vue'
 import EdgeTrigger from './components/UI/EdgeTrigger.vue'
 
@@ -43,6 +44,7 @@ onMounted(async () => {
       <CommandPalette />
       <SettingsPanel />
       <OnboardingTour />
+      <SleepOverlay />
       
       <BackgroundLayer />
 
