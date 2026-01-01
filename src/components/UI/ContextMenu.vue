@@ -6,7 +6,10 @@ import {
   ArrowRightIcon, 
   ArrowUpIcon, 
   ArrowDownIcon, 
-  TrashIcon 
+  TrashIcon,
+  Bars3Icon,
+  Bars2Icon,
+  Cog6ToothIcon
 } from '@heroicons/vue/24/outline'
 
 defineProps<{
@@ -19,14 +22,16 @@ const emit = defineEmits<{
   (e: 'close'): void
 }>()
 
-// Icon mapping
 const iconComponents: Record<string, typeof ArrowsPointingInIcon> = {
   center: ArrowsPointingInIcon,
+  centerH: Bars3Icon,
+  centerV: Bars2Icon,
   left: ArrowLeftIcon,
   right: ArrowRightIcon,
   up: ArrowUpIcon,
   down: ArrowDownIcon,
-  trash: TrashIcon
+  trash: TrashIcon,
+  settings: Cog6ToothIcon
 }
 
 // Close on click outside

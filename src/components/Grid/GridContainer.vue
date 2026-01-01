@@ -72,7 +72,6 @@ const handleKeydown = (e: KeyboardEvent) => {
 onMounted(() => window.addEventListener('keydown', handleKeydown))
 onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 
-// Position widget helper
 const positionWidget = (position: WidgetPosition) => {
   if (contextMenu.value) {
     gridStore.positionWidget(contextMenu.value.blockId, position)
@@ -80,12 +79,21 @@ const positionWidget = (position: WidgetPosition) => {
   }
 }
 
+const openWidgetSettings = () => {
+  if (contextMenu.value) {
+    const widget = widgets.value.find(w => w.id === contextMenu.value?.blockId)
+    if (widget) {
+      uiStore.openSettings()
+    }
+    contextMenu.value = null
+  }
+}
+
 const menuItems = [
   { label: 'Center', icon: 'center', action: () => positionWidget('center') },
-  { label: 'Left', icon: 'left', action: () => positionWidget('left') },
-  { label: 'Right', icon: 'right', action: () => positionWidget('right') },
-  { label: 'Top', icon: 'up', action: () => positionWidget('top') },
-  { label: 'Bottom', icon: 'down', action: () => positionWidget('bottom') },
+  { label: 'Center H', icon: 'centerH', action: () => positionWidget('centerH') },
+  { label: 'Center V', icon: 'centerV', action: () => positionWidget('centerV') },
+  { label: 'Edit Settings', icon: 'settings', action: openWidgetSettings },
   {
     label: 'Delete',
     icon: 'trash',

@@ -8,7 +8,7 @@ import { getClockSize, getSearchSize } from '../constants/widgetSizes'
 
 import type { GridBlock } from '../types/grid'
 
-export type WidgetPosition = 'center' | 'left' | 'right' | 'top' | 'bottom' | 'tl' | 'tr' | 'bl' | 'br'
+export type WidgetPosition = 'center' | 'centerH' | 'centerV' | 'left' | 'right' | 'top' | 'bottom' | 'tl' | 'tr' | 'bl' | 'br'
 
 export const useGridStore = defineStore('grid', () => {
   // --- State ---
@@ -95,6 +95,12 @@ export const useGridStore = defineStore('grid', () => {
         newX = centerX
         newY = centerY
         break
+      case 'centerH':
+        newX = centerX
+        break
+      case 'centerV':
+        newY = centerY
+        break
       case 'left':
         newX = 0
         newY = centerY
@@ -111,19 +117,19 @@ export const useGridStore = defineStore('grid', () => {
         newX = centerX
         newY = maxY
         break
-      case 'tl': // Top-left
+      case 'tl':
         newX = 0
         newY = 0
         break
-      case 'tr': // Top-right
+      case 'tr':
         newX = maxX
         newY = 0
         break
-      case 'bl': // Bottom-left
+      case 'bl':
         newX = 0
         newY = maxY
         break
-      case 'br': // Bottom-right
+      case 'br':
         newX = maxX
         newY = maxY
         break

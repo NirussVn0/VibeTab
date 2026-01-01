@@ -10,7 +10,7 @@ import {
   TransitionChild, 
   TransitionRoot 
 } from '@headlessui/vue'
-import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+import { MagnifyingGlassIcon, SparklesIcon } from '@heroicons/vue/24/outline'
 import Fuse from 'fuse.js'
 import { useThemeStore } from '../../stores/theme.store'
 import { useUIStore } from '../../stores/ui.store'
@@ -80,6 +80,15 @@ const submitAiSearch = () => {
   }
 }
 
+const submitGoogleSearch = () => {
+  const trimmedQuery = query.value.trim()
+  if (trimmedQuery && !isAiQuery.value && filteredActions.value.length === 0) {
+    const url = `https://www.google.com/search?q=${encodeURIComponent(trimmedQuery)}`
+    window.location.href = url
+    closeModal()
+  }
+}
+
 const closeModal = () => {
   isOpen.value = false
   query.value = ''
@@ -131,9 +140,9 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
                 />
                 <ComboboxInput
                   class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-white placeholder:text-gray-500 focus:ring-0 sm:text-sm"
-                  placeholder="Type a command or > for AI..."
+                  placeholder="Search or type > for AI..."
                   @change="query = $event.target.value"
-                  @keydown.enter="isAiQuery && submitAiSearch()"
+                  @keydown.enter="isAiQuery ? submitAiSearch() : submitGoogleSearch()"
                   :displayValue="(item: any) => item?.name"
                   autocomplete="off"
                 />
@@ -167,13 +176,17 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 
               <!-- AI Query Prompt -->
               <div v-if="isAiQuery" class="py-6 px-6 text-center text-sm sm:px-14">
-                <div class="text-blue-400 font-medium mb-2">🤖 AI Search Mode</div>
+                <div class="text-blue-400 font-medium mb-2 flex items-center justify-center gap-2">
+                  <SparklesIcon class="w-5 h-5" />
+                  <span>AI Search Mode</span>
+                </div>
                 <p v-if="aiQueryText" class="text-white">Press Enter to ask: "{{ aiQueryText }}"</p>
                 <p v-else class="text-gray-400">Type your question after &gt;</p>
               </div>
 
-              <div v-else-if="query !== '' && filteredActions.length === 0" class="py-14 px-6 text-center text-sm sm:px-14">
-                <p class="mt-4 text-gray-400">No matching commands found.</p>
+              <!-- Google Search Prompt -->
+              <div v-else-if="query !== '' && filteredActions.length === 0" class="py-6 px-6 text-center text-sm sm:px-14">
+                <p class="text-gray-400">Press Enter to search Google for: <span class="text-white">"{{ query }}"</span></p>
               </div>
             </Combobox>
           </DialogPanel>
