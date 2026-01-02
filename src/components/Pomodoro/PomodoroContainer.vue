@@ -4,9 +4,11 @@
  */
 <script setup lang="ts">
 import { usePomodoroStore } from '../../stores/pomodoro.store'
+import { useSound } from '../../composables/useSound'
 import { Play, Pause, SkipForward, RotateCcw } from 'lucide-vue-next'
 
 const pomodoro = usePomodoroStore()
+const { playStart, playPause, playComplete } = useSound()
 
 const modeLabels = {
   focus: 'Focus Time',
@@ -18,6 +20,21 @@ const modeColors = {
   focus: 'text-primary-400',
   shortBreak: 'text-green-400',
   longBreak: 'text-blue-400'
+}
+
+const handlePlayPause = () => {
+  if (pomodoro.isRunning) {
+    pomodoro.pause()
+    playPause()
+  } else {
+    pomodoro.start()
+    playStart()
+  }
+}
+
+const handleSkip = () => {
+  playComplete()
+  pomodoro.skip()
 }
 </script>
 
@@ -37,7 +54,7 @@ const modeColors = {
 
     <div class="flex gap-4">
       <button
-        @click="pomodoro.isRunning ? pomodoro.pause() : pomodoro.start()"
+        @click="handlePlayPause"
         class="w-16 h-16 rounded-xl bg-primary-500/20 backdrop-blur-sm border border-primary-500/30 flex items-center justify-center text-primary-400 hover:bg-primary-500/40 hover:text-white transition-all"
       >
         <Pause v-if="pomodoro.isRunning" class="w-7 h-7" />
@@ -45,7 +62,7 @@ const modeColors = {
       </button>
       
       <button
-        @click="pomodoro.skip()"
+        @click="handleSkip"
         class="w-16 h-16 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:bg-white/10 hover:text-white transition-all"
       >
         <SkipForward class="w-7 h-7" />
