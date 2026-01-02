@@ -1,26 +1,43 @@
 /**
  * usePomodoroStore - State for Pomodoro mode and timer logic
- * Controls focus/break cycles, timer countdown, and view toggling
+ * Persists view mode and session state across tab refreshes
  */
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+import { useStorage } from '../composables/useStorage'
+import { useSettingsStore } from './settings.store'
 
 export const usePomodoroStore = defineStore('pomodoro', () => {
+  const settingsStore = useSettingsStore()
+  
+  const persistedState = useStorage('vibetab_pomodoro_state', {
+    isPomodoroView: false,
+    mode: 'focus' as 'focus' | 'shortBreak' | 'longBreak',
+    cycles: 0
+  })
+  
   const isActive = ref(false)
-  const isPomodoroView = ref(false)
-  
-  const mode = ref<'focus' | 'shortBreak' | 'longBreak'>('focus')
-  const timeLeft = ref(25 * 60)
+  const isPomodoroView = ref(persistedState.value.isPomodoroView)
+  const mode = ref<'focus' | 'shortBreak' | 'longBreak'>(persistedState.value.mode)
+  const cycles = ref(persistedState.value.cycles)
   const isRunning = ref(false)
-  const cycles = ref(0)
   
-  const durations = {
-    focus: 25 * 60,
-    shortBreak: 5 * 60,
+  const getDurations = () => ({
+    focus: (settingsStore.general.focusDuration || 25) * 60,
+    shortBreak: (settingsStore.general.breakDuration || 5) * 60,
     longBreak: 15 * 60
-  }
+  })
   
+  const timeLeft = ref(getDurations().focus)
   let timerId: ReturnType<typeof setInterval> | null = null
+  
+  watch([isPomodoroView, mode, cycles], () => {
+    persistedState.value = {
+      isPomodoroView: isPomodoroView.value,
+      mode: mode.value,
+      cycles: cycles.value
+    }
+  })
   
   const formattedTime = computed(() => {
     const mins = Math.floor(timeLeft.value / 60)
@@ -60,7 +77,7 @@ export const usePomodoroStore = defineStore('pomodoro', () => {
   
   const reset = () => {
     pause()
-    timeLeft.value = durations[mode.value]
+    timeLeft.value = getDurations()[mode.value]
   }
   
   const skip = () => {
@@ -71,7 +88,7 @@ export const usePomodoroStore = defineStore('pomodoro', () => {
     } else {
       mode.value = 'focus'
     }
-    timeLeft.value = durations[mode.value]
+    timeLeft.value = getDurations()[mode.value]
   }
   
   return {
@@ -91,3 +108,4 @@ export const usePomodoroStore = defineStore('pomodoro', () => {
     skip
   }
 })
+
