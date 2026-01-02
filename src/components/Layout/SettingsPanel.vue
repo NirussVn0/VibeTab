@@ -55,8 +55,44 @@
               </button>
               <div v-if="expandedSection === 'clock'" class="p-4 border-t border-white/5 space-y-3">
                 <div class="flex items-center justify-between">
-                  <span class="text-sm text-white/80">Show Clock</span>
+                  <span class="text-xs text-white/60">Show Clock</span>
                   <ToggleSwitch v-model="settingsStore.general.showClock" />
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-white/60">Time Format</span>
+                  <div class="flex gap-1">
+                    <button 
+                      @click="clockFormat = '12h'"
+                      class="px-2 py-1 text-xs rounded border transition-colors"
+                      :class="clockFormat === '12h' ? 'bg-primary-500/20 border-primary-500 text-primary-400' : 'bg-white/5 border-white/10 text-white/60'"
+                    >12h</button>
+                    <button 
+                      @click="clockFormat = '24h'"
+                      class="px-2 py-1 text-xs rounded border transition-colors"
+                      :class="clockFormat === '24h' ? 'bg-primary-500/20 border-primary-500 text-primary-400' : 'bg-white/5 border-white/10 text-white/60'"
+                    >24h</button>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-white/60">Date Format</span>
+                  <select 
+                    v-model="clockDateFormat"
+                    class="bg-white/10 border border-white/10 rounded px-2 py-1 text-xs text-white"
+                  >
+                    <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                    <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                    <option value="Mon Jan 01">Mon Jan 01</option>
+                    <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                    <option value="none">Hide Date</option>
+                  </select>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-white/60">Text Color</span>
+                  <input 
+                    type="color" 
+                    v-model="clockColor"
+                    class="w-8 h-8 rounded cursor-pointer border-0"
+                  />
                 </div>
                 <button 
                   @click="addClockWidget"
@@ -479,6 +515,10 @@ const tabs = [
 const activeTab = ref('general')
 const expandedSection = ref<string | null>(null)
 
+const clockFormat = ref<'12h' | '24h'>('24h')
+const clockDateFormat = ref<'MM/DD/YYYY' | 'DD/MM/YYYY' | 'Mon Jan 01' | 'YYYY-MM-DD' | 'none'>('Mon Jan 01')
+const clockColor = ref('#ffffff')
+
 const addClockWidget = () => {
   const clockSize = getClockSize('medium')
   gridStore.addWidget({
@@ -487,7 +527,13 @@ const addClockWidget = () => {
     x: 0, y: 0,
     w: clockSize.w,
     h: clockSize.h,
-    config: { style: 'digital', format: '24h', dateFormat: 'Mon Jan 01', showSeconds: true },
+    config: { 
+      style: 'digital', 
+      format: clockFormat.value, 
+      dateFormat: clockDateFormat.value, 
+      showSeconds: false,
+      color: clockColor.value
+    },
     isLocked: false,
     zIndex: 10,
     createdAt: Date.now(),
