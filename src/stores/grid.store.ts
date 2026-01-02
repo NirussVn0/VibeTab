@@ -48,6 +48,22 @@ export const useGridStore = defineStore('grid', () => {
     widgets.value = widgets.value.filter(w => w.id !== id)
   }
 
+  const resetWidgetConfig = (id: string) => {
+    const widgetIndex = widgets.value.findIndex(w => w.id === id)
+    if (widgetIndex === -1) return
+
+    const widget = widgets.value[widgetIndex]
+    const { getDefaultConfig } = require('../constants/defaults')
+    const defaultConfig = getDefaultConfig(widget.type)
+
+    saveStateToHistory()
+    widgets.value[widgetIndex] = {
+      ...widget,
+      config: defaultConfig,
+      updatedAt: Date.now()
+    }
+  }
+
   const updateWidgetPosition = (id: string, pos: { x: number, y: number, w?: number, h?: number }) => {
     const widgetIndex = widgets.value.findIndex(w => w.id === id)
     if (widgetIndex === -1) return
@@ -173,6 +189,7 @@ export const useGridStore = defineStore('grid', () => {
     widgets,
     addWidget,
     removeWidget,
+    resetWidgetConfig,
     updateWidgetPosition,
     positionWidget,
     undo,

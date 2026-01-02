@@ -94,6 +94,15 @@ const menuItems = [
   { label: 'Center H', icon: 'centerH', action: () => positionWidget('centerH') },
   { label: 'Center V', icon: 'centerV', action: () => positionWidget('centerV') },
   { label: 'Edit Settings', icon: 'settings', action: openWidgetSettings },
+  { 
+    label: 'Reset Settings', 
+    icon: 'reset', 
+    action: () => {
+      if (contextMenu.value?.blockId) {
+        gridStore.resetWidgetConfig(contextMenu.value.blockId)
+      }
+    }
+  },
   {
     label: 'Delete',
     icon: 'trash',
@@ -136,7 +145,10 @@ const getDraggedWidget = () => widgets.value.find(w => w.id === draggedId.value)
     <div
       class="w-full h-full relative transition-all"
       :style="gridStyle"
-      :class="{ 'ring-1 ring-border/30 rounded bg-surface/5': isEditMode }"
+      :class="{ 
+        'ring-1 ring-border/30 rounded bg-surface/5': isEditMode,
+        'widgets-hidden': !uiStore.areWidgetsVisible
+      }"
       role="grid"
       aria-label="Widget Grid"
     >

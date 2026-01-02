@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, type Component } from 'vue'
-import { 
-  Crosshair, 
+import {
+  Crosshair,
   AlignHorizontalJustifyCenter,
   AlignVerticalJustifyCenter,
   Trash2,
-  Settings
+  Settings,
+  RotateCcw
 } from 'lucide-vue-next'
 
 defineProps<{
@@ -23,7 +24,8 @@ const iconComponents: Record<string, Component> = {
   centerH: AlignHorizontalJustifyCenter,
   centerV: AlignVerticalJustifyCenter,
   trash: Trash2,
-  settings: Settings
+  settings: Settings,
+  reset: RotateCcw
 }
 
 // Close on click outside
@@ -41,24 +43,14 @@ onUnmounted(() => window.removeEventListener('click', handleClickOutside))
 </script>
 
 <template>
-  <div 
-    ref="menuRef"
+  <div ref="menuRef"
     class="fixed z-context-menu min-w-[160px] bg-background border border-border rounded-lg shadow-xl overflow-hidden glass-panel"
-    :style="{ top: `${y}px`, left: `${x}px` }"
-  >
+    :style="{ top: `${y}px`, left: `${x}px` }">
     <div class="py-1">
-      <button 
-        v-for="item in items" 
-        :key="item.label"
-        @click="() => { item.action(); emit('close') }"
+      <button v-for="item in items" :key="item.label" @click="() => { item.action(); emit('close') }"
         class="w-full px-4 py-2 text-left text-sm hover:bg-surface transition-colors flex items-center gap-2"
-        :class="item.destructive ? 'text-error hover:bg-error/10' : 'text-text-primary'"
-      >
-        <component 
-          v-if="item.icon && iconComponents[item.icon]" 
-          :is="iconComponents[item.icon]" 
-          class="w-4 h-4" 
-        />
+        :class="item.destructive ? 'text-error hover:bg-error/10' : 'text-text-primary'">
+        <component v-if="item.icon && iconComponents[item.icon]" :is="iconComponents[item.icon]" class="w-4 h-4" />
         {{ item.label }}
       </button>
     </div>
