@@ -57,6 +57,7 @@ export const useUIStore = defineStore('ui', () => {
 
   const areWidgetsVisible = ref(true)
   const toggleWidgetsVisibility = () => areWidgetsVisible.value = !areWidgetsVisible.value
+  const setWidgetsHidden = (hidden: boolean) => areWidgetsVisible.value = !hidden
 
   return {
     isLoading,
@@ -76,7 +77,8 @@ export const useUIStore = defineStore('ui', () => {
     isEditMode,
     toggleEditMode,
     areWidgetsVisible,
-    toggleWidgetsVisibility
+    toggleWidgetsVisibility,
+    setWidgetsHidden
   }
 })
 

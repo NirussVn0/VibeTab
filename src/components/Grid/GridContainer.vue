@@ -6,11 +6,13 @@ import { useGridConfig } from '../../composables/useGridConfig'
 import { useGridDrag } from '../../composables/useGridDrag'
 import { useGridResize } from '../../composables/useGridResize'
 import { useUIStore } from '../../stores/ui.store'
+import { useSettingsStore } from '../../stores/settings.store'
 import GridBlock from './GridBlock.vue'
 import ContextMenu from '../UI/ContextMenu.vue'
 
 const gridStore = useGridStore()
 const uiStore = useUIStore()
+const settingsStore = useSettingsStore()
 const { widgets } = storeToRefs(gridStore)
 
 const { config, cellPx, cols, rows, gap } = useGridConfig()
@@ -18,6 +20,12 @@ const { config, cellPx, cols, rows, gap } = useGridConfig()
 provide('gridConfig', config)
 
 const isEditMode = computed(() => uiStore.isEditMode)
+
+const shouldHideWidget = (type: string) => {
+  if (uiStore.areWidgetsVisible) return false
+  if (settingsStore.autoHide.keepClockVisible && type === 'clock') return false
+  return true
+}
 const contextMenu = ref<{ x: number; y: number; blockId: string } | null>(null)
 
 // Drag Logic
@@ -139,6 +147,7 @@ const getDraggedWidget = () => widgets.value.find(w => w.id === draggedId.value)
         :is-dragging="draggedId === block.id"
         :is-resizing="resizingId === block.id"
         :is-edit-mode="isEditMode"
+        :class="{ 'widget-fade-hidden': shouldHideWidget(block.type) }"
         :preview-w="resizingId === block.id && resizeState ? resizeState.currentDim.w : undefined"
         :preview-h="resizingId === block.id && resizeState ? resizeState.currentDim.h : undefined"
         @drag-start="(e: MouseEvent) => isEditMode && handleMouseDown(e, block.id, { x: block.x, y: block.y }, { w: block.w, h: block.h })"

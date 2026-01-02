@@ -1,14 +1,35 @@
 /**
  * SleepOverlay - Full-screen dim overlay during inactivity
- * Fades in when idle, fades out on any user interaction
+ * Uses autoHide settings for timeout, color, and opacity
  */
 <script setup lang="ts">
+import { computed, watch } from 'vue'
 import { useIdleTimer } from '../../composables/useIdleTimer'
 import { useSettingsStore } from '../../stores/settings.store'
+import { useUIStore } from '../../stores/ui.store'
 
 const settingsStore = useSettingsStore()
-const sleepTimeout = 5 * 60 * 1000
-const { isIdle } = useIdleTimer(sleepTimeout)
+const uiStore = useUIStore()
+
+const timeout = computed(() => (settingsStore.autoHide.timeout || 60) * 1000)
+const { isIdle } = useIdleTimer(timeout.value)
+
+const isActive = computed(() => 
+  settingsStore.autoHide.enabled && isIdle.value
+)
+
+const overlayStyle = computed(() => ({
+  backgroundColor: settingsStore.autoHide.dimBackground 
+    ? settingsStore.autoHide.dimColor || '#000000'
+    : 'transparent',
+  opacity: settingsStore.autoHide.dimBackground 
+    ? settingsStore.autoHide.dimOpacity || 0.6
+    : 0
+}))
+
+watch(isActive, (active) => {
+  uiStore.setWidgetsHidden(active)
+})
 </script>
 
 <template>
@@ -19,8 +40,10 @@ const { isIdle } = useIdleTimer(sleepTimeout)
     leave-to-class="opacity-0"
   >
     <div 
-      v-if="isIdle && settingsStore.general.enableSleepMode !== false" 
-      class="fixed inset-0 z-[100] bg-black/60 pointer-events-none"
+      v-if="isActive" 
+      class="fixed inset-0 z-[100] pointer-events-none"
+      :style="overlayStyle"
     />
   </Transition>
 </template>
+

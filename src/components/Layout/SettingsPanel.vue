@@ -179,6 +179,74 @@
                   <span class="text-xs text-white/60">Auto-dim when timer starts</span>
                   <ToggleSwitch v-model="settingsStore.general.pomodoroDim" />
                 </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-white/60">Sound notifications</span>
+                  <ToggleSwitch v-model="settingsStore.general.pomodoroSound" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Auto-Hide Settings -->
+            <div class="bg-white/5 rounded-xl border border-white/5 overflow-hidden">
+              <button
+                @click="expandedSection = expandedSection === 'autohide' ? null : 'autohide'"
+                class="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors"
+              >
+                <div class="flex items-center gap-3">
+                  <Eye class="w-5 h-5 text-violet-400" />
+                  <span class="text-sm font-medium text-white">Auto-Hide Widgets</span>
+                </div>
+                <ChevronDown 
+                  class="w-4 h-4 text-white/50 transition-transform" 
+                  :class="{ 'rotate-180': expandedSection === 'autohide' }"
+                />
+              </button>
+              <div v-if="expandedSection === 'autohide'" class="p-4 border-t border-white/5 space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-white/60">Enable Auto-Hide</span>
+                  <ToggleSwitch v-model="settingsStore.autoHide.enabled" />
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-white/60">Timeout (seconds)</span>
+                  <select 
+                    v-model="settingsStore.autoHide.timeout"
+                    class="bg-white/10 border border-white/10 rounded px-2 py-1 text-xs text-white"
+                  >
+                    <option :value="30">30s</option>
+                    <option :value="60">60s</option>
+                    <option :value="120">2m</option>
+                    <option :value="300">5m</option>
+                  </select>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-white/60">Keep clock visible</span>
+                  <ToggleSwitch v-model="settingsStore.autoHide.keepClockVisible" />
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-white/60">Dim background</span>
+                  <ToggleSwitch v-model="settingsStore.autoHide.dimBackground" />
+                </div>
+                <div v-if="settingsStore.autoHide.dimBackground" class="space-y-2 pt-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs text-white/60">Dim color</span>
+                    <input 
+                      type="color" 
+                      v-model="settingsStore.autoHide.dimColor"
+                      class="w-8 h-8 rounded cursor-pointer border-0"
+                    />
+                  </div>
+                  <div class="space-y-1">
+                    <span class="text-xs text-white/60">Opacity: {{ Math.round(settingsStore.autoHide.dimOpacity * 100) }}%</span>
+                    <input 
+                      type="range" 
+                      min="0.1" 
+                      max="0.9" 
+                      step="0.1"
+                      v-model.number="settingsStore.autoHide.dimOpacity"
+                      class="w-full accent-violet-500"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -391,7 +459,7 @@ import { useThemeStore } from '../../stores/theme.store'
 import { useBackgroundStore } from '../../stores/background.store'
 import { BackgroundService } from '../../services/BackgroundService'
 import ToggleSwitch from '../Base/ToggleSwitch.vue'
-import { X, Image, AlertTriangle, Clock, Cloud, Search, ChevronDown, Plus } from 'lucide-vue-next'
+import { X, Image, AlertTriangle, Clock, Cloud, Search, ChevronDown, Plus, Eye } from 'lucide-vue-next'
 
 import { useGridStore } from '../../stores/grid.store'
 import { getClockSize, getSearchSize } from '../../constants/widgetSizes'
