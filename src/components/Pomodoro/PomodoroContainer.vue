@@ -1,19 +1,14 @@
 /**
  * PomodoroContainer - Focus mode dashboard with timer and controls
- * Includes Edit Layout mode for customizing widgets in Pomodoro view
+ * TopToolbar handles edit mode and settings globally
  */
 <script setup lang="ts">
-import { ref } from 'vue'
 import { usePomodoroStore } from '../../stores/pomodoro.store'
-import { useUIStore } from '../../stores/ui.store'
 import { useSound } from '../../composables/useSound'
-import { Play, Pause, SkipForward, RotateCcw, Settings, LayoutGrid } from 'lucide-vue-next'
+import { Play, Pause, SkipForward, RotateCcw } from 'lucide-vue-next'
 
 const pomodoro = usePomodoroStore()
-const uiStore = useUIStore()
 const { playStart, playPause, playComplete } = useSound()
-
-const showEditHint = ref(false)
 
 const modeLabels = {
   focus: 'Focus Time',
@@ -41,46 +36,10 @@ const handleSkip = () => {
   playComplete()
   pomodoro.skip()
 }
-
-const openSettings = () => {
-  uiStore.openSettings()
-}
-
-const toggleEditMode = () => {
-  uiStore.toggleEditMode()
-  showEditHint.value = uiStore.isEditMode
-}
 </script>
 
 <template>
-  <div class="w-full h-full flex flex-col items-center justify-center gap-8 p-8 relative">
-    <!-- Top Toolbar -->
-    <div class="absolute top-4 right-4 flex gap-2">
-      <button
-        @click="toggleEditMode"
-        class="w-10 h-10 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:bg-white/10 hover:text-white transition-all"
-        :class="{ 'bg-primary-500/20 border-primary-500/30 text-primary-400': uiStore.isEditMode }"
-        title="Edit Layout"
-      >
-        <LayoutGrid class="w-5 h-5" />
-      </button>
-      <button
-        @click="openSettings"
-        class="w-10 h-10 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:bg-white/10 hover:text-white transition-all"
-        title="Settings"
-      >
-        <Settings class="w-5 h-5" />
-      </button>
-    </div>
-
-    <!-- Edit Mode Hint -->
-    <div 
-      v-if="showEditHint && uiStore.isEditMode" 
-      class="absolute top-16 right-4 bg-primary-500/20 backdrop-blur-sm border border-primary-500/30 rounded-lg px-3 py-2 text-xs text-primary-400"
-    >
-      Click widgets to drag/resize. Click again to exit.
-    </div>
-
+  <div class="w-full h-full flex flex-col items-center justify-center gap-8 p-8">
     <div class="text-center">
       <p class="text-sm uppercase tracking-widest mb-2" :class="modeColors[pomodoro.mode]">
         {{ modeLabels[pomodoro.mode] }}
@@ -96,7 +55,7 @@ const toggleEditMode = () => {
     <div class="flex gap-4">
       <button
         @click="handlePlayPause"
-        class="w-16 h-16 rounded-xl bg-primary-500/20 backdrop-blur-sm border border-primary-500/30 flex items-center justify-center text-primary-400 hover:bg-primary-500/40 hover:text-white transition-all"
+        class="w-16 h-16 rounded-xl bg-primary-500/20 backdrop-blur-sm border border-primary-500/30 flex items-center justify-center text-primary-400 hover:bg-primary-500/40 hover:text-white transition-all interactive"
       >
         <Pause v-if="pomodoro.isRunning" class="w-7 h-7" />
         <Play v-else class="w-7 h-7" />
@@ -104,14 +63,14 @@ const toggleEditMode = () => {
       
       <button
         @click="handleSkip"
-        class="w-16 h-16 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:bg-white/10 hover:text-white transition-all"
+        class="w-16 h-16 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:bg-white/10 hover:text-white transition-all interactive"
       >
         <SkipForward class="w-7 h-7" />
       </button>
       
       <button
         @click="pomodoro.reset()"
-        class="w-16 h-16 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:bg-white/10 hover:text-white transition-all"
+        class="w-16 h-16 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:bg-white/10 hover:text-white transition-all interactive"
       >
         <RotateCcw class="w-7 h-7" />
       </button>
