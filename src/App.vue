@@ -16,6 +16,7 @@ import OnboardingTour from './components/Overlay/OnboardingTour.vue'
 import SleepOverlay from './components/Overlay/SleepOverlay.vue'
 import ErrorBoundary from './components/Base/ErrorBoundary.vue'
 import EdgeTrigger from './components/UI/EdgeTrigger.vue'
+import TopToolbar from './components/Layout/TopToolbar.vue'
 
 const themeStore = useThemeStore()
 const backgroundStore = useBackgroundStore()
@@ -45,6 +46,7 @@ onMounted(async () => {
       <SettingsPanel />
       <OnboardingTour />
       <SleepOverlay />
+      <TopToolbar />
       
       <BackgroundLayer />
 

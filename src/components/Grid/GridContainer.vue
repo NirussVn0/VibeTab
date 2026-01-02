@@ -8,17 +8,16 @@ import { useGridResize } from '../../composables/useGridResize'
 import { useUIStore } from '../../stores/ui.store'
 import GridBlock from './GridBlock.vue'
 import ContextMenu from '../UI/ContextMenu.vue'
-import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
 
 const gridStore = useGridStore()
 const uiStore = useUIStore()
 const { widgets } = storeToRefs(gridStore)
 
-const { config, cellPx, cols, rows, gap, zoomFactor } = useGridConfig()
+const { config, cellPx, cols, rows, gap } = useGridConfig()
 
 provide('gridConfig', config)
 
-const isEditMode = ref(false)
+const isEditMode = computed(() => uiStore.isEditMode)
 const contextMenu = ref<{ x: number; y: number; blockId: string } | null>(null)
 
 // Drag Logic
@@ -52,7 +51,7 @@ const gridStyle = computed(() => ({
 }))
 
 const toggleEditMode = () => {
-  isEditMode.value = !isEditMode.value
+  uiStore.toggleEditMode()
 }
 
 const onContextMenu = (e: MouseEvent, blockId: string) => {
@@ -120,28 +119,6 @@ const getDraggedWidget = () => widgets.value.find(w => w.id === draggedId.value)
 
 <template>
   <div class="w-screen h-screen overflow-hidden select-none relative">
-    
-    <div class="absolute top-4 right-4 z-50 flex items-center gap-2">
-      <span class="text-xs text-text-secondary bg-surface/80 px-2 py-1 rounded font-mono">
-        {{ cols }}×{{ rows }} | {{ cellPx.toFixed(1) }}px | ×{{ zoomFactor.toFixed(2) }}
-      </span>
-      <button
-        @click="uiStore.openSettings()"
-        class="p-1 rounded bg-surface border border-border text-text-secondary hover:text-primary hover:border-primary transition-colors"
-        data-testid="open-settings"
-        title="Settings"
-      >
-        <Cog6ToothIcon class="w-5 h-5" />
-      </button>
-      <button
-        @click="toggleEditMode"
-        class="px-3 py-1 rounded bg-surface border border-border text-sm hover:bg-surface/80 transition-colors"
-        :class="{ 'text-primary border-primary': isEditMode }"
-      >
-        {{ isEditMode ? 'Done' : 'Edit Layout' }}
-      </button>
-    </div>
-
     <div
       class="w-full h-full relative transition-all"
       :style="gridStyle"

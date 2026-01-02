@@ -6,7 +6,7 @@
     "isEntry": true
   },
   "index.html": {
-    "file": "assets/index.html-shWROqil.js",
+    "file": "assets/index.html-DsT6xqmW.js",
     "name": "index.html",
     "src": "index.html",
     "isEntry": true,
@@ -25,7 +25,7 @@
     "isEntry": true
   },
   "src/components/Widgets/ClockWidget.vue": {
-    "file": "assets/ClockWidget-C1NV-FqZ.js",
+    "file": "assets/ClockWidget-DsxKjpVu.js",
     "name": "ClockWidget",
     "src": "src/components/Widgets/ClockWidget.vue",
     "isDynamicEntry": true,
@@ -37,7 +37,7 @@
     ]
   },
   "src/components/Widgets/SearchWidget.vue": {
-    "file": "assets/SearchWidget-Cp6lxkJE.js",
+    "file": "assets/SearchWidget-x_r67BPE.js",
     "name": "SearchWidget",
     "src": "src/components/Widgets/SearchWidget.vue",
     "isDynamicEntry": true,
