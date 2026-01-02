@@ -1,9 +1,10 @@
 <script setup lang="ts">
 /**
  * ClockWidget - Displays time and date with configurable formats
- * Supports: 12h/24h time, MM/DD/Full date formats, custom colors
+ * Uses dayjs for date formatting, supports custom colors
  */
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import dayjs from 'dayjs'
 import type { ClockConfig } from '../../types/widget'
 
 const props = withDefaults(defineProps<{
@@ -12,18 +13,18 @@ const props = withDefaults(defineProps<{
   config: () => ({
     style: 'digital',
     format: '24h',
-    dateFormat: 'full',
+    dateFormat: 'Mon Jan 01',
     showSeconds: false,
     color: undefined,
     timezone: undefined
   })
 })
 
-const time = ref(new Date())
+const time = ref(dayjs())
 let timer: ReturnType<typeof setInterval> | null = null
 
 const updateTime = () => {
-  time.value = new Date()
+  time.value = dayjs()
 }
 
 onMounted(() => {
@@ -36,32 +37,29 @@ onUnmounted(() => {
 })
 
 const formattedTime = computed(() => {
-  const options: Intl.DateTimeFormatOptions = {
-    hour: 'numeric',
-    minute: '2-digit',
-    second: props.config.showSeconds ? '2-digit' : undefined,
-    hour12: props.config.format === '12h',
-    timeZone: props.config.timezone
-  }
-  return new Intl.DateTimeFormat('en-US', options).format(time.value)
+  const fmt = props.config.format === '12h' ? 'h:mm' : 'HH:mm'
+  const sec = props.config.showSeconds ? ':ss' : ''
+  const ampm = props.config.format === '12h' ? ' A' : ''
+  return time.value.format(fmt + sec + ampm)
 })
 
 const dateStr = computed(() => {
-  const format = props.config.dateFormat || 'full'
-  const d = time.value
+  const format = props.config.dateFormat || 'Mon Jan 01'
   
-  if (format === 'MM/DD') {
-    return `${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate().toString().padStart(2, '0')}`
-  } else if (format === 'DD/MM') {
-    return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`
-  } else {
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      month: 'short',
-      day: 'numeric'
-    }
-    return new Intl.DateTimeFormat('en-US', options).format(d)
+  const formatMap: Record<string, string> = {
+    'MM/DD/YYYY': 'MM/DD/YYYY',
+    'DD/MM/YYYY': 'DD/MM/YYYY',
+    'Mon Jan 01': 'ddd, MMM D',
+    'YYYY-MM-DD': 'YYYY-MM-DD',
+    'none': '',
+    'full': 'ddd, MMM D',
+    'MM/DD': 'MM/DD',
+    'DD/MM': 'DD/MM'
   }
+  
+  const dayjsFormat = formatMap[format] || 'ddd, MMM D'
+  if (!dayjsFormat) return ''
+  return time.value.format(dayjsFormat)
 })
 
 const textColor = computed(() => props.config.color || 'inherit')

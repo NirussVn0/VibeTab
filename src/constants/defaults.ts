@@ -7,7 +7,7 @@ import type { ClockConfig, SearchConfig, WeatherConfig } from '../types/widget'
 export const DEFAULT_CLOCK_CONFIG: ClockConfig = {
   style: 'digital',
   format: '24h',
-  dateFormat: 'full',
+  dateFormat: 'Mon Jan 01',
   showSeconds: false,
   color: undefined,
   timezone: undefined
