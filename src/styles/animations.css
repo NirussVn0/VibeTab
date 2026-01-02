@@ -10,7 +10,7 @@
   }
 }
 
-/* Staggered Appear */
+/* Staggered Appear - Waterfall entrance */
 @keyframes slideUpFade {
   from {
     opacity: 0;
@@ -22,7 +22,26 @@
   }
 }
 
-/* Delete Animation */
+/* Delete Animation - Thanos Snap */
+@keyframes thanosSnap {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.95) rotate(2deg);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8) rotate(5deg) translateY(-10px);
+    filter: blur(8px);
+  }
+}
+
+/* Legacy Delete Animation */
 @keyframes slideOutDelete {
   to {
     opacity: 0;
@@ -62,3 +81,16 @@
     backdrop-filter: blur(10px);
   }
 }
+
+/* Staggered Widget Entrance */
+@keyframes widgetEnter {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
