@@ -53,31 +53,31 @@
                   :class="{ 'rotate-180': expandedSection === 'clock' }"
                 />
               </button>
-              <div v-if="expandedSection === 'clock'" class="p-4 border-t border-white/5 space-y-3">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-white/60">Show Clock</span>
+              <div v-if="expandedSection === 'clock'" class="p-4 border-t border-white/10 space-y-4 bg-black/20">
+                <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
+                  <span class="text-sm text-white/90">Show Clock</span>
                   <ToggleSwitch v-model="settingsStore.general.showClock" />
                 </div>
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-white/60">Time Format</span>
+                <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5">
+                  <span class="text-sm text-white/90">Time Format</span>
                   <div class="flex gap-1">
                     <button 
                       @click="clockFormat = '12h'"
-                      class="px-2 py-1 text-xs rounded border transition-colors"
-                      :class="clockFormat === '12h' ? 'bg-primary-500/20 border-primary-500 text-primary-400' : 'bg-white/5 border-white/10 text-white/60'"
+                      class="px-3 py-1.5 text-xs font-medium rounded-lg border transition-all"
+                      :class="clockFormat === '12h' ? 'bg-primary-500 border-primary-500 text-white shadow-lg shadow-primary-500/30' : 'bg-surface border-border text-text-secondary hover:bg-white/10'"
                     >12h</button>
                     <button 
                       @click="clockFormat = '24h'"
-                      class="px-2 py-1 text-xs rounded border transition-colors"
-                      :class="clockFormat === '24h' ? 'bg-primary-500/20 border-primary-500 text-primary-400' : 'bg-white/5 border-white/10 text-white/60'"
+                      class="px-3 py-1.5 text-xs font-medium rounded-lg border transition-all"
+                      :class="clockFormat === '24h' ? 'bg-primary-500 border-primary-500 text-white shadow-lg shadow-primary-500/30' : 'bg-surface border-border text-text-secondary hover:bg-white/10'"
                     >24h</button>
                   </div>
                 </div>
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-white/60">Date Format</span>
+                <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5">
+                  <span class="text-sm text-white/90">Date Format</span>
                   <select 
                     v-model="clockDateFormat"
-                    class="bg-white/10 border border-white/10 rounded px-2 py-1 text-xs text-white"
+                    class="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary focus:border-primary-500 focus:ring-1 focus:ring-primary-500/30 outline-none"
                   >
                     <option value="MM/DD/YYYY">MM/DD/YYYY</option>
                     <option value="DD/MM/YYYY">DD/MM/YYYY</option>
@@ -86,17 +86,13 @@
                     <option value="none">Hide Date</option>
                   </select>
                 </div>
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-white/60">Text Color</span>
-                  <input 
-                    type="color" 
-                    v-model="clockColor"
-                    class="w-8 h-8 rounded cursor-pointer border-0"
-                  />
+                <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5">
+                  <span class="text-sm text-white/90">Text Color</span>
+                  <ColorPickerCircle v-model="clockColor" />
                 </div>
                 <button 
                   @click="addClockWidget"
-                  class="w-full px-3 py-2 rounded-lg bg-primary-500/10 hover:bg-primary-500/20 text-xs text-primary-400 border border-primary-500/20 flex items-center justify-center gap-2"
+                  class="w-full px-4 py-2.5 rounded-lg bg-primary-500 hover:bg-primary-600 text-sm font-medium text-white flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary-500/20"
                 >
                   <Plus class="w-4 h-4" /> Add Clock Widget
                 </button>
@@ -237,49 +233,48 @@
                   :class="{ 'rotate-180': expandedSection === 'autohide' }"
                 />
               </button>
-              <div v-if="expandedSection === 'autohide'" class="p-4 border-t border-white/5 space-y-3">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-white/60">Enable Auto-Hide</span>
+              <div v-if="expandedSection === 'autohide'" class="p-4 border-t border-white/10 space-y-4 bg-black/20">
+                <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
+                  <span class="text-sm text-white/90">Enable Auto-Hide</span>
                   <ToggleSwitch v-model="settingsStore.autoHide.enabled" />
                 </div>
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-white/60">Timeout (seconds)</span>
+                <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5">
+                  <span class="text-sm text-white/90">Timeout</span>
                   <select 
                     v-model="settingsStore.autoHide.timeout"
-                    class="bg-white/10 border border-white/10 rounded px-2 py-1 text-xs text-white"
+                    class="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary focus:border-primary-500 outline-none"
                   >
                     <option :value="30">30s</option>
                     <option :value="60">60s</option>
-                    <option :value="120">2m</option>
-                    <option :value="300">5m</option>
+                    <option :value="120">2 min</option>
+                    <option :value="300">5 min</option>
                   </select>
                 </div>
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-white/60">Keep clock visible</span>
+                <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
+                  <span class="text-sm text-white/90">Keep clock visible</span>
                   <ToggleSwitch v-model="settingsStore.autoHide.keepClockVisible" />
                 </div>
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-white/60">Dim background</span>
+                <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
+                  <span class="text-sm text-white/90">Dim background</span>
                   <ToggleSwitch v-model="settingsStore.autoHide.dimBackground" />
                 </div>
-                <div v-if="settingsStore.autoHide.dimBackground" class="space-y-2 pt-2">
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs text-white/60">Dim color</span>
-                    <input 
-                      type="color" 
-                      v-model="settingsStore.autoHide.dimColor"
-                      class="w-8 h-8 rounded cursor-pointer border-0"
-                    />
+                <div v-if="settingsStore.autoHide.dimBackground" class="space-y-3 pt-2 pl-2 border-l-2 border-violet-500/30">
+                  <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5">
+                    <span class="text-sm text-white/90">Dim color</span>
+                    <ColorPickerCircle v-model="settingsStore.autoHide.dimColor" />
                   </div>
-                  <div class="space-y-1">
-                    <span class="text-xs text-white/60">Opacity: {{ Math.round(settingsStore.autoHide.dimOpacity * 100) }}%</span>
+                  <div class="py-2 px-3 rounded-lg bg-white/5">
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-sm text-white/90">Opacity</span>
+                      <span class="text-xs text-white/60 font-mono">{{ Math.round(settingsStore.autoHide.dimOpacity * 100) }}%</span>
+                    </div>
                     <input 
                       type="range" 
                       min="0.1" 
                       max="0.9" 
                       step="0.1"
                       v-model.number="settingsStore.autoHide.dimOpacity"
-                      class="w-full accent-violet-500"
+                      class="w-full h-2 rounded-full appearance-none cursor-pointer bg-white/10 accent-violet-500"
                     />
                   </div>
                 </div>
@@ -495,6 +490,7 @@ import { useThemeStore } from '../../stores/theme.store'
 import { useBackgroundStore } from '../../stores/background.store'
 import { BackgroundService } from '../../services/BackgroundService'
 import ToggleSwitch from '../Base/ToggleSwitch.vue'
+import ColorPickerCircle from '../Base/ColorPickerCircle.vue'
 import { X, Image, AlertTriangle, Clock, Cloud, Search, ChevronDown, Plus, Eye } from 'lucide-vue-next'
 
 import { useGridStore } from '../../stores/grid.store'
