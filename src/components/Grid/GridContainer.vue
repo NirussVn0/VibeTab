@@ -26,6 +26,37 @@ const shouldHideWidget = (type: string) => {
   if (settingsStore.autoHide.keepClockVisible && type === 'clock') return false
   return true
 }
+
+const onBeforeEnter = (el: Element) => {
+  const htmlEl = el as HTMLElement
+  htmlEl.style.opacity = '0'
+  htmlEl.style.transform = 'translateY(20px) scale(0.95)'
+}
+
+const onEnter = (el: Element, done: () => void) => {
+  const htmlEl = el as HTMLElement
+  const index = parseInt(htmlEl.dataset.index || '0')
+  const delay = index * 50
+  
+  setTimeout(() => {
+    htmlEl.style.transition = 'opacity 0.4s ease-out, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'
+    htmlEl.style.opacity = '1'
+    htmlEl.style.transform = 'translateY(0) scale(1)'
+    
+    setTimeout(done, 400)
+  }, delay)
+}
+
+const onLeave = (el: Element, done: () => void) => {
+  const htmlEl = el as HTMLElement
+  htmlEl.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out, filter 0.3s ease-out'
+  htmlEl.style.opacity = '0'
+  htmlEl.style.transform = 'scale(0.8) rotate(2deg)'
+  htmlEl.style.filter = 'blur(8px)'
+  
+  setTimeout(done, 300)
+}
+
 const contextMenu = ref<{ x: number; y: number; blockId: string } | null>(null)
 
 // Drag Logic
@@ -137,25 +168,35 @@ const getDraggedWidget = () => widgets.value.find(w => w.id === draggedId.value)
       role="grid"
       aria-label="Widget Grid"
     >
-      <GridBlock
-        v-for="block in widgets"
-        :key="block.id"
-        :block="block"
-        :cell-px="cellPx"
-        :cols="cols"
-        :rows="rows"
-        :is-dragging="draggedId === block.id"
-        :is-resizing="resizingId === block.id"
-        :is-edit-mode="isEditMode"
-        :class="{ 'widget-fade-hidden': shouldHideWidget(block.type) }"
-        :preview-w="resizingId === block.id && resizeState ? resizeState.currentDim.w : undefined"
-        :preview-h="resizingId === block.id && resizeState ? resizeState.currentDim.h : undefined"
-        @drag-start="(e: MouseEvent) => isEditMode && handleMouseDown(e, block.id, { x: block.x, y: block.y }, { w: block.w, h: block.h })"
-        @resize-start="(e: MouseEvent, corner: 'tl' | 'tr' | 'bl' | 'br') => isEditMode && handleResizeStart(e, block.id, { w: block.w, h: block.h }, corner)"
-        @contextmenu="(e: MouseEvent) => onContextMenu(e, block.id)"
-        @delete="gridStore.removeWidget(block.id)"
-        @open-settings="() => { uiStore.setActiveWidgetId(block.id); uiStore.openSettings() }"
-      />
+      <TransitionGroup
+        name="widget"
+        tag="div"
+        class="contents"
+        @before-enter="onBeforeEnter"
+        @enter="onEnter"
+        @leave="onLeave"
+      >
+        <GridBlock
+          v-for="(block, index) in widgets"
+          :key="block.id"
+          :data-index="index"
+          :block="block"
+          :cell-px="cellPx"
+          :cols="cols"
+          :rows="rows"
+          :is-dragging="draggedId === block.id"
+          :is-resizing="resizingId === block.id"
+          :is-edit-mode="isEditMode"
+          :class="{ 'widget-fade-hidden': shouldHideWidget(block.type) }"
+          :preview-w="resizingId === block.id && resizeState ? resizeState.currentDim.w : undefined"
+          :preview-h="resizingId === block.id && resizeState ? resizeState.currentDim.h : undefined"
+          @drag-start="(e: MouseEvent) => isEditMode && handleMouseDown(e, block.id, { x: block.x, y: block.y }, { w: block.w, h: block.h })"
+          @resize-start="(e: MouseEvent, corner: 'tl' | 'tr' | 'bl' | 'br') => isEditMode && handleResizeStart(e, block.id, { w: block.w, h: block.h }, corner)"
+          @contextmenu="(e: MouseEvent) => onContextMenu(e, block.id)"
+          @delete="gridStore.removeWidget(block.id)"
+          @open-settings="() => { uiStore.setActiveWidgetId(block.id); uiStore.openSettings() }"
+        />
+      </TransitionGroup>
 
       <!-- Drag Preview (Placeholder) -->
       <div

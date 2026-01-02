@@ -3,7 +3,7 @@
  * Uses translateX for smooth slide transitions, background stays fixed
  */
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { onMounted } from 'vue'
 import { useThemeStore } from './stores/theme.store'
 import { useBackgroundStore } from './stores/background.store'
 import { usePomodoroStore } from './stores/pomodoro.store'
@@ -21,10 +21,6 @@ import TopToolbar from './components/Layout/TopToolbar.vue'
 const themeStore = useThemeStore()
 const backgroundStore = useBackgroundStore()
 const pomodoro = usePomodoroStore()
-
-const viewTransform = computed(() => 
-  pomodoro.isPomodoroView ? 'translateX(-50%)' : 'translateX(0)'
-)
 
 onMounted(async () => {
   themeStore.applyTheme()
@@ -50,17 +46,27 @@ onMounted(async () => {
       
       <BackgroundLayer />
 
-      <div 
-        class="relative z-10 w-[200%] h-full flex transition-transform duration-500 ease-out"
-        :style="{ transform: viewTransform }"
-      >
-        <div class="w-1/2 h-full flex flex-col page-load-fade">
-          <div class="flex-1 w-full overflow-hidden page-load-slide">
-            <GridContainer />
-          </div>
+      <div class="relative z-10 w-full h-full">
+        <!-- Grid View with Parallax Effect -->
+        <div 
+          class="absolute inset-0 transition-all duration-700 ease-out"
+          :class="pomodoro.isPomodoroView ? 'opacity-0 pointer-events-none' : 'opacity-100'"
+          :style="{
+            transform: pomodoro.isPomodoroView ? 'scale(0.92) translateX(-5%)' : 'scale(1) translateX(0)',
+            filter: pomodoro.isPomodoroView ? 'blur(12px)' : 'blur(0)'
+          }"
+        >
+          <GridContainer />
         </div>
 
-        <div class="w-1/2 h-full">
+        <!-- Pomodoro View with Slide-in Effect -->
+        <div 
+          class="absolute inset-0 transition-all duration-700 ease-out"
+          :class="pomodoro.isPomodoroView ? 'opacity-100' : 'opacity-0 pointer-events-none'"
+          :style="{
+            transform: pomodoro.isPomodoroView ? 'translateX(0) scale(1)' : 'translateX(30%) scale(0.95)',
+          }"
+        >
           <PomodoroContainer />
         </div>
       </div>
