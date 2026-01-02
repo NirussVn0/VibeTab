@@ -100,122 +100,160 @@
             </div>
 
             <!-- Weather Settings -->
-            <div class="bg-white/5 rounded-xl border border-white/5 overflow-hidden">
+            <div class="bg-white/5 rounded-xl border border-white/10 overflow-hidden">
               <button 
                 @click="expandedSection = expandedSection === 'weather' ? null : 'weather'"
-                class="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors"
+                class="w-full flex items-center justify-between p-4 text-left hover:bg-white/10 transition-all duration-200"
               >
                 <div class="flex items-center gap-3">
                   <Cloud class="w-5 h-5 text-blue-400" />
                   <span class="text-sm font-medium text-white">Weather Settings</span>
                 </div>
                 <ChevronDown 
-                  class="w-4 h-4 text-white/50 transition-transform" 
+                  class="w-4 h-4 text-white/50 transition-transform duration-300" 
                   :class="{ 'rotate-180': expandedSection === 'weather' }"
                 />
               </button>
-              <div v-if="expandedSection === 'weather'" class="p-4 border-t border-white/5 space-y-3">
-                <div class="flex items-center justify-between">
-                  <span class="text-sm text-white/80">Show Weather</span>
-                  <ToggleSwitch v-model="settingsStore.general.showWeather" />
-                </div>
-                <div class="space-y-2">
-                  <span class="text-xs text-white/60">Location</span>
-                  <select
-                    v-model="settingsStore.general.weatherLocation"
-                    class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-primary-500 outline-none"
+              <Transition name="expand">
+                <div v-if="expandedSection === 'weather'" class="p-4 border-t border-white/10 space-y-4 bg-black/20">
+                  <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
+                    <span class="text-sm text-white/90">Show Weather</span>
+                    <ToggleSwitch v-model="settingsStore.general.showWeather" />
+                  </div>
+                  <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5">
+                    <span class="text-sm text-white/90">Location</span>
+                    <select
+                      v-model="settingsStore.general.weatherLocation"
+                      class="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary focus:border-primary-500 outline-none"
+                    >
+                      <option value="New York">New York</option>
+                      <option value="London">London</option>
+                      <option value="Tokyo">Tokyo</option>
+                      <option value="San Francisco">San Francisco</option>
+                      <option value="Sydney">Sydney</option>
+                      <option value="Hanoi">Hanoi</option>
+                    </select>
+                  </div>
+                  <button 
+                    @click="addWeatherWidget"
+                    class="w-full px-4 py-2.5 rounded-lg bg-blue-500 hover:bg-blue-600 text-sm font-medium text-white flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-500/20"
                   >
-                    <option value="New York">New York</option>
-                    <option value="London">London</option>
-                    <option value="Tokyo">Tokyo</option>
-                    <option value="San Francisco">San Francisco</option>
-                    <option value="Sydney">Sydney</option>
-                    <option value="Hanoi">Hanoi</option>
-                  </select>
+                    <Plus class="w-4 h-4" /> Add Weather Widget
+                  </button>
                 </div>
-                <button 
-                  @click="addWeatherWidget"
-                  class="w-full px-3 py-2 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-xs text-blue-400 border border-blue-500/20 flex items-center justify-center gap-2"
-                >
-                  <Plus class="w-4 h-4" /> Add Weather Widget
-                </button>
-              </div>
+              </Transition>
             </div>
 
             <!-- Search Settings -->
-            <div class="bg-white/5 rounded-xl border border-white/5 overflow-hidden">
+            <div class="bg-white/5 rounded-xl border border-white/10 overflow-hidden">
               <button 
                 @click="expandedSection = expandedSection === 'search' ? null : 'search'"
-                class="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors"
+                class="w-full flex items-center justify-between p-4 text-left hover:bg-white/10 transition-all duration-200"
               >
                 <div class="flex items-center gap-3">
                   <Search class="w-5 h-5 text-green-400" />
                   <span class="text-sm font-medium text-white">Search Settings</span>
                 </div>
                 <ChevronDown 
-                  class="w-4 h-4 text-white/50 transition-transform" 
+                  class="w-4 h-4 text-white/50 transition-transform duration-300" 
                   :class="{ 'rotate-180': expandedSection === 'search' }"
                 />
               </button>
-              <div v-if="expandedSection === 'search'" class="p-4 border-t border-white/5 space-y-3">
-                <button 
-                  @click="addSearchWidget"
-                  class="w-full px-3 py-2 rounded-lg bg-green-500/10 hover:bg-green-500/20 text-xs text-green-400 border border-green-500/20 flex items-center justify-center gap-2"
-                >
-                  <Plus class="w-4 h-4" /> Add Search Widget
-                </button>
-              </div>
+              <Transition name="expand">
+                <div v-if="expandedSection === 'search'" class="p-4 border-t border-white/10 space-y-4 bg-black/20">
+                  <button 
+                    @click="addSearchWidget"
+                    class="w-full px-4 py-2.5 rounded-lg bg-green-500 hover:bg-green-600 text-sm font-medium text-white flex items-center justify-center gap-2 transition-all shadow-lg shadow-green-500/20"
+                  >
+                    <Plus class="w-4 h-4" /> Add Search Widget
+                  </button>
+                </div>
+              </Transition>
             </div>
 
             <!-- Pomodoro Settings -->
-            <div class="bg-white/5 rounded-xl border border-white/5 overflow-hidden">
+            <div class="bg-white/5 rounded-xl border border-white/10 overflow-hidden">
               <button
                 @click="expandedSection = expandedSection === 'pomodoro' ? null : 'pomodoro'"
-                class="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors"
+                class="w-full flex items-center justify-between p-4 text-left hover:bg-white/10 transition-all duration-200"
               >
                 <div class="flex items-center gap-3">
                   <Clock class="w-5 h-5 text-rose-400" />
                   <span class="text-sm font-medium text-white">Pomodoro Settings</span>
                 </div>
                 <ChevronDown 
-                  class="w-4 h-4 text-white/50 transition-transform" 
+                  class="w-4 h-4 text-white/50 transition-transform duration-300" 
                   :class="{ 'rotate-180': expandedSection === 'pomodoro' }"
                 />
               </button>
-              <div v-if="expandedSection === 'pomodoro'" class="p-4 border-t border-white/5 space-y-3">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-white/60">Focus Duration</span>
-                  <select 
-                    v-model="settingsStore.general.focusDuration"
-                    class="bg-white/10 border border-white/10 rounded px-2 py-1 text-xs text-white"
-                  >
-                    <option value="15">15 min</option>
-                    <option value="25">25 min</option>
-                    <option value="30">30 min</option>
-                    <option value="45">45 min</option>
-                    <option value="60">60 min</option>
-                  </select>
+              <Transition name="expand">
+                <div v-if="expandedSection === 'pomodoro'" class="p-4 border-t border-white/10 space-y-4 bg-black/20">
+                  <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5">
+                    <span class="text-sm text-white/90">Focus Duration</span>
+                    <div class="flex items-center gap-2">
+                      <select 
+                        v-model="settingsStore.general.focusDuration"
+                        class="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary focus:border-primary-500 outline-none"
+                      >
+                        <option v-for="t in focusTimes" :key="t" :value="t">{{ t }} min</option>
+                      </select>
+                      <button 
+                        @click="showAddFocusTime = !showAddFocusTime"
+                        class="w-7 h-7 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 flex items-center justify-center transition-colors"
+                      >
+                        <Plus class="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                  <div v-if="showAddFocusTime" class="flex items-center gap-2 py-2 px-3 rounded-lg bg-rose-500/10 border border-rose-500/20">
+                    <input 
+                      v-model.number="newFocusTime" 
+                      type="number" 
+                      min="1" 
+                      max="120"
+                      placeholder="Minutes"
+                      class="flex-1 bg-transparent border-0 text-sm text-white placeholder-white/40 outline-none"
+                    />
+                    <button @click="addCustomFocusTime" class="px-3 py-1 rounded bg-rose-500 text-white text-xs font-medium">Add</button>
+                  </div>
+                  <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5">
+                    <span class="text-sm text-white/90">Break Duration</span>
+                    <div class="flex items-center gap-2">
+                      <select 
+                        v-model="settingsStore.general.breakDuration"
+                        class="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary focus:border-primary-500 outline-none"
+                      >
+                        <option v-for="t in breakTimes" :key="t" :value="t">{{ t }} min</option>
+                      </select>
+                      <button 
+                        @click="showAddBreakTime = !showAddBreakTime"
+                        class="w-7 h-7 rounded-lg bg-green-500/20 hover:bg-green-500/30 text-green-400 flex items-center justify-center transition-colors"
+                      >
+                        <Plus class="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                  <div v-if="showAddBreakTime" class="flex items-center gap-2 py-2 px-3 rounded-lg bg-green-500/10 border border-green-500/20">
+                    <input 
+                      v-model.number="newBreakTime" 
+                      type="number" 
+                      min="1" 
+                      max="60"
+                      placeholder="Minutes"
+                      class="flex-1 bg-transparent border-0 text-sm text-white placeholder-white/40 outline-none"
+                    />
+                    <button @click="addCustomBreakTime" class="px-3 py-1 rounded bg-green-500 text-white text-xs font-medium">Add</button>
+                  </div>
+                  <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
+                    <span class="text-sm text-white/90">Auto-dim when timer starts</span>
+                    <ToggleSwitch v-model="settingsStore.general.pomodoroDim" />
+                  </div>
+                  <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
+                    <span class="text-sm text-white/90">Sound notifications</span>
+                    <ToggleSwitch v-model="settingsStore.general.pomodoroSound" />
+                  </div>
                 </div>
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-white/60">Break Duration</span>
-                  <select 
-                    v-model="settingsStore.general.breakDuration"
-                    class="bg-white/10 border border-white/10 rounded px-2 py-1 text-xs text-white"
-                  >
-                    <option value="5">5 min</option>
-                    <option value="10">10 min</option>
-                    <option value="15">15 min</option>
-                  </select>
-                </div>
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-white/60">Auto-dim when timer starts</span>
-                  <ToggleSwitch v-model="settingsStore.general.pomodoroDim" />
-                </div>
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-white/60">Sound notifications</span>
-                  <ToggleSwitch v-model="settingsStore.general.pomodoroSound" />
-                </div>
-              </div>
+              </Transition>
             </div>
 
             <!-- Auto-Hide Settings -->
@@ -484,6 +522,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useStorage } from '../../composables/useStorage'
 import { useUIStore } from '../../stores/ui.store'
 import { useSettingsStore } from '../../stores/settings.store'
 import { useThemeStore } from '../../stores/theme.store'
@@ -514,6 +553,34 @@ const expandedSection = ref<string | null>(null)
 const clockFormat = ref<'12h' | '24h'>('24h')
 const clockDateFormat = ref<'MM/DD/YYYY' | 'DD/MM/YYYY' | 'Mon Jan 01' | 'YYYY-MM-DD' | 'none'>('Mon Jan 01')
 const clockColor = ref('#ffffff')
+
+const customFocusTimes = useStorage('vibetab_custom_focus_times', [15, 25, 30, 45, 60])
+const customBreakTimes = useStorage('vibetab_custom_break_times', [5, 10, 15])
+const focusTimes = computed(() => [...new Set(customFocusTimes.value)].sort((a, b) => a - b))
+const breakTimes = computed(() => [...new Set(customBreakTimes.value)].sort((a, b) => a - b))
+
+const showAddFocusTime = ref(false)
+const showAddBreakTime = ref(false)
+const newFocusTime = ref(0)
+const newBreakTime = ref(0)
+
+const addCustomFocusTime = () => {
+  if (newFocusTime.value > 0 && newFocusTime.value <= 120) {
+    customFocusTimes.value = [...customFocusTimes.value, newFocusTime.value]
+    settingsStore.general.focusDuration = newFocusTime.value
+    newFocusTime.value = 0
+    showAddFocusTime.value = false
+  }
+}
+
+const addCustomBreakTime = () => {
+  if (newBreakTime.value > 0 && newBreakTime.value <= 60) {
+    customBreakTimes.value = [...customBreakTimes.value, newBreakTime.value]
+    settingsStore.general.breakDuration = newBreakTime.value
+    newBreakTime.value = 0
+    showAddBreakTime.value = false
+  }
+}
 
 const addClockWidget = () => {
   const clockSize = getClockSize('medium')
@@ -692,5 +759,24 @@ const importSettings = (event: Event) => {
 }
 .slide-right-enter-from, .slide-right-leave-to {
   transform: translateX(100%);
+}
+
+.expand-enter-active {
+  transition: all 0.3s ease-out;
+  overflow: hidden;
+}
+.expand-leave-active {
+  transition: all 0.2s ease-in;
+  overflow: hidden;
+}
+.expand-enter-from, .expand-leave-to {
+  opacity: 0;
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.expand-enter-to, .expand-leave-from {
+  opacity: 1;
+  max-height: 500px;
 }
 </style>
