@@ -5,54 +5,175 @@
     "src": "../../../../@crx/manifest",
     "isEntry": true
   },
+  "_vendor-ui-BbMO9KcX.js": {
+    "file": "assets/vendor-ui-BbMO9KcX.js",
+    "name": "vendor-ui",
+    "imports": [
+      "_vendor-vue-tARjYzNi.js"
+    ]
+  },
+  "_vendor-utils-KI_kqnJe.js": {
+    "file": "assets/vendor-utils-KI_kqnJe.js",
+    "name": "vendor-utils"
+  },
+  "_vendor-vue-tARjYzNi.js": {
+    "file": "assets/vendor-vue-tARjYzNi.js",
+    "name": "vendor-vue"
+  },
+  "_vendor-vueuse-CmhvhKCr.js": {
+    "file": "assets/vendor-vueuse-CmhvhKCr.js",
+    "name": "vendor-vueuse",
+    "imports": [
+      "_vendor-vue-tARjYzNi.js"
+    ]
+  },
   "index.html": {
-    "file": "assets/index.html-BKUClk4k.js",
+    "file": "assets/index.html-CW0f6dez.js",
     "name": "index.html",
     "src": "index.html",
     "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-vue-tARjYzNi.js",
+      "_vendor-vueuse-CmhvhKCr.js",
+      "_vendor-ui-BbMO9KcX.js"
+    ],
     "dynamicImports": [
       "src/components/Widgets/ClockWidget.vue",
       "src/components/Widgets/SearchWidget.vue",
-      "src/components/Widgets/WeatherWidget.vue"
+      "src/components/Widgets/WeatherWidget.vue",
+      "src/components/Layout/SettingsPanel.vue",
+      "src/components/Overlay/CommandPalette.vue",
+      "src/components/Overlay/OnboardingTour.vue",
+      "src/components/Overlay/SleepOverlay.vue",
+      "src/components/UI/EdgeTrigger.vue",
+      "src/components/Pomodoro/PomodoroContainer.vue"
     ],
     "css": [
-      "assets/index-DycIwY08.css"
+      "assets/index-CefEG-Go.css"
     ]
   },
   "src/background.ts": {
-    "file": "assets/background.ts-Ctmv7tUK.js",
+    "file": "assets/background.ts-Cgxppf-X.js",
     "name": "background.ts",
     "src": "src/background.ts",
     "isEntry": true
   },
+  "src/components/Layout/SettingsPanel.vue": {
+    "file": "assets/SettingsPanel-DI-2s5zB.js",
+    "name": "SettingsPanel",
+    "src": "src/components/Layout/SettingsPanel.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-vue-tARjYzNi.js",
+      "index.html",
+      "_vendor-ui-BbMO9KcX.js",
+      "_vendor-vueuse-CmhvhKCr.js"
+    ],
+    "css": [
+      "assets/SettingsPanel-Cgg3Hk6Y.css"
+    ]
+  },
+  "src/components/Overlay/CommandPalette.vue": {
+    "file": "assets/CommandPalette-Bwt372oD.js",
+    "name": "CommandPalette",
+    "src": "src/components/Overlay/CommandPalette.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_vendor-vue-tARjYzNi.js",
+      "_vendor-utils-KI_kqnJe.js",
+      "_vendor-ui-BbMO9KcX.js",
+      "_vendor-vueuse-CmhvhKCr.js"
+    ],
+    "dynamicImports": [
+      "index.html"
+    ]
+  },
+  "src/components/Overlay/OnboardingTour.vue": {
+    "file": "assets/OnboardingTour-qc4bktT_.js",
+    "name": "OnboardingTour",
+    "src": "src/components/Overlay/OnboardingTour.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-vue-tARjYzNi.js",
+      "_vendor-vueuse-CmhvhKCr.js",
+      "index.html",
+      "_vendor-ui-BbMO9KcX.js"
+    ],
+    "css": [
+      "assets/OnboardingTour-DNUG32ui.css"
+    ]
+  },
+  "src/components/Overlay/SleepOverlay.vue": {
+    "file": "assets/SleepOverlay-DnEhnxK3.js",
+    "name": "SleepOverlay",
+    "src": "src/components/Overlay/SleepOverlay.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-vue-tARjYzNi.js",
+      "index.html",
+      "_vendor-vueuse-CmhvhKCr.js",
+      "_vendor-ui-BbMO9KcX.js"
+    ]
+  },
+  "src/components/Pomodoro/PomodoroContainer.vue": {
+    "file": "assets/PomodoroContainer-C3ptrwVQ.js",
+    "name": "PomodoroContainer",
+    "src": "src/components/Pomodoro/PomodoroContainer.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_vendor-vue-tARjYzNi.js",
+      "_vendor-ui-BbMO9KcX.js",
+      "_vendor-vueuse-CmhvhKCr.js"
+    ]
+  },
+  "src/components/UI/EdgeTrigger.vue": {
+    "file": "assets/EdgeTrigger-CgVDeejs.js",
+    "name": "EdgeTrigger",
+    "src": "src/components/UI/EdgeTrigger.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-ui-BbMO9KcX.js",
+      "_vendor-vue-tARjYzNi.js"
+    ]
+  },
   "src/components/Widgets/ClockWidget.vue": {
-    "file": "assets/ClockWidget-DiRf1d8O.js",
+    "file": "assets/ClockWidget--vYrtkpx.js",
     "name": "ClockWidget",
     "src": "src/components/Widgets/ClockWidget.vue",
     "isDynamicEntry": true,
     "imports": [
-      "index.html"
+      "_vendor-utils-KI_kqnJe.js",
+      "_vendor-vue-tARjYzNi.js",
+      "index.html",
+      "_vendor-vueuse-CmhvhKCr.js",
+      "_vendor-ui-BbMO9KcX.js"
     ],
     "css": [
       "assets/ClockWidget-CO4m9hyx.css"
     ]
   },
   "src/components/Widgets/SearchWidget.vue": {
-    "file": "assets/SearchWidget-C1UGZihV.js",
+    "file": "assets/SearchWidget-C0-kNmPv.js",
     "name": "SearchWidget",
     "src": "src/components/Widgets/SearchWidget.vue",
     "isDynamicEntry": true,
     "imports": [
-      "index.html"
+      "_vendor-vue-tARjYzNi.js"
     ]
   },
   "src/components/Widgets/WeatherWidget.vue": {
-    "file": "assets/WeatherWidget-D4PIh8g8.js",
+    "file": "assets/WeatherWidget-BLdKaOWZ.js",
     "name": "WeatherWidget",
     "src": "src/components/Widgets/WeatherWidget.vue",
     "isDynamicEntry": true,
     "imports": [
-      "index.html"
+      "index.html",
+      "_vendor-ui-BbMO9KcX.js",
+      "_vendor-vue-tARjYzNi.js",
+      "_vendor-vueuse-CmhvhKCr.js"
     ]
   }
 }

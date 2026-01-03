@@ -1,22 +1,26 @@
 /**
  * App.vue - Root component with Grid/Pomodoro view switching
- * Uses translateX for smooth slide transitions, background stays fixed
+ * Uses lazy loading for better initial load performance
  */
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, defineAsyncComponent } from 'vue'
 import { useThemeStore } from './stores/theme.store'
 import { useBackgroundStore } from './stores/background.store'
 import { usePomodoroStore } from './stores/pomodoro.store'
+
+// Critical path - load immediately
 import BackgroundLayer from './components/Background/BackgroundLayer.vue'
 import GridContainer from './components/Grid/GridContainer.vue'
-import PomodoroContainer from './components/Pomodoro/PomodoroContainer.vue'
-import SettingsPanel from './components/Layout/SettingsPanel.vue'
-import CommandPalette from './components/Overlay/CommandPalette.vue'
-import OnboardingTour from './components/Overlay/OnboardingTour.vue'
-import SleepOverlay from './components/Overlay/SleepOverlay.vue'
 import ErrorBoundary from './components/Base/ErrorBoundary.vue'
-import EdgeTrigger from './components/UI/EdgeTrigger.vue'
 import TopToolbar from './components/Layout/TopToolbar.vue'
+
+// Lazy loaded - not needed for initial render
+const SettingsPanel = defineAsyncComponent(() => import('./components/Layout/SettingsPanel.vue'))
+const CommandPalette = defineAsyncComponent(() => import('./components/Overlay/CommandPalette.vue'))
+const OnboardingTour = defineAsyncComponent(() => import('./components/Overlay/OnboardingTour.vue'))
+const SleepOverlay = defineAsyncComponent(() => import('./components/Overlay/SleepOverlay.vue'))
+const EdgeTrigger = defineAsyncComponent(() => import('./components/UI/EdgeTrigger.vue'))
+const PomodoroContainer = defineAsyncComponent(() => import('./components/Pomodoro/PomodoroContainer.vue'))
 
 const themeStore = useThemeStore()
 const backgroundStore = useBackgroundStore()
@@ -47,7 +51,7 @@ onMounted(async () => {
       <BackgroundLayer />
 
       <div class="relative z-10 w-full h-full">
-        <!-- Grid View with Parallax Effect -->
+        <!-- Grid View -->
         <div 
           class="absolute inset-0 transition-all duration-700 ease-out"
           :class="pomodoro.isPomodoroView ? 'opacity-0 pointer-events-none' : 'opacity-100'"
@@ -59,7 +63,7 @@ onMounted(async () => {
           <GridContainer />
         </div>
 
-        <!-- Pomodoro View with Slide-in Effect -->
+        <!-- Pomodoro View -->
         <div 
           class="absolute inset-0 transition-all duration-700 ease-out"
           :class="pomodoro.isPomodoroView ? 'opacity-100' : 'opacity-0 pointer-events-none'"

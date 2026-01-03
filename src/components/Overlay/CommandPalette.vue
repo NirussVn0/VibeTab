@@ -10,7 +10,6 @@ import {
   TransitionChild, 
   TransitionRoot 
 } from '@headlessui/vue'
-import { MagnifyingGlassIcon, SparklesIcon } from '@heroicons/vue/24/outline'
 import Fuse from 'fuse.js'
 import { useThemeStore } from '../../stores/theme.store'
 import { useUIStore } from '../../stores/ui.store'

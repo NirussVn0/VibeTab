@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import type { SearchConfig } from '../../types/widget'
-import { MagnifyingGlassIcon, SparklesIcon } from '@heroicons/vue/24/outline'
 
 const props = withDefaults(defineProps<{
   config: SearchConfig
