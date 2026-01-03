@@ -126,12 +126,27 @@
                       v-model="settingsStore.general.weatherLocation"
                       class="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary focus:border-primary-500 outline-none"
                     >
+                      <option value="Hanoi">Hanoi</option>
+                      <option value="Ho Chi Minh">Ho Chi Minh</option>
                       <option value="New York">New York</option>
                       <option value="London">London</option>
                       <option value="Tokyo">Tokyo</option>
                       <option value="San Francisco">San Francisco</option>
                       <option value="Sydney">Sydney</option>
-                      <option value="Hanoi">Hanoi</option>
+                      <option value="Paris">Paris</option>
+                      <option value="Berlin">Berlin</option>
+                      <option value="Singapore">Singapore</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5">
+                    <span class="text-sm text-white/90">Display Mode</span>
+                    <select
+                      v-model="weatherDisplayMode"
+                      class="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary focus:border-primary-500 outline-none"
+                    >
+                      <option value="default">Default (Icon + Temp)</option>
+                      <option value="compact">Compact (Stats List)</option>
+                      <option value="detailed">Detailed (Full Info)</option>
                     </select>
                   </div>
                   <button 
@@ -553,6 +568,7 @@ const expandedSection = ref<string | null>(null)
 const clockFormat = ref<'12h' | '24h'>('24h')
 const clockDateFormat = ref<'MM/DD/YYYY' | 'DD/MM/YYYY' | 'Mon Jan 01' | 'YYYY-MM-DD' | 'none'>('Mon Jan 01')
 const clockColor = ref('#ffffff')
+const weatherDisplayMode = ref<'default' | 'compact' | 'detailed'>('default')
 
 const customFocusTimes = useStorage('vibetab_custom_focus_times', [15, 25, 30, 45, 60])
 const customBreakTimes = useStorage('vibetab_custom_break_times', [5, 10, 15])
@@ -610,7 +626,7 @@ const addWeatherWidget = () => {
     type: 'weather',
     x: 0, y: 0,
     w: 3, h: 2,
-    config: { unit: 'c', location: settingsStore.general.weatherLocation },
+    config: { unit: 'c', location: settingsStore.general.weatherLocation, displayMode: weatherDisplayMode.value },
     isLocked: false,
     zIndex: 10,
     createdAt: Date.now(),

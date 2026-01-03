@@ -6,7 +6,7 @@
     "isEntry": true
   },
   "index.html": {
-    "file": "assets/index.html-yFL_LxlF.js",
+    "file": "assets/index.html-BKUClk4k.js",
     "name": "index.html",
     "src": "index.html",
     "isEntry": true,
@@ -16,7 +16,7 @@
       "src/components/Widgets/WeatherWidget.vue"
     ],
     "css": [
-      "assets/index-C651azu4.css"
+      "assets/index-DycIwY08.css"
     ]
   },
   "src/background.ts": {
@@ -26,7 +26,7 @@
     "isEntry": true
   },
   "src/components/Widgets/ClockWidget.vue": {
-    "file": "assets/ClockWidget-CUXJiImX.js",
+    "file": "assets/ClockWidget-DiRf1d8O.js",
     "name": "ClockWidget",
     "src": "src/components/Widgets/ClockWidget.vue",
     "isDynamicEntry": true,
@@ -38,7 +38,7 @@
     ]
   },
   "src/components/Widgets/SearchWidget.vue": {
-    "file": "assets/SearchWidget-BoPMwlEi.js",
+    "file": "assets/SearchWidget-C1UGZihV.js",
     "name": "SearchWidget",
     "src": "src/components/Widgets/SearchWidget.vue",
     "isDynamicEntry": true,
@@ -47,7 +47,7 @@
     ]
   },
   "src/components/Widgets/WeatherWidget.vue": {
-    "file": "assets/WeatherWidget-B1Kzq03S.js",
+    "file": "assets/WeatherWidget-D4PIh8g8.js",
     "name": "WeatherWidget",
     "src": "src/components/Widgets/WeatherWidget.vue",
     "isDynamicEntry": true,
