@@ -5,11 +5,12 @@
  */
 import { computed, defineAsyncComponent } from 'vue'
 import type { GridBlock } from '../../types/grid'
-import type { ClockConfig, SearchConfig } from '../../types/widget'
+import type { ClockConfig, SearchConfig, WeatherConfig } from '../../types/widget'
 import { Trash2, Settings } from 'lucide-vue-next'
 
 const ClockWidget = defineAsyncComponent(() => import('../Widgets/ClockWidget.vue'))
 const SearchWidget = defineAsyncComponent(() => import('../Widgets/SearchWidget.vue'))
+const WeatherWidget = defineAsyncComponent(() => import('../Widgets/WeatherWidget.vue'))
 
 const props = defineProps<{
   block: GridBlock
@@ -91,6 +92,11 @@ const isOutOfBounds = computed(() => {
         v-else-if="block.type === 'search'"
         :is="SearchWidget"
         :config="block.config as SearchConfig"
+      />
+      <component
+        v-else-if="block.type === 'weather'"
+        :is="WeatherWidget"
+        :config="block.config as WeatherConfig"
       />
 
       <div v-else class="h-full w-full p-4 flex flex-col items-center justify-center text-text-secondary">
