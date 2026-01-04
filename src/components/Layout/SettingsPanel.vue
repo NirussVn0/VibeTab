@@ -306,7 +306,6 @@
               </Transition>
             </div>
 
-            <!-- Keyboard Shortcuts Settings -->
             <div class="bg-white/5 rounded-xl border border-white/10 overflow-hidden">
               <button
                 @click="expandedSection = expandedSection === 'shortcuts' ? null : 'shortcuts'"
@@ -326,17 +325,21 @@
                   <div 
                     v-for="shortcut in settingsStore.shortcuts" 
                     :key="shortcut.id"
-                    class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5"
+                    @click="startEditShortcut(shortcut.id)"
+                    class="flex items-center justify-between py-2 px-3 rounded-lg cursor-pointer transition-all duration-200"
+                    :class="editingShortcut === shortcut.id ? 'bg-red-500/20 border border-red-500/50 ring-2 ring-red-500/30' : 'bg-white/5 hover:bg-white/10'"
                   >
                     <span class="text-sm text-white/90">{{ shortcut.name }}</span>
-                    <div class="flex gap-1">
+                    <div v-if="editingShortcut === shortcut.id" class="flex items-center gap-2">
+                      <span class="text-xs text-red-400 animate-pulse">Press new keys...</span>
+                      <button @click.stop="cancelEditShortcut" class="text-xs text-white/50 hover:text-white">Cancel</button>
+                    </div>
+                    <div v-else class="flex gap-1">
                       <span 
                         v-for="(key, idx) in shortcut.keys" 
                         :key="idx"
                         class="px-2 py-0.5 bg-white/10 rounded text-xs font-mono text-white/70"
-                      >
-                        {{ key }}
-                      </span>
+                      >{{ key }}</span>
                     </div>
                   </div>
                   <button 
@@ -642,6 +645,42 @@ const tabs = [
 ]
 const activeTab = ref('general')
 const expandedSection = ref<string | null>(null)
+
+const editingShortcut = ref<string | null>(null)
+const capturedKeys = ref<string[]>([])
+
+const startEditShortcut = (id: string) => {
+  editingShortcut.value = id
+  capturedKeys.value = []
+  document.addEventListener('keydown', handleShortcutCapture, true)
+}
+
+const handleShortcutCapture = (e: KeyboardEvent) => {
+  e.preventDefault()
+  e.stopPropagation()
+  
+  const keys: string[] = []
+  if (e.ctrlKey) keys.push('Ctrl')
+  if (e.altKey) keys.push('Alt')
+  if (e.shiftKey) keys.push('Shift')
+  if (e.metaKey) keys.push('Meta')
+  
+  const key = e.key.toUpperCase()
+  if (!['CONTROL', 'ALT', 'SHIFT', 'META'].includes(key)) {
+    keys.push(key)
+  }
+  
+  if (keys.length > 0 && editingShortcut.value) {
+    settingsStore.updateShortcut(editingShortcut.value, keys)
+    cancelEditShortcut()
+  }
+}
+
+const cancelEditShortcut = () => {
+  editingShortcut.value = null
+  capturedKeys.value = []
+  document.removeEventListener('keydown', handleShortcutCapture, true)
+}
 
 const clockFormat = ref<'12h' | '24h'>('24h')
 const clockDateFormat = ref<'MM/DD/YYYY' | 'DD/MM/YYYY' | 'Mon Jan 01' | 'YYYY-MM-DD' | 'none'>('Mon Jan 01')

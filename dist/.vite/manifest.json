@@ -14,7 +14,7 @@
     "name": "vendor-vue"
   },
   "index.html": {
-    "file": "assets/index.html-OXHEfQ-c.js",
+    "file": "assets/index.html-CcsZa9mw.js",
     "name": "index.html",
     "src": "index.html",
     "isEntry": true,
@@ -34,7 +34,7 @@
       "src/components/Pomodoro/PomodoroContainer.vue"
     ],
     "css": [
-      "assets/index-DdE5Bplk.css"
+      "assets/index-B0D0MDTh.css"
     ]
   },
   "src/background.ts": {
@@ -44,7 +44,7 @@
     "isEntry": true
   },
   "src/components/Layout/SettingsPanel.vue": {
-    "file": "assets/SettingsPanel-CuMGuUzm.js",
+    "file": "assets/SettingsPanel-DMgCryBc.js",
     "name": "SettingsPanel",
     "src": "src/components/Layout/SettingsPanel.vue",
     "isDynamicEntry": true,
@@ -53,11 +53,11 @@
       "index.html"
     ],
     "css": [
-      "assets/SettingsPanel-CZtrHrUB.css"
+      "assets/SettingsPanel-hZUz9EcB.css"
     ]
   },
   "src/components/Overlay/CommandPalette.vue": {
-    "file": "assets/CommandPalette-0c3j0ytA.js",
+    "file": "assets/CommandPalette-BUVPE57F.js",
     "name": "CommandPalette",
     "src": "src/components/Overlay/CommandPalette.vue",
     "isDynamicEntry": true,
@@ -71,7 +71,7 @@
     ]
   },
   "src/components/Overlay/OnboardingTour.vue": {
-    "file": "assets/OnboardingTour-99u3dftn.js",
+    "file": "assets/OnboardingTour-vKzM2TFw.js",
     "name": "OnboardingTour",
     "src": "src/components/Overlay/OnboardingTour.vue",
     "isDynamicEntry": true,
@@ -84,7 +84,7 @@
     ]
   },
   "src/components/Overlay/SleepOverlay.vue": {
-    "file": "assets/SleepOverlay-Cr0kbR8r.js",
+    "file": "assets/SleepOverlay-C0jsaXrF.js",
     "name": "SleepOverlay",
     "src": "src/components/Overlay/SleepOverlay.vue",
     "isDynamicEntry": true,
@@ -94,7 +94,7 @@
     ]
   },
   "src/components/Pomodoro/PomodoroContainer.vue": {
-    "file": "assets/PomodoroContainer-1NNUbj2K.js",
+    "file": "assets/PomodoroContainer-IY8gwn3D.js",
     "name": "PomodoroContainer",
     "src": "src/components/Pomodoro/PomodoroContainer.vue",
     "isDynamicEntry": true,
@@ -113,7 +113,7 @@
     ]
   },
   "src/components/Widgets/ClockWidget.vue": {
-    "file": "assets/ClockWidget-DAEeUINr.js",
+    "file": "assets/ClockWidget-4S8MnLtR.js",
     "name": "ClockWidget",
     "src": "src/components/Widgets/ClockWidget.vue",
     "isDynamicEntry": true,
@@ -136,7 +136,7 @@
     ]
   },
   "src/components/Widgets/WeatherWidget.vue": {
-    "file": "assets/WeatherWidget-BZOjvdcr.js",
+    "file": "assets/WeatherWidget-yLghDMjy.js",
     "name": "WeatherWidget",
     "src": "src/components/Widgets/WeatherWidget.vue",
     "isDynamicEntry": true,
