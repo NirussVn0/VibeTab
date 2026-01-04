@@ -271,6 +271,84 @@
               </Transition>
             </div>
 
+            <!-- AI Provider Settings -->
+            <div class="bg-white/5 rounded-xl border border-white/10 overflow-hidden">
+              <button
+                @click="expandedSection = expandedSection === 'ai' ? null : 'ai'"
+                class="w-full flex items-center justify-between p-4 text-left hover:bg-white/10 transition-all duration-200"
+              >
+                <div class="flex items-center gap-3">
+                  <Sparkles class="w-5 h-5 text-purple-400" />
+                  <span class="text-sm font-medium text-white">AI Provider</span>
+                </div>
+                <ChevronDown 
+                  class="w-4 h-4 text-white/50 transition-transform duration-300" 
+                  :class="{ 'rotate-180': expandedSection === 'ai' }"
+                />
+              </button>
+              <Transition name="expand">
+                <div v-if="expandedSection === 'ai'" class="p-4 border-t border-white/10 space-y-4 bg-black/20">
+                  <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5">
+                    <span class="text-sm text-white/90">Default AI</span>
+                    <select
+                      v-model="settingsStore.general.aiProvider"
+                      class="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary focus:border-primary-500 outline-none"
+                    >
+                      <option value="chatgpt">ChatGPT</option>
+                      <option value="perplexity">Perplexity</option>
+                      <option value="google">Google</option>
+                    </select>
+                  </div>
+                  <div class="text-xs text-white/50 px-3">
+                    Type <code class="bg-white/10 px-1 rounded">></code> in Command Palette to search with AI
+                  </div>
+                </div>
+              </Transition>
+            </div>
+
+            <!-- Keyboard Shortcuts Settings -->
+            <div class="bg-white/5 rounded-xl border border-white/10 overflow-hidden">
+              <button
+                @click="expandedSection = expandedSection === 'shortcuts' ? null : 'shortcuts'"
+                class="w-full flex items-center justify-between p-4 text-left hover:bg-white/10 transition-all duration-200"
+              >
+                <div class="flex items-center gap-3">
+                  <Keyboard class="w-5 h-5 text-amber-400" />
+                  <span class="text-sm font-medium text-white">Keyboard Shortcuts</span>
+                </div>
+                <ChevronDown 
+                  class="w-4 h-4 text-white/50 transition-transform duration-300" 
+                  :class="{ 'rotate-180': expandedSection === 'shortcuts' }"
+                />
+              </button>
+              <Transition name="expand">
+                <div v-if="expandedSection === 'shortcuts'" class="p-4 border-t border-white/10 space-y-3 bg-black/20">
+                  <div 
+                    v-for="shortcut in settingsStore.shortcuts" 
+                    :key="shortcut.id"
+                    class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5"
+                  >
+                    <span class="text-sm text-white/90">{{ shortcut.name }}</span>
+                    <div class="flex gap-1">
+                      <span 
+                        v-for="(key, idx) in shortcut.keys" 
+                        :key="idx"
+                        class="px-2 py-0.5 bg-white/10 rounded text-xs font-mono text-white/70"
+                      >
+                        {{ key }}
+                      </span>
+                    </div>
+                  </div>
+                  <button 
+                    @click="settingsStore.resetShortcuts()"
+                    class="w-full px-4 py-2 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-sm text-amber-400 flex items-center justify-center gap-2 transition-all"
+                  >
+                    <RotateCcw class="w-4 h-4" /> Reset to Defaults
+                  </button>
+                </div>
+              </Transition>
+            </div>
+
             <!-- Auto-Hide Settings -->
             <div class="bg-white/5 rounded-xl border border-white/5 overflow-hidden">
               <button
@@ -545,7 +623,7 @@ import { useBackgroundStore } from '../../stores/background.store'
 import { BackgroundService } from '../../services/BackgroundService'
 import ToggleSwitch from '../Base/ToggleSwitch.vue'
 import ColorPickerCircle from '../Base/ColorPickerCircle.vue'
-import { X, Image, AlertTriangle, Clock, Cloud, Search, ChevronDown, Plus, Eye } from 'lucide-vue-next'
+import { X, Image, AlertTriangle, Clock, Cloud, Search, ChevronDown, Plus, Eye, Sparkles, Keyboard, RotateCcw } from 'lucide-vue-next'
 
 import { useGridStore } from '../../stores/grid.store'
 import { getClockSize, getSearchSize } from '../../constants/widgetSizes'

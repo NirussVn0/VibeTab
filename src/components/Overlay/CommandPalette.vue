@@ -13,14 +13,23 @@ import {
 import Fuse from 'fuse.js'
 import { useThemeStore } from '../../stores/theme.store'
 import { useUIStore } from '../../stores/ui.store'
+import { useSettingsStore, type AIProvider } from '../../stores/settings.store'
 
 // Stores
 const themeStore = useThemeStore()
 const uiStore = useUIStore()
+const settingsStore = useSettingsStore()
 
 // State
 const isOpen = ref(false)
 const query = ref('')
+
+// AI Provider URLs
+const AI_PROVIDERS: Record<AIProvider, { name: string; url: (q: string) => string }> = {
+  chatgpt: { name: 'ChatGPT', url: (q) => `https://chatgpt.com/?q=${encodeURIComponent(q)}` },
+  perplexity: { name: 'Perplexity', url: (q) => `https://www.perplexity.ai/search?q=${encodeURIComponent(q)}` },
+  google: { name: 'Google', url: (q) => `https://www.google.com/search?q=${encodeURIComponent(q)}` }
+}
 
 // Actions Definition
 interface CommandAction {
@@ -40,9 +49,14 @@ const actions: CommandAction[] = [
   // UI Actions
   { id: 'open-settings', name: 'Open Settings', category: 'Navigation', shortcut: ['S'], perform: () => uiStore.openSettings() },
   
-  // Grid Actions (Future hooks)
+  // Grid Actions
   { id: 'edit-layout', name: 'Toggle Edit Mode', category: 'Grid', shortcut: ['Ctrl', 'E'], perform: () => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'e', ctrlKey: true })) },
   { id: 'toggle-pomodoro', name: 'Toggle Focus Mode', category: 'Navigation', shortcut: ['Alt', 'P'], perform: () => { import('../../stores/pomodoro.store').then(m => m.usePomodoroStore().toggleView()) } },
+  
+  // AI Provider Actions
+  { id: 'ai-chatgpt', name: 'Set AI Provider: ChatGPT', category: 'AI', perform: () => { settingsStore.general.aiProvider = 'chatgpt' } },
+  { id: 'ai-perplexity', name: 'Set AI Provider: Perplexity', category: 'AI', perform: () => { settingsStore.general.aiProvider = 'perplexity' } },
+  { id: 'ai-google', name: 'Set AI Provider: Google', category: 'AI', perform: () => { settingsStore.general.aiProvider = 'google' } },
 ]
 
 // Fuse.js Setup
@@ -54,6 +68,7 @@ const fuse = new Fuse(actions, {
 // Check if query is AI search (starts with >)
 const isAiQuery = computed(() => query.value.startsWith('>'))
 const aiQueryText = computed(() => query.value.slice(1).trim())
+const currentAiProvider = computed(() => AI_PROVIDERS[settingsStore.general.aiProvider])
 
 const filteredActions = computed(() => {
   // If AI query, return empty to show AI prompt
@@ -74,7 +89,7 @@ const onSelect = (action: CommandAction) => {
 // Handle AI search submission
 const submitAiSearch = () => {
   if (isAiQuery.value && aiQueryText.value) {
-    const url = `https://chatgpt.com/?q=${encodeURIComponent(aiQueryText.value)}`
+    const url = currentAiProvider.value.url(aiQueryText.value)
     window.open(url, '_blank')
     closeModal()
   }
