@@ -1,20 +1,14 @@
-/**
- * App.vue - Root component with Grid/Pomodoro view switching
- * Uses lazy loading for better initial load performance
- */
 <script setup lang="ts">
 import { onMounted, defineAsyncComponent } from 'vue'
 import { useThemeStore } from './stores/theme.store'
 import { useBackgroundStore } from './stores/background.store'
 import { usePomodoroStore } from './stores/pomodoro.store'
 
-// Critical path - load immediately
 import BackgroundLayer from './components/Background/BackgroundLayer.vue'
 import GridContainer from './components/Grid/GridContainer.vue'
 import ErrorBoundary from './components/Base/ErrorBoundary.vue'
 import TopToolbar from './components/Layout/TopToolbar.vue'
 
-// Lazy loaded - not needed for initial render
 const SettingsPanel = defineAsyncComponent(() => import('./components/Layout/SettingsPanel.vue'))
 const CommandPalette = defineAsyncComponent(() => import('./components/Overlay/CommandPalette.vue'))
 const OnboardingTour = defineAsyncComponent(() => import('./components/Overlay/OnboardingTour.vue'))
@@ -47,11 +41,9 @@ onMounted(async () => {
       <OnboardingTour />
       <SleepOverlay />
       <TopToolbar />
-      
       <BackgroundLayer />
 
       <div class="relative z-10 w-full h-full">
-        <!-- Grid View -->
         <div 
           class="absolute inset-0 transition-all duration-700 ease-out"
           :class="pomodoro.isPomodoroView ? 'opacity-0 pointer-events-none' : 'opacity-100'"
@@ -63,31 +55,19 @@ onMounted(async () => {
           <GridContainer />
         </div>
 
-        <!-- Pomodoro View -->
         <div 
           class="absolute inset-0 transition-all duration-700 ease-out"
           :class="pomodoro.isPomodoroView ? 'opacity-100' : 'opacity-0 pointer-events-none'"
-          :style="{
-            transform: pomodoro.isPomodoroView ? 'translateX(0) scale(1)' : 'translateX(30%) scale(0.95)',
-          }"
+          :style="{ transform: pomodoro.isPomodoroView ? 'translateX(0) scale(1)' : 'translateX(30%) scale(0.95)' }"
         >
           <PomodoroContainer />
         </div>
       </div>
 
-      <EdgeTrigger 
-        v-if="!pomodoro.isPomodoroView" 
-        side="right" 
-        @trigger="pomodoro.enterPomodoroView" 
-      />
-      <EdgeTrigger 
-        v-if="pomodoro.isPomodoroView" 
-        side="left" 
-        @trigger="pomodoro.exitPomodoroView" 
-      />
+      <EdgeTrigger v-if="!pomodoro.isPomodoroView" side="right" @trigger="pomodoro.enterPomodoroView" />
+      <EdgeTrigger v-if="pomodoro.isPomodoroView" side="left" @trigger="pomodoro.exitPomodoroView" />
       
       <div id="modal-portal"></div>
     </main>
   </ErrorBoundary>
 </template>
-

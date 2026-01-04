@@ -5,16 +5,10 @@ import { crx } from '@crxjs/vite-plugin'
 import { resolve } from 'path'
 import manifest from './src/manifest'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-    crx({ manifest }),
-  ],
+  plugins: [vue(), crx({ manifest })],
   resolve: {
-    alias: {
-      '@': resolve(__dirname, 'src'),
-    },
+    alias: { '@': resolve(__dirname, 'src') }
   },
   build: {
     target: 'esnext',
@@ -22,24 +16,18 @@ export default defineConfig({
     cssCodeSplit: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-vue': ['vue', 'pinia'],
-          'vendor-vueuse': ['@vueuse/core'],
-          'vendor-ui': ['lucide-vue-next', '@headlessui/vue'],
-          'vendor-utils': ['dayjs', 'fuse.js'],
-        },
-      },
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('vue') || id.includes('pinia')) return 'vendor-vue'
+            if (id.includes('vueuse')) return 'vendor-vueuse'
+            if (id.includes('lucide') || id.includes('headlessui')) return 'vendor-ui'
+            if (id.includes('dayjs') || id.includes('fuse')) return 'vendor-utils'
+          }
+        }
+      }
     },
-    chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 500
   },
-  server: {
-    port: 5173,
-    strictPort: true,
-    hmr: {
-      port: 5173,
-    },
-  },
-  test: {
-    environment: 'happy-dom',
-  },
+  server: { port: 5173, strictPort: true, hmr: { port: 5173 } },
+  test: { environment: 'happy-dom' }
 })
