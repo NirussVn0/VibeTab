@@ -96,6 +96,47 @@ export class GridManager {
     return this.rows
   }
 
+  findNearestEmptySlot(
+    blocks: GridBlock[], 
+    targetX: number, 
+    targetY: number, 
+    w: number, 
+    h: number, 
+    excludeId?: string
+  ): { x: number; y: number } {
+    const blocksToCheck = excludeId ? blocks.filter(b => b.id !== excludeId) : blocks
+    const gridMap = this.createGridMap(blocksToCheck)
+    
+    let bestPos = { x: targetX, y: targetY }
+    let minDist = Infinity
+
+    const searchRadius = Math.max(this.columns, this.rows)
+    
+    for (let dist = 0; dist <= searchRadius; dist++) {
+      for (let dy = -dist; dy <= dist; dy++) {
+        for (let dx = -dist; dx <= dist; dx++) {
+          if (Math.abs(dx) !== dist && Math.abs(dy) !== dist) continue
+          
+          const testX = targetX + dx
+          const testY = targetY + dy
+          
+          if (testX < 0 || testX + w > this.columns || testY < 0 || testY + h > this.rows) continue
+          
+          if (this.isAreaEmpty(gridMap, testX, testY, w, h)) {
+            const distance = Math.sqrt(dx * dx + dy * dy)
+            if (distance < minDist) {
+              minDist = distance
+              bestPos = { x: testX, y: testY }
+            }
+          }
+        }
+      }
+      if (minDist < Infinity) break
+    }
+    
+    return bestPos
+  }
+
   clampPosition(x: number, y: number, w: number, h: number): { x: number; y: number } {
     return {
       x: Math.max(0, Math.min(x, this.columns - w)),

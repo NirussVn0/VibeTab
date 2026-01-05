@@ -78,13 +78,20 @@ export const useGridStore = defineStore('grid', () => {
     if (!gridManager.isValidPosition(widget)) return
 
     const collision = gridManager.findCollision(widget, widgets.value)
-    if (collision) return
+    if (collision) {
+      const nearestSlot = gridManager.findNearestEmptySlot(
+        widgets.value, widget.x, widget.y, widget.w, widget.h, id
+      )
+      widget.x = nearestSlot.x
+      widget.y = nearestSlot.y
+    }
 
     saveStateToHistory()
     
     widgets.value[widgetIndex] = {
       ...widgets.value[widgetIndex],
-      ...pos,
+      x: widget.x,
+      y: widget.y,
       w: widget.w,
       h: widget.h,
       updatedAt: Date.now()
