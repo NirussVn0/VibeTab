@@ -186,90 +186,7 @@
               </Transition>
             </div>
 
-            <!-- Pomodoro Settings -->
-            <div class="bg-white/5 rounded-xl border border-white/10 overflow-hidden">
-              <button
-                @click="expandedSection = expandedSection === 'pomodoro' ? null : 'pomodoro'"
-                class="w-full flex items-center justify-between p-4 text-left hover:bg-white/10 transition-all duration-200"
-              >
-                <div class="flex items-center gap-3">
-                  <Clock class="w-5 h-5 text-rose-400" />
-                  <span class="text-sm font-medium text-white">Pomodoro Settings</span>
-                </div>
-                <ChevronDown 
-                  class="w-4 h-4 text-white/50 transition-transform duration-300" 
-                  :class="{ 'rotate-180': expandedSection === 'pomodoro' }"
-                />
-              </button>
-              <Transition name="expand">
-                <div v-if="expandedSection === 'pomodoro'" class="p-4 border-t border-white/10 space-y-4 bg-black/20">
-                  <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5">
-                    <span class="text-sm text-white/90">Focus Duration</span>
-                    <div class="flex items-center gap-2">
-                      <select 
-                        v-model="settingsStore.general.focusDuration"
-                        class="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary focus:border-primary-500 outline-none"
-                      >
-                        <option v-for="t in focusTimes" :key="t" :value="t">{{ t }} min</option>
-                      </select>
-                      <button 
-                        @click="showAddFocusTime = !showAddFocusTime"
-                        class="w-7 h-7 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 flex items-center justify-center transition-colors"
-                      >
-                        <Plus class="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                  <div v-if="showAddFocusTime" class="flex items-center gap-2 py-2 px-3 rounded-lg bg-rose-500/10 border border-rose-500/20">
-                    <input 
-                      v-model.number="newFocusTime" 
-                      type="number" 
-                      min="1" 
-                      max="120"
-                      placeholder="Minutes"
-                      class="flex-1 bg-transparent border-0 text-sm text-white placeholder-white/40 outline-none"
-                    />
-                    <button @click="addCustomFocusTime" class="px-3 py-1 rounded bg-rose-500 text-white text-xs font-medium">Add</button>
-                  </div>
-                  <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5">
-                    <span class="text-sm text-white/90">Break Duration</span>
-                    <div class="flex items-center gap-2">
-                      <select 
-                        v-model="settingsStore.general.breakDuration"
-                        class="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary focus:border-primary-500 outline-none"
-                      >
-                        <option v-for="t in breakTimes" :key="t" :value="t">{{ t }} min</option>
-                      </select>
-                      <button 
-                        @click="showAddBreakTime = !showAddBreakTime"
-                        class="w-7 h-7 rounded-lg bg-green-500/20 hover:bg-green-500/30 text-green-400 flex items-center justify-center transition-colors"
-                      >
-                        <Plus class="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                  <div v-if="showAddBreakTime" class="flex items-center gap-2 py-2 px-3 rounded-lg bg-green-500/10 border border-green-500/20">
-                    <input 
-                      v-model.number="newBreakTime" 
-                      type="number" 
-                      min="1" 
-                      max="60"
-                      placeholder="Minutes"
-                      class="flex-1 bg-transparent border-0 text-sm text-white placeholder-white/40 outline-none"
-                    />
-                    <button @click="addCustomBreakTime" class="px-3 py-1 rounded bg-green-500 text-white text-xs font-medium">Add</button>
-                  </div>
-                  <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-                    <span class="text-sm text-white/90">Auto-dim when timer starts</span>
-                    <ToggleSwitch v-model="settingsStore.general.pomodoroDim" />
-                  </div>
-                  <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-                    <span class="text-sm text-white/90">Sound notifications</span>
-                    <ToggleSwitch v-model="settingsStore.general.pomodoroSound" />
-                  </div>
-                </div>
-              </Transition>
-            </div>
+
 
             <!-- AI Provider Settings -->
             <div class="bg-white/5 rounded-xl border border-white/10 overflow-hidden">
@@ -583,6 +500,50 @@
             </div>
           </section>
 
+          <section v-if="activeTab === 'focus'" class="space-y-6">
+            <div class="bg-white/5 rounded-xl p-4 border border-white/5 space-y-4">
+              <h3 class="text-xs font-bold text-white/40 uppercase tracking-widest">Focus Mode Settings</h3>
+              <div class="setting-row">
+                <span class="text-sm text-white/90">Focus Duration</span>
+                <div class="flex items-center gap-2">
+                  <select v-model="settingsStore.general.focusDuration" class="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary focus:border-primary-500 outline-none">
+                    <option v-for="t in focusTimes" :key="t" :value="t">{{ t }} min</option>
+                  </select>
+                  <button @click="showAddFocusTime = !showAddFocusTime" class="w-7 h-7 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 flex items-center justify-center transition-colors">
+                    <Plus class="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+              <div v-if="showAddFocusTime" class="flex items-center gap-2 py-2 px-3 rounded-lg bg-rose-500/10 border border-rose-500/20">
+                <input v-model.number="newFocusTime" type="number" min="1" max="120" placeholder="Minutes" class="flex-1 bg-transparent border-0 text-sm text-white placeholder-white/40 outline-none" />
+                <button @click="addCustomFocusTime" class="px-3 py-1 rounded bg-rose-500 text-white text-xs font-medium">Add</button>
+              </div>
+              <div class="setting-row">
+                <span class="text-sm text-white/90">Break Duration</span>
+                <div class="flex items-center gap-2">
+                  <select v-model="settingsStore.general.breakDuration" class="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary focus:border-primary-500 outline-none">
+                    <option v-for="t in breakTimes" :key="t" :value="t">{{ t }} min</option>
+                  </select>
+                  <button @click="showAddBreakTime = !showAddBreakTime" class="w-7 h-7 rounded-lg bg-green-500/20 hover:bg-green-500/30 text-green-400 flex items-center justify-center transition-colors">
+                    <Plus class="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+              <div v-if="showAddBreakTime" class="flex items-center gap-2 py-2 px-3 rounded-lg bg-green-500/10 border border-green-500/20">
+                <input v-model.number="newBreakTime" type="number" min="1" max="60" placeholder="Minutes" class="flex-1 bg-transparent border-0 text-sm text-white placeholder-white/40 outline-none" />
+                <button @click="addCustomBreakTime" class="px-3 py-1 rounded bg-green-500 text-white text-xs font-medium">Add</button>
+              </div>
+              <div class="setting-row">
+                <span class="text-sm text-white/90">Auto-dim when timer starts</span>
+                <ToggleSwitch v-model="settingsStore.general.pomodoroDim" />
+              </div>
+              <div class="setting-row">
+                <span class="text-sm text-white/90">Sound notifications</span>
+                <ToggleSwitch v-model="settingsStore.general.pomodoroSound" />
+              </div>
+            </div>
+          </section>
+
           <section v-if="activeTab === 'advanced'" class="space-y-6">
             <div class="bg-white/5 rounded-xl p-4 border border-white/5 space-y-4">
               <h3 class="text-xs font-bold text-white/40 uppercase tracking-widest">Data Management</h3>
@@ -651,6 +612,7 @@ const tabs = [
   { id: 'appearance', label: 'Theme' },
   { id: 'backgrounds', label: 'Background' },
   { id: 'shortcuts', label: 'Shortcuts' },
+  { id: 'focus', label: 'Focus Mode' },
   { id: 'advanced', label: 'Advanced' }
 ]
 const activeTab = ref('general')

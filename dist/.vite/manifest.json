@@ -9,18 +9,18 @@
     "file": "assets/vendor-utils-BTmY1uLd.js",
     "name": "vendor-utils"
   },
-  "_vendor-vue-D2jImCNN.js": {
-    "file": "assets/vendor-vue-D2jImCNN.js",
+  "_vendor-vue-CwRLKmKl.js": {
+    "file": "assets/vendor-vue-CwRLKmKl.js",
     "name": "vendor-vue"
   },
   "index.html": {
-    "file": "assets/index.html-DiOdCZXl.js",
+    "file": "assets/index.html-CiUl5isF.js",
     "name": "index.html",
     "src": "index.html",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-vue-D2jImCNN.js"
+      "_vendor-vue-CwRLKmKl.js"
     ],
     "dynamicImports": [
       "src/components/Widgets/ClockWidget.vue",
@@ -44,26 +44,26 @@
     "isEntry": true
   },
   "src/components/Layout/SettingsPanel.vue": {
-    "file": "assets/SettingsPanel-DvDEmype.js",
+    "file": "assets/SettingsPanel-BvRcH5ze.js",
     "name": "SettingsPanel",
     "src": "src/components/Layout/SettingsPanel.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-vue-D2jImCNN.js",
+      "_vendor-vue-CwRLKmKl.js",
       "index.html"
     ],
     "css": [
-      "assets/SettingsPanel-DVAyTF3A.css"
+      "assets/SettingsPanel-BBZVnY9d.css"
     ]
   },
   "src/components/Overlay/CommandPalette.vue": {
-    "file": "assets/CommandPalette-DsQL7yUk.js",
+    "file": "assets/CommandPalette-CmCxiGBr.js",
     "name": "CommandPalette",
     "src": "src/components/Overlay/CommandPalette.vue",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_vendor-vue-D2jImCNN.js",
+      "_vendor-vue-CwRLKmKl.js",
       "_vendor-utils-BTmY1uLd.js"
     ],
     "dynamicImports": [
@@ -71,12 +71,12 @@
     ]
   },
   "src/components/Overlay/OnboardingTour.vue": {
-    "file": "assets/OnboardingTour-B7A7JzMT.js",
+    "file": "assets/OnboardingTour-BBKPTu_Z.js",
     "name": "OnboardingTour",
     "src": "src/components/Overlay/OnboardingTour.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-vue-D2jImCNN.js",
+      "_vendor-vue-CwRLKmKl.js",
       "index.html"
     ],
     "css": [
@@ -84,42 +84,42 @@
     ]
   },
   "src/components/Overlay/SleepOverlay.vue": {
-    "file": "assets/SleepOverlay-BMz22bBL.js",
+    "file": "assets/SleepOverlay-NU2WuIH8.js",
     "name": "SleepOverlay",
     "src": "src/components/Overlay/SleepOverlay.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-vue-D2jImCNN.js",
+      "_vendor-vue-CwRLKmKl.js",
       "index.html"
     ]
   },
   "src/components/Pomodoro/PomodoroContainer.vue": {
-    "file": "assets/PomodoroContainer-8UaFfNwa.js",
+    "file": "assets/PomodoroContainer-BoA0v33b.js",
     "name": "PomodoroContainer",
     "src": "src/components/Pomodoro/PomodoroContainer.vue",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_vendor-vue-D2jImCNN.js"
+      "_vendor-vue-CwRLKmKl.js"
     ]
   },
   "src/components/UI/EdgeTrigger.vue": {
-    "file": "assets/EdgeTrigger-D3KVGfQq.js",
+    "file": "assets/EdgeTrigger-Dcgyqwpo.js",
     "name": "EdgeTrigger",
     "src": "src/components/UI/EdgeTrigger.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-vue-D2jImCNN.js"
+      "_vendor-vue-CwRLKmKl.js"
     ]
   },
   "src/components/Widgets/ClockWidget.vue": {
-    "file": "assets/ClockWidget-JtKkequD.js",
+    "file": "assets/ClockWidget-DRCqCy3-.js",
     "name": "ClockWidget",
     "src": "src/components/Widgets/ClockWidget.vue",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-utils-BTmY1uLd.js",
-      "_vendor-vue-D2jImCNN.js",
+      "_vendor-vue-CwRLKmKl.js",
       "index.html"
     ],
     "css": [
@@ -127,22 +127,22 @@
     ]
   },
   "src/components/Widgets/SearchWidget.vue": {
-    "file": "assets/SearchWidget-CNHHRMQR.js",
+    "file": "assets/SearchWidget-DJ7g6RbB.js",
     "name": "SearchWidget",
     "src": "src/components/Widgets/SearchWidget.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-vue-D2jImCNN.js"
+      "_vendor-vue-CwRLKmKl.js"
     ]
   },
   "src/components/Widgets/WeatherWidget.vue": {
-    "file": "assets/WeatherWidget-Coh-52ZM.js",
+    "file": "assets/WeatherWidget-DWC-DjnB.js",
     "name": "WeatherWidget",
     "src": "src/components/Widgets/WeatherWidget.vue",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_vendor-vue-D2jImCNN.js"
+      "_vendor-vue-CwRLKmKl.js"
     ]
   }
 }
