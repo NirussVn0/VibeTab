@@ -9,18 +9,18 @@
     "file": "assets/vendor-utils-BTmY1uLd.js",
     "name": "vendor-utils"
   },
-  "_vendor-vue-CFNvlejV.js": {
-    "file": "assets/vendor-vue-CFNvlejV.js",
+  "_vendor-vue-DrxoK5fQ.js": {
+    "file": "assets/vendor-vue-DrxoK5fQ.js",
     "name": "vendor-vue"
   },
   "index.html": {
-    "file": "assets/index.html-3vxWRpqg.js",
+    "file": "assets/index.html-C_VmGqhG.js",
     "name": "index.html",
     "src": "index.html",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-vue-CFNvlejV.js"
+      "_vendor-vue-DrxoK5fQ.js"
     ],
     "dynamicImports": [
       "src/components/Widgets/ClockWidget.vue",
@@ -35,7 +35,7 @@
       "src/components/Auth/AuthModal.vue"
     ],
     "css": [
-      "assets/index-Dz1MbINd.css"
+      "assets/index-DMk4SPXL.css"
     ]
   },
   "src/background.ts": {
@@ -45,36 +45,36 @@
     "isEntry": true
   },
   "src/components/Auth/AuthModal.vue": {
-    "file": "assets/AuthModal-CYbso71E.js",
+    "file": "assets/AuthModal-BbJDcd5C.js",
     "name": "AuthModal",
     "src": "src/components/Auth/AuthModal.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-vue-CFNvlejV.js",
+      "_vendor-vue-DrxoK5fQ.js",
       "index.html"
     ]
   },
   "src/components/Layout/SettingsPanel.vue": {
-    "file": "assets/SettingsPanel-DhIAV-Co.js",
+    "file": "assets/SettingsPanel-dW4h-BuQ.js",
     "name": "SettingsPanel",
     "src": "src/components/Layout/SettingsPanel.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-vue-CFNvlejV.js",
+      "_vendor-vue-DrxoK5fQ.js",
       "index.html"
     ],
     "css": [
-      "assets/SettingsPanel-BBZVnY9d.css"
+      "assets/SettingsPanel-CfosvK-B.css"
     ]
   },
   "src/components/Overlay/CommandPalette.vue": {
-    "file": "assets/CommandPalette-Bf9DcaRW.js",
+    "file": "assets/CommandPalette-1EPrGXOz.js",
     "name": "CommandPalette",
     "src": "src/components/Overlay/CommandPalette.vue",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_vendor-vue-CFNvlejV.js",
+      "_vendor-vue-DrxoK5fQ.js",
       "_vendor-utils-BTmY1uLd.js"
     ],
     "dynamicImports": [
@@ -82,12 +82,12 @@
     ]
   },
   "src/components/Overlay/OnboardingTour.vue": {
-    "file": "assets/OnboardingTour-DCAW2BUZ.js",
+    "file": "assets/OnboardingTour-DMsKVmvr.js",
     "name": "OnboardingTour",
     "src": "src/components/Overlay/OnboardingTour.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-vue-CFNvlejV.js",
+      "_vendor-vue-DrxoK5fQ.js",
       "index.html"
     ],
     "css": [
@@ -95,42 +95,42 @@
     ]
   },
   "src/components/Overlay/SleepOverlay.vue": {
-    "file": "assets/SleepOverlay-D6Gt22Zd.js",
+    "file": "assets/SleepOverlay-DczaB3cc.js",
     "name": "SleepOverlay",
     "src": "src/components/Overlay/SleepOverlay.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-vue-CFNvlejV.js",
+      "_vendor-vue-DrxoK5fQ.js",
       "index.html"
     ]
   },
   "src/components/Pomodoro/PomodoroContainer.vue": {
-    "file": "assets/PomodoroContainer-CA7U9P-y.js",
+    "file": "assets/PomodoroContainer-DxabmLzb.js",
     "name": "PomodoroContainer",
     "src": "src/components/Pomodoro/PomodoroContainer.vue",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_vendor-vue-CFNvlejV.js"
+      "_vendor-vue-DrxoK5fQ.js"
     ]
   },
   "src/components/UI/EdgeTrigger.vue": {
-    "file": "assets/EdgeTrigger-DqcfWNO1.js",
+    "file": "assets/EdgeTrigger-DXHye3JQ.js",
     "name": "EdgeTrigger",
     "src": "src/components/UI/EdgeTrigger.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-vue-CFNvlejV.js"
+      "_vendor-vue-DrxoK5fQ.js"
     ]
   },
   "src/components/Widgets/ClockWidget.vue": {
-    "file": "assets/ClockWidget-DRkEUqX6.js",
+    "file": "assets/ClockWidget-CT_zUdgI.js",
     "name": "ClockWidget",
     "src": "src/components/Widgets/ClockWidget.vue",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-utils-BTmY1uLd.js",
-      "_vendor-vue-CFNvlejV.js",
+      "_vendor-vue-DrxoK5fQ.js",
       "index.html"
     ],
     "css": [
@@ -138,22 +138,22 @@
     ]
   },
   "src/components/Widgets/SearchWidget.vue": {
-    "file": "assets/SearchWidget-fKtJgqid.js",
+    "file": "assets/SearchWidget-CuTNUJ7i.js",
     "name": "SearchWidget",
     "src": "src/components/Widgets/SearchWidget.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-vue-CFNvlejV.js"
+      "_vendor-vue-DrxoK5fQ.js"
     ]
   },
   "src/components/Widgets/WeatherWidget.vue": {
-    "file": "assets/WeatherWidget-C9gQhaO5.js",
+    "file": "assets/WeatherWidget-DV94xWyE.js",
     "name": "WeatherWidget",
     "src": "src/components/Widgets/WeatherWidget.vue",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_vendor-vue-CFNvlejV.js"
+      "_vendor-vue-DrxoK5fQ.js"
     ]
   }
 }

@@ -14,8 +14,18 @@ const { playStart, playPause, playComplete } = useSound()
 
 const isEditMode = computed(() => uiStore.isEditMode)
 
-const modeLabels = { focus: 'Focus Time', shortBreak: 'Short Break', longBreak: 'Long Break' }
-const modeColors = { focus: 'text-primary-400', shortBreak: 'text-green-400', longBreak: 'text-blue-400' }
+const modeLabels = { 
+  focus: 'Focus Time', 
+  shortBreak: 'Short Break', 
+  longBreak: 'Long Break',
+  prepare: 'Prepare'
+}
+const modeColors = { 
+  focus: 'text-primary-400', 
+  shortBreak: 'text-green-400', 
+  longBreak: 'text-blue-400',
+  prepare: 'text-purple-400'
+}
 
 const focusTimes = [15, 25, 30, 45, 60]
 const breakTimes = [5, 10, 15]

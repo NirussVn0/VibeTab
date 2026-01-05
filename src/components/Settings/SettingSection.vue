@@ -1,4 +1,4 @@
-<!-- SettingSection.vue - Reusable collapsible settings section component -->
+<!-- SettingSection.vue - Reusable container for collapsible settings sections -->
 <script setup lang="ts">
 import { ChevronDown } from 'lucide-vue-next'
 

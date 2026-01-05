@@ -1,4 +1,4 @@
-<!-- AuthModal.vue - Login/Signup modal with glassmorphism design -->
+<!-- AuthModal.vue - User authentication interface with glassmorphism design -->
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'

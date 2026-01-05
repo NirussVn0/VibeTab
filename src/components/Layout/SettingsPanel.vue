@@ -11,7 +11,7 @@
     <transition name="slide-right">
       <div
         v-if="uiStore.isSettingsOpen"
-        class="absolute right-0 top-0 h-full w-[400px] bg-surface-dark border-l border-white/10 shadow-2xl pointer-events-auto flex flex-col"
+        class="absolute right-0 top-0 h-full w-[500px] max-w-[90vw] bg-surface-dark border-l border-white/10 shadow-2xl pointer-events-auto flex flex-col"
       >
         <div class="p-6 border-b border-white/5 flex items-center justify-between">
           <h2 class="text-xl font-bold text-white">Settings</h2>
@@ -503,6 +503,17 @@
           <section v-if="activeTab === 'focus'" class="space-y-6">
             <div class="bg-white/5 rounded-xl p-4 border border-white/5 space-y-4">
               <h3 class="text-xs font-bold text-white/40 uppercase tracking-widest">Focus Mode Settings</h3>
+              
+              <!-- Timer Mode Selector -->
+              <div class="setting-row">
+                <span class="text-sm text-white/90 font-medium">Timer Mode</span>
+                <select v-model="settingsStore.general.timerMode" class="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary focus:border-primary-500 outline-none">
+                  <option value="2-phase">2-Phase (Focus → Break)</option>
+                  <option value="3-phase">3-Phase (Focus → Break → Prepare)</option>
+                </select>
+              </div>
+
+              <!-- Focus Duration -->
               <div class="setting-row">
                 <span class="text-sm text-white/90">Focus Duration</span>
                 <div class="flex items-center gap-2">
@@ -518,6 +529,8 @@
                 <input v-model.number="newFocusTime" type="number" min="1" max="120" placeholder="Minutes" class="flex-1 bg-transparent border-0 text-sm text-white placeholder-white/40 outline-none" />
                 <button @click="addCustomFocusTime" class="px-3 py-1 rounded bg-rose-500 text-white text-xs font-medium">Add</button>
               </div>
+
+              <!-- Break Duration -->
               <div class="setting-row">
                 <span class="text-sm text-white/90">Break Duration</span>
                 <div class="flex items-center gap-2">
@@ -533,6 +546,41 @@
                 <input v-model.number="newBreakTime" type="number" min="1" max="60" placeholder="Minutes" class="flex-1 bg-transparent border-0 text-sm text-white placeholder-white/40 outline-none" />
                 <button @click="addCustomBreakTime" class="px-3 py-1 rounded bg-green-500 text-white text-xs font-medium">Add</button>
               </div>
+
+              <!-- Prepare Time (3-phase only) -->
+              <div v-if="settingsStore.general.timerMode === '3-phase'" class="setting-row">
+                <span class="text-sm text-white/90">Prepare Time</span>
+                <div class="flex items-center gap-2">
+                  <input v-model.number="settingsStore.general.prepareTime" type="number" min="1" max="30" class="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary focus:border-primary-500 outline-none w-20" />
+                  <span class="text-sm text-white/60">min</span>
+                </div>
+              </div>
+
+              <div class="h-px bg-white/10 my-4"></div>
+
+              <!-- Long Break Configuration -->
+              <div class="setting-row">
+                <span class="text-sm text-white/90 font-medium">Enable Long Break</span>
+                <ToggleSwitch v-model="settingsStore.general.longBreakEnabled" />
+              </div>
+
+              <div v-if="settingsStore.general.longBreakEnabled" class="space-y-4 pl-4 border-l-2 border-primary-500/30">
+                <div class="setting-row">
+                  <span class="text-sm text-white/90">Sessions before long break</span>
+                  <input v-model.number="settingsStore.general.longBreakInterval" type="number" min="1" max="10" class="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary focus:border-primary-500 outline-none w-20" />
+                </div>
+                <div class="setting-row">
+                  <span class="text-sm text-white/90">Long break duration</span>
+                  <div class="flex items-center gap-2">
+                    <input v-model.number="settingsStore.general.longBreakDuration" type="number" min="5" max="60" class="bg-surface border border-border rounded-lg px-3 py-1.5 text-sm text-text-primary focus:border-primary-500 outline-none w-20" />
+                    <span class="text-sm text-white/60">min</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="h-px bg-white/10 my-4"></div>
+
+              <!-- Auto-dim and Sound Settings -->
               <div class="setting-row">
                 <span class="text-sm text-white/90">Auto-dim when timer starts</span>
                 <ToggleSwitch v-model="settingsStore.general.pomodoroDim" />

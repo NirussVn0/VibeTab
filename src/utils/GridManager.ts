@@ -1,3 +1,6 @@
+/**
+ * GridManager.ts - Logic for grid positioning, collision detection, and magnetic snapping
+ */
 import type { GridBlock } from '../types/grid'
 
 export class GridManager {
@@ -144,3 +147,4 @@ export class GridManager {
     }
   }
 }
+

@@ -1,10 +1,11 @@
 /**
- * settings.store.ts - User preferences, AI provider, and keyboard shortcuts
+ * settings.store.ts - User preferences, AI provider, keyboard shortcuts, and timer modes
  */
 import { defineStore } from 'pinia'
 import { useStorage } from '../composables/useStorage'
 
 export type AIProvider = 'chatgpt' | 'perplexity' | 'google'
+export type TimerMode = '2-phase' | '3-phase'
 
 export interface KeyboardShortcut {
   id: string
@@ -30,7 +31,12 @@ export const useSettingsStore = defineStore('settings', () => {
     breakDuration: 5,
     pomodoroDim: true,
     pomodoroSound: true,
-    aiProvider: 'chatgpt' as AIProvider
+    aiProvider: 'chatgpt' as AIProvider,
+    timerMode: '2-phase' as TimerMode,
+    prepareTime: 3,
+    longBreakEnabled: true,
+    longBreakInterval: 4,
+    longBreakDuration: 15
   })
 
   const autoHide = useStorage('vibetab_settings_autohide', {

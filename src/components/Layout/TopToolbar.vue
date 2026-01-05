@@ -16,7 +16,7 @@ const zoomFactor = computed(() => cellPx.value / 16)
 </script>
 
 <template>
-  <div class="fixed top-4 right-4 z-50 flex items-center gap-2">
+  <div v-if="!uiStore.isSettingsOpen" class="fixed top-4 right-4 z-50 flex items-center gap-2">
     <span class="text-xs text-text-secondary bg-surface/80 backdrop-blur-sm px-2 py-1 rounded font-mono border border-border/50">
       {{ cols }}×{{ rows }} | {{ cellPx.toFixed(1) }}px | ×{{ zoomFactor.toFixed(2) }}
     </span>

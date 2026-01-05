@@ -1,5 +1,5 @@
 /**
- * usePomodoroStore - State for Pomodoro mode and timer logic
+ * usePomodoroStore - State for Pomodoro mode and timer logic with 2/3-phase support
  * Persists view mode and session state across tab refreshes
  */
 import { defineStore } from 'pinia'
@@ -12,21 +12,28 @@ export const usePomodoroStore = defineStore('pomodoro', () => {
   
   const persistedState = useStorage('vibetab_pomodoro_state', {
     isPomodoroView: false,
-    mode: 'focus' as 'focus' | 'shortBreak' | 'longBreak',
+    mode: 'focus' as 'focus' | 'shortBreak' | 'longBreak' | 'prepare',
     cycles: 0
   })
   
   const isActive = ref(false)
   const isPomodoroView = ref(persistedState.value.isPomodoroView)
-  const mode = ref<'focus' | 'shortBreak' | 'longBreak'>(persistedState.value.mode)
+  const mode = ref<'focus' | 'shortBreak' | 'longBreak' | 'prepare'>(persistedState.value.mode)
   const cycles = ref(persistedState.value.cycles)
   const isRunning = ref(false)
   
-  const getDurations = () => ({
-    focus: (settingsStore.general.focusDuration || 25) * 60,
-    shortBreak: (settingsStore.general.breakDuration || 5) * 60,
-    longBreak: 15 * 60
-  })
+  const getDurations = () => {
+    const longBreakDuration = settingsStore.general.longBreakEnabled 
+      ? settingsStore.general.longBreakDuration 
+      : settingsStore.general.breakDuration
+    
+    return {
+      focus: (settingsStore.general.focusDuration || 25) * 60,
+      shortBreak: (settingsStore.general.breakDuration || 5) * 60,
+      longBreak: longBreakDuration * 60,
+      prepare: (settingsStore.general.prepareTime || 3) * 60
+    }
+  }
   
   const timeLeft = ref(getDurations().focus)
   let timerId: ReturnType<typeof setInterval> | null = null
@@ -82,12 +89,19 @@ export const usePomodoroStore = defineStore('pomodoro', () => {
   
   const skip = () => {
     pause()
+    const is3Phase = settingsStore.general.timerMode === '3-phase'
+    
     if (mode.value === 'focus') {
       cycles.value++
-      mode.value = cycles.value % 4 === 0 ? 'longBreak' : 'shortBreak'
-    } else {
+      const longBreakInterval = settingsStore.general.longBreakInterval || 4
+      const shouldLongBreak = settingsStore.general.longBreakEnabled && cycles.value % longBreakInterval === 0
+      mode.value = shouldLongBreak ? 'longBreak' : 'shortBreak'
+    } else if (mode.value === 'shortBreak' || mode.value === 'longBreak') {
+      mode.value = is3Phase ? 'prepare' : 'focus'
+    } else if (mode.value === 'prepare') {
       mode.value = 'focus'
     }
+    
     timeLeft.value = getDurations()[mode.value]
   }
   
@@ -108,4 +122,3 @@ export const usePomodoroStore = defineStore('pomodoro', () => {
     skip
   }
 })
-
