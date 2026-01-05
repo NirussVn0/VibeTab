@@ -14,7 +14,7 @@
     "name": "vendor-vue"
   },
   "index.html": {
-    "file": "assets/index.html-CcsZa9mw.js",
+    "file": "assets/index.html-B2dEvQke.js",
     "name": "index.html",
     "src": "index.html",
     "isEntry": true,
@@ -44,7 +44,7 @@
     "isEntry": true
   },
   "src/components/Layout/SettingsPanel.vue": {
-    "file": "assets/SettingsPanel-DMgCryBc.js",
+    "file": "assets/SettingsPanel-B2-zynIr.js",
     "name": "SettingsPanel",
     "src": "src/components/Layout/SettingsPanel.vue",
     "isDynamicEntry": true,
@@ -57,7 +57,7 @@
     ]
   },
   "src/components/Overlay/CommandPalette.vue": {
-    "file": "assets/CommandPalette-BUVPE57F.js",
+    "file": "assets/CommandPalette-nm-gZuno.js",
     "name": "CommandPalette",
     "src": "src/components/Overlay/CommandPalette.vue",
     "isDynamicEntry": true,
@@ -71,7 +71,7 @@
     ]
   },
   "src/components/Overlay/OnboardingTour.vue": {
-    "file": "assets/OnboardingTour-vKzM2TFw.js",
+    "file": "assets/OnboardingTour-DLpLJo23.js",
     "name": "OnboardingTour",
     "src": "src/components/Overlay/OnboardingTour.vue",
     "isDynamicEntry": true,
@@ -84,7 +84,7 @@
     ]
   },
   "src/components/Overlay/SleepOverlay.vue": {
-    "file": "assets/SleepOverlay-C0jsaXrF.js",
+    "file": "assets/SleepOverlay-B5MceQE6.js",
     "name": "SleepOverlay",
     "src": "src/components/Overlay/SleepOverlay.vue",
     "isDynamicEntry": true,
@@ -94,7 +94,7 @@
     ]
   },
   "src/components/Pomodoro/PomodoroContainer.vue": {
-    "file": "assets/PomodoroContainer-IY8gwn3D.js",
+    "file": "assets/PomodoroContainer-CUbCpxBn.js",
     "name": "PomodoroContainer",
     "src": "src/components/Pomodoro/PomodoroContainer.vue",
     "isDynamicEntry": true,
@@ -113,7 +113,7 @@
     ]
   },
   "src/components/Widgets/ClockWidget.vue": {
-    "file": "assets/ClockWidget-4S8MnLtR.js",
+    "file": "assets/ClockWidget-Bf4ZcpFX.js",
     "name": "ClockWidget",
     "src": "src/components/Widgets/ClockWidget.vue",
     "isDynamicEntry": true,
@@ -136,7 +136,7 @@
     ]
   },
   "src/components/Widgets/WeatherWidget.vue": {
-    "file": "assets/WeatherWidget-yLghDMjy.js",
+    "file": "assets/WeatherWidget-YUHluyZp.js",
     "name": "WeatherWidget",
     "src": "src/components/Widgets/WeatherWidget.vue",
     "isDynamicEntry": true,

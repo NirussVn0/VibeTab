@@ -1,3 +1,6 @@
+/**
+ * settings.store.ts - User preferences, AI provider, and keyboard shortcuts
+ */
 import { defineStore } from 'pinia'
 import { useStorage } from '../composables/useStorage'
 
@@ -41,28 +44,12 @@ export const useSettingsStore = defineStore('settings', () => {
 
   const shortcuts = useStorage('vibetab_keyboard_shortcuts', [...DEFAULT_SHORTCUTS])
 
-  const resetShortcuts = () => {
-    shortcuts.value = [...DEFAULT_SHORTCUTS]
-  }
-
+  const resetShortcuts = () => { shortcuts.value = [...DEFAULT_SHORTCUTS] }
   const updateShortcut = (id: string, keys: string[]) => {
-    const shortcut = shortcuts.value.find(s => s.id === id)
-    if (shortcut) {
-      shortcut.keys = keys
-    }
+    const s = shortcuts.value.find(x => x.id === id)
+    if (s) s.keys = keys
   }
+  const getShortcut = (id: string) => shortcuts.value.find(s => s.id === id)?.keys || []
 
-  const getShortcut = (id: string): string[] => {
-    return shortcuts.value.find(s => s.id === id)?.keys || []
-  }
-
-  return {
-    general,
-    autoHide,
-    shortcuts,
-    resetShortcuts,
-    updateShortcut,
-    getShortcut,
-    DEFAULT_SHORTCUTS
-  }
+  return { general, autoHide, shortcuts, resetShortcuts, updateShortcut, getShortcut, DEFAULT_SHORTCUTS }
 })
