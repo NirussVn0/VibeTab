@@ -15,6 +15,7 @@ const OnboardingTour = defineAsyncComponent(() => import('./components/Overlay/O
 const SleepOverlay = defineAsyncComponent(() => import('./components/Overlay/SleepOverlay.vue'))
 const EdgeTrigger = defineAsyncComponent(() => import('./components/UI/EdgeTrigger.vue'))
 const PomodoroContainer = defineAsyncComponent(() => import('./components/Pomodoro/PomodoroContainer.vue'))
+const AuthModal = defineAsyncComponent(() => import('./components/Auth/AuthModal.vue'))
 
 const themeStore = useThemeStore()
 const backgroundStore = useBackgroundStore()
@@ -36,6 +37,7 @@ onMounted(async () => {
 <template>
   <ErrorBoundary>
     <main class="h-screen w-screen overflow-hidden text-text-primary transition-colors duration-500 relative">
+      <AuthModal />
       <CommandPalette />
       <SettingsPanel />
       <OnboardingTour />
