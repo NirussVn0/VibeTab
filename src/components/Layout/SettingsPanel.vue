@@ -575,6 +575,14 @@
             </div>
           </section>
 
+          <section v-if="activeTab === 'shortcuts'" class="space-y-6">
+            <div class="bg-white/5 rounded-xl p-4 border border-white/5 space-y-4">
+              <h3 class="text-xs font-bold text-white/40 uppercase tracking-widest">Keyboard Shortcuts</h3>
+              <p class="text-xs text-white/50">Click on any shortcut to edit. Press new key combination to save.</p>
+              <ShortcutEditor />
+            </div>
+          </section>
+
           <section v-if="activeTab === 'advanced'" class="space-y-6">
             <div class="bg-white/5 rounded-xl p-4 border border-white/5 space-y-4">
               <h3 class="text-xs font-bold text-white/40 uppercase tracking-widest">Data Management</h3>
@@ -626,6 +634,7 @@ import { useBackgroundStore } from '../../stores/background.store'
 import { BackgroundService } from '../../services/BackgroundService'
 import ToggleSwitch from '../Base/ToggleSwitch.vue'
 import ColorPickerCircle from '../Base/ColorPickerCircle.vue'
+import ShortcutEditor from '../Settings/ShortcutEditor.vue'
 import { X, Image, AlertTriangle, Clock, Cloud, Search, ChevronDown, Plus, Eye, Sparkles, Keyboard, RotateCcw } from 'lucide-vue-next'
 
 import { useGridStore } from '../../stores/grid.store'
@@ -641,6 +650,7 @@ const tabs = [
   { id: 'general', label: 'General' },
   { id: 'appearance', label: 'Theme' },
   { id: 'backgrounds', label: 'Background' },
+  { id: 'shortcuts', label: 'Shortcuts' },
   { id: 'advanced', label: 'Advanced' }
 ]
 const activeTab = ref('general')
