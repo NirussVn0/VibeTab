@@ -1,4 +1,4 @@
-<!-- PomodoroContainer.vue - Focus mode dashboard with unified edit layout --  >
+<!-- PomodoroContainer.vue - Focus mode dashboard with unified edit layout -->
 <script setup lang="ts">
 import { computed } from 'vue'
 import { usePomodoroStore } from '../../stores/pomodoro.store'
