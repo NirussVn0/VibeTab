@@ -1,173 +1,202 @@
-<!-- PomodoroContainer.vue - Focus mode dashboard with SharedGridLayout -->
+/**
+ * PomodoroContainer - Focus Mode with editable grid layout.
+ * Uses vue-grid-layout-v3 for drag/resize with 16px grid snap.
+ */
 <script setup lang="ts">
 import { computed } from 'vue'
+import { GridLayout, GridItem } from 'vue-grid-layout-v3'
 import { usePomodoroStore } from '../../stores/pomodoro.store'
 import { useUIStore } from '../../stores/ui.store'
-import { useSettingsStore } from '../../stores/settings.store'
-import { usePomodoroLayoutStore } from '../../stores/pomodoroLayout.store'
-import { useSound } from '../../composables/useSound'
-import { Play, Pause, SkipForward, RotateCcw, Settings, GripVertical } from 'lucide-vue-next'
-import SharedGridLayout from '../Grid/SharedGridLayout.vue'
+import { useEditableGrid } from '../../composables/useEditableGrid'
+import { Play, Pause, RotateCcw, SkipForward, Settings, Move } from 'lucide-vue-next'
 
 const pomodoro = usePomodoroStore()
 const uiStore = useUIStore()
-const settingsStore = useSettingsStore()
-const layoutStore = usePomodoroLayoutStore()
-const { playStart, playPause, playComplete } = useSound()
 
-const isEditMode = computed(() => uiStore.isEditMode)
+const GRID_COLS = Math.floor(window.innerWidth / 16)
 
-const modeLabels = { 
-  focus: 'Focus Time', 
-  shortBreak: 'Short Break', 
-  longBreak: 'Long Break',
-  prepare: 'Prepare'
+const {
+  layout,
+  isEditMode,
+  gridLayoutProps,
+  gridBackgroundStyle,
+  toggleEditMode
+} = useEditableGrid({
+  storageKey: 'vibetab_pomodoro_layout',
+  defaultLayout: [
+    { i: 'timer', x: Math.floor((GRID_COLS - 20) / 2), y: 8, w: 20, h: 14, static: false },
+    { i: 'controls', x: Math.floor((GRID_COLS - 16) / 2), y: 24, w: 16, h: 4, static: false }
+  ],
+  cellSize: 16,
+  preventCollision: true,
+  verticalCompact: false
+})
+
+const modeColors = computed(() => {
+  const colors: Record<string, { bg: string; text: string; ring: string }> = {
+    focus: { bg: 'bg-rose-500/20', text: 'text-rose-400', ring: 'ring-rose-500/30' },
+    shortBreak: { bg: 'bg-emerald-500/20', text: 'text-emerald-400', ring: 'ring-emerald-500/30' },
+    longBreak: { bg: 'bg-blue-500/20', text: 'text-blue-400', ring: 'ring-blue-500/30' },
+    prepare: { bg: 'bg-amber-500/20', text: 'text-amber-400', ring: 'ring-amber-500/30' }
+  }
+  return colors[pomodoro.mode] || colors.focus
+})
+
+const modeLabel = computed(() => {
+  const labels: Record<string, string> = {
+    focus: 'FOCUS',
+    shortBreak: 'SHORT BREAK',
+    longBreak: 'LONG BREAK',
+    prepare: 'PREPARE'
+  }
+  return labels[pomodoro.mode] || 'FOCUS'
+})
+
+const openSettings = () => {
+  uiStore.openSettings()
 }
-const modeColors = { 
-  focus: 'text-primary-400', 
-  shortBreak: 'text-green-400', 
-  longBreak: 'text-blue-400',
-  prepare: 'text-purple-400'
-}
-
-const focusTimes = [15, 25, 30, 45, 60]
-const breakTimes = [5, 10, 15]
-
-const handlePlayPause = () => {
-  if (pomodoro.isRunning) { pomodoro.pause(); playPause() }
-  else { pomodoro.start(); playStart() }
-}
-
-const handleSkip = () => { playComplete(); pomodoro.skip() }
-
-const updateLayoutItem = (id: string, changes: { x: number; y: number; w?: number; h?: number }) => {
-  layoutStore.updateItem(id, changes)
-}
-
-// Convert layout items for SharedGridLayout
-const gridItems = computed(() => layoutStore.layout.map(item => ({
-  id: item.i,
-  ...item
-})))
 </script>
 
 <template>
-  <div class="w-full h-full relative p-4 md:p-8">
-    <div v-if="isEditMode" class="absolute top-6 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg bg-primary-500/20 border border-primary-500/30 text-primary-400 text-sm flex items-center gap-2 z-50 pointer-events-none">
-      <Settings class="w-4 h-4" />
-      <span>Edit Mode - Drag and resize elements</span>
+  <div class="w-full h-full flex flex-col items-center justify-center relative">
+    <div 
+      class="absolute top-4 right-4 flex gap-2 z-50"
+      :class="{ 'opacity-100': isEditMode, 'opacity-0 hover:opacity-100': !isEditMode }"
+    >
+      <button
+        @click="toggleEditMode"
+        class="p-2 rounded-lg transition-all"
+        :class="isEditMode 
+          ? 'bg-primary-500 text-white' 
+          : 'bg-white/10 hover:bg-white/20 text-white/70'"
+        :title="isEditMode ? 'Exit Edit Mode' : 'Edit Layout'"
+      >
+        <Move class="w-5 h-5" />
+      </button>
+      <button
+        @click="openSettings"
+        class="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/70 transition-all"
+        title="Settings"
+      >
+        <Settings class="w-5 h-5" />
+      </button>
     </div>
 
-    <SharedGridLayout
-      :items="gridItems"
-      :cols="layoutStore.COLS"
-      :rows="layoutStore.ROWS"
-      :cell-px="16"
-      :gap="0"
-      :is-edit-mode="isEditMode"
-      @update:item="updateLayoutItem"
+    <div 
+      v-if="isEditMode" 
+      class="absolute inset-0 pointer-events-none z-40"
+      :style="gridBackgroundStyle"
+    />
+
+    <GridLayout
+      v-model:layout="layout"
+      v-bind="gridLayoutProps"
+      class="w-full h-full"
     >
-      <template #default="{ onDragStart, onResizeStart, draggedId }">
-        <!-- Loop handled by SharedGridLayout? No, slot renders ALL? -->
-        <!-- SharedGridLayout logic: it explicitly loops over widgets in template? -->
-        <!-- Wait, checking SharedGridLayout implementation -->
-        <!-- Ideally SharedGridLayout should expose slot for EACH item or I use v-for here -->
-        <!-- Let's check SharedGridLayout design again inside. It has a slot named 'default' BUT uses it once? -->
-        <!-- Actually, SharedGridLayout.vue template iterates v-for="item in widgets" inside? No, I implemented it to expose logic to slot? -->
-        <!-- Let's RE-CHECK SharedGridLayout.vue content I wrote earlier. -->
-        
-        <!-- Re-reading SharedGridLayout.vue content... -->
-        <!-- The template has: -->
-        <!-- <div ... gridStyle ... > <slot name="default" ... /> ... </div> -->
-        <!-- It DOES NOT loop. It expects consumer to loop. -->
-        
+      <GridItem
+        v-for="item in layout"
+        :key="item.i"
+        :i="item.i"
+        :x="item.x"
+        :y="item.y"
+        :w="item.w"
+        :h="item.h"
+        :static="item.static"
+        class="transition-shadow duration-200"
+        :class="{ 
+          'ring-2 ring-white/20 rounded-xl cursor-move': isEditMode,
+          'hover:ring-white/40': isEditMode
+        }"
+      >
         <div 
-          v-for="item in gridItems" 
-          :key="item.id"
-          class="relative rounded-xl transition-all duration-200"
-          :class="{
-            'bg-surface/50 backdrop-blur-sm border border-border hover:shadow-lg hover:bg-surface/80 cursor-move': isEditMode,
-            'opacity-50': draggedId === item.id
-          }"
-          :style="{
-            gridColumn: `${item.x + 1} / span ${item.w}`,
-            gridRow: `${item.y + 1} / span ${item.h}`,
-            zIndex: draggedId === item.id ? 100 : 1
-          }"
-          @mousedown="(e) => onDragStart(e, item.id, {x: item.x, y: item.y}, {w: item.w, h: item.h})"
+          v-if="item.i === 'timer'" 
+          class="w-full h-full flex flex-col items-center justify-center"
         >
-          <!-- Content -->
-          <div v-if="item.id === 'clock'" class="w-full h-full flex flex-col items-center justify-center gap-4 py-6">
-             <div v-if="isEditMode" class="absolute top-2 right-2 text-primary-400 opacity-50">
-                <GripVertical class="w-5 h-5" />
-             </div>
-             <div class="text-center select-none">
-                <p class="text-sm uppercase tracking-widest mb-2" :class="modeColors[pomodoro.mode]">
-                  {{ modeLabels[pomodoro.mode] }}
-                </p>
-                <div class="text-[6rem] md:text-[8rem] font-bold tabular-nums leading-none tracking-tight text-white" style="font-family: system-ui, -apple-system, sans-serif;">
-                  {{ pomodoro.formattedTime }}
-                </div>
-              </div>
-              
-              <!-- Edit Controls -->
-              <div v-if="isEditMode" class="flex gap-4 p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm mt-4" @mousedown.stop>
-                <div class="text-center">
-                  <p class="text-xs text-white/50 mb-2">Focus</p>
-                  <div class="flex gap-1">
-                    <button v-for="t in focusTimes" :key="'f'+t" @click="settingsStore.general.focusDuration = t" class="px-2 py-1 text-xs rounded-lg transition-all" :class="settingsStore.general.focusDuration === t ? 'bg-primary-500 text-white' : 'bg-white/10 text-white/70 hover:bg-white/20'">{{ t }}m</button>
-                  </div>
-                </div>
-                <div class="w-px bg-white/10"></div>
-                <div class="text-center">
-                  <p class="text-xs text-white/50 mb-2">Break</p>
-                  <div class="flex gap-1">
-                    <button v-for="t in breakTimes" :key="'b'+t" @click="settingsStore.general.breakDuration = t" class="px-2 py-1 text-xs rounded-lg transition-all" :class="settingsStore.general.breakDuration === t ? 'bg-green-500 text-white' : 'bg-white/10 text-white/70 hover:bg-white/20'">{{ t }}m</button>
-                  </div>
-                </div>
-              </div>
-          </div>
-
-          <div v-else-if="item.id === 'controls'" class="w-full h-full flex flex-col items-center justify-center gap-4">
-             <div v-if="isEditMode" class="absolute top-2 right-2 text-primary-400 opacity-50">
-                <GripVertical class="w-5 h-5" />
-             </div>
-             <div class="flex gap-4" @mousedown.stop>
-                <button @click="handlePlayPause" class="w-16 h-16 rounded-xl bg-primary-500/20 backdrop-blur-sm border border-primary-500/30 flex items-center justify-center text-primary-400 hover:bg-primary-500/40 hover:text-white transition-all">
-                  <Pause v-if="pomodoro.isRunning" class="w-7 h-7" />
-                  <Play v-else class="w-7 h-7" />
-                </button>
-                <button @click="handleSkip" class="w-16 h-16 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:bg-white/10 hover:text-white transition-all">
-                  <SkipForward class="w-7 h-7" />
-                </button>
-                <button @click="pomodoro.reset()" class="w-16 h-16 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:bg-white/10 hover:text-white transition-all">
-                  <RotateCcw class="w-7 h-7" />
-                </button>
-             </div>
-             <div class="flex gap-2">
-                <div v-for="i in 4" :key="i" class="w-3 h-3 rounded-full transition-colors" :class="i <= pomodoro.cycles % 4 ? 'bg-primary-500' : 'bg-white/20'" />
-             </div>
-          </div>
-
-          <!-- Resize Handle -->
-          <div 
-             v-if="isEditMode" 
-             class="absolute bottom-0 right-0 w-6 h-6 cursor-se-resize z-20 flex items-end justify-end p-1 opacity-50 hover:opacity-100"
-             @mousedown="(e) => onResizeStart(e, item.id, {w: item.w, h: item.h}, 'br')"
+          <span 
+            class="text-xs uppercase tracking-[0.3em] font-medium mb-4"
+            :class="modeColors.text"
           >
-             <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 0L10 10L0 10" stroke="currentColor" stroke-width="2" />
-             </svg>
+            {{ modeLabel }}
+          </span>
+          
+          <div 
+            class="text-8xl md:text-9xl font-extralight tracking-tight text-white tabular-nums"
+            style="font-feature-settings: 'tnum'"
+          >
+            {{ pomodoro.formattedTime }}
+          </div>
+          
+          <div class="mt-4 text-white/40 text-sm">
+            Cycle {{ pomodoro.cycles + 1 }}
           </div>
         </div>
-      </template>
 
-      <!-- Drag Follower Slot -->
-      <template #drag-follower="{ item }">
-         <div v-if="item" class="w-full h-full rounded-xl bg-surface/90 backdrop-blur-md border border-primary-500 shadow-2xl flex items-center justify-center text-primary-200">
-           <span class="font-bold text-lg capitalize">{{ item.id }}</span>
-         </div>
-      </template>
-    </SharedGridLayout>
+        <div 
+          v-else-if="item.i === 'controls'" 
+          class="w-full h-full flex items-center justify-center gap-4"
+        >
+          <button
+            v-if="!pomodoro.isRunning"
+            @click="pomodoro.start"
+            class="w-14 h-14 rounded-full flex items-center justify-center transition-all"
+            :class="[modeColors.bg, modeColors.text, 'ring-1', modeColors.ring, 'hover:scale-110']"
+            title="Start"
+          >
+            <Play class="w-6 h-6 ml-1" />
+          </button>
+          
+          <button
+            v-else
+            @click="pomodoro.pause"
+            class="w-14 h-14 rounded-full flex items-center justify-center transition-all"
+            :class="[modeColors.bg, modeColors.text, 'ring-1', modeColors.ring, 'hover:scale-110']"
+            title="Pause"
+          >
+            <Pause class="w-6 h-6" />
+          </button>
+          
+          <button
+            @click="pomodoro.reset"
+            class="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white/70 flex items-center justify-center transition-all hover:scale-110"
+            title="Reset"
+          >
+            <RotateCcw class="w-5 h-5" />
+          </button>
+          
+          <button
+            @click="pomodoro.skip"
+            class="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white/70 flex items-center justify-center transition-all hover:scale-110"
+            title="Skip"
+          >
+            <SkipForward class="w-5 h-5" />
+          </button>
+        </div>
+      </GridItem>
+    </GridLayout>
   </div>
 </template>
+
+<style scoped>
+:deep(.vue-grid-layout) {
+  position: relative;
+}
+
+:deep(.vue-grid-item) {
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+:deep(.vue-grid-item.vue-grid-placeholder) {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 2px dashed rgba(255, 255, 255, 0.3) !important;
+  border-radius: 12px;
+}
+
+:deep(.vue-resizable-handle) {
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+:deep(.vue-grid-item:hover .vue-resizable-handle) {
+  opacity: 0.5;
+}
+</style>
