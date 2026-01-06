@@ -223,51 +223,6 @@
               </Transition>
             </div>
 
-            <div class="bg-white/5 rounded-xl border border-white/10 overflow-hidden">
-              <button
-                @click="expandedSection = expandedSection === 'shortcuts' ? null : 'shortcuts'"
-                class="w-full flex items-center justify-between p-4 text-left hover:bg-white/10 transition-all duration-200"
-              >
-                <div class="flex items-center gap-3">
-                  <Keyboard class="w-5 h-5 text-amber-400" />
-                  <span class="text-sm font-medium text-white">Keyboard Shortcuts</span>
-                </div>
-                <ChevronDown 
-                  class="w-4 h-4 text-white/50 transition-transform duration-300" 
-                  :class="{ 'rotate-180': expandedSection === 'shortcuts' }"
-                />
-              </button>
-              <Transition name="expand">
-                <div v-if="expandedSection === 'shortcuts'" class="p-4 border-t border-white/10 space-y-3 bg-black/20">
-                  <div 
-                    v-for="shortcut in settingsStore.shortcuts" 
-                    :key="shortcut.id"
-                    @click="startEditShortcut(shortcut.id)"
-                    class="flex items-center justify-between py-2 px-3 rounded-lg cursor-pointer transition-all duration-200"
-                    :class="editingShortcut === shortcut.id ? 'bg-red-500/20 border border-red-500/50 ring-2 ring-red-500/30' : 'bg-white/5 hover:bg-white/10'"
-                  >
-                    <span class="text-sm text-white/90">{{ shortcut.name }}</span>
-                    <div v-if="editingShortcut === shortcut.id" class="flex items-center gap-2">
-                      <span class="text-xs text-red-400 animate-pulse">Press new keys...</span>
-                      <button @click.stop="cancelEditShortcut" class="text-xs text-white/50 hover:text-white">Cancel</button>
-                    </div>
-                    <div v-else class="flex gap-1">
-                      <span 
-                        v-for="(key, idx) in shortcut.keys" 
-                        :key="idx"
-                        class="px-2 py-0.5 bg-white/10 rounded text-xs font-mono text-white/70"
-                      >{{ key }}</span>
-                    </div>
-                  </div>
-                  <button 
-                    @click="settingsStore.resetShortcuts()"
-                    class="w-full px-4 py-2 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-sm text-amber-400 flex items-center justify-center gap-2 transition-all"
-                  >
-                    <RotateCcw class="w-4 h-4" /> Reset to Defaults
-                  </button>
-                </div>
-              </Transition>
-            </div>
 
             <!-- Auto-Hide Settings -->
             <div class="bg-white/5 rounded-xl border border-white/5 overflow-hidden">
@@ -644,7 +599,7 @@ import { BackgroundService } from '../../services/BackgroundService'
 import ToggleSwitch from '../Base/ToggleSwitch.vue'
 import ColorPickerCircle from '../Base/ColorPickerCircle.vue'
 import ShortcutEditor from '../Settings/ShortcutEditor.vue'
-import { X, Image, AlertTriangle, Clock, Cloud, Search, ChevronDown, Plus, Eye, Sparkles, Keyboard, RotateCcw } from 'lucide-vue-next'
+import { X, Image, AlertTriangle, Clock, Cloud, Search, ChevronDown, Plus, Eye, Sparkles } from 'lucide-vue-next'
 
 import { useGridStore } from '../../stores/grid.store'
 import { getClockSize, getSearchSize } from '../../constants/widgetSizes'
@@ -665,42 +620,6 @@ const tabs = [
 ]
 const activeTab = ref('general')
 const expandedSection = ref<string | null>(null)
-
-const editingShortcut = ref<string | null>(null)
-const capturedKeys = ref<string[]>([])
-
-const startEditShortcut = (id: string) => {
-  editingShortcut.value = id
-  capturedKeys.value = []
-  document.addEventListener('keydown', handleShortcutCapture, true)
-}
-
-const handleShortcutCapture = (e: KeyboardEvent) => {
-  e.preventDefault()
-  e.stopPropagation()
-  
-  const keys: string[] = []
-  if (e.ctrlKey) keys.push('Ctrl')
-  if (e.altKey) keys.push('Alt')
-  if (e.shiftKey) keys.push('Shift')
-  if (e.metaKey) keys.push('Meta')
-  
-  const key = e.key.toUpperCase()
-  if (!['CONTROL', 'ALT', 'SHIFT', 'META'].includes(key)) {
-    keys.push(key)
-  }
-  
-  if (keys.length > 0 && editingShortcut.value) {
-    settingsStore.updateShortcut(editingShortcut.value, keys)
-    cancelEditShortcut()
-  }
-}
-
-const cancelEditShortcut = () => {
-  editingShortcut.value = null
-  capturedKeys.value = []
-  document.removeEventListener('keydown', handleShortcutCapture, true)
-}
 
 const clockFormat = ref<'12h' | '24h'>('24h')
 const clockDateFormat = ref<'MM/DD/YYYY' | 'DD/MM/YYYY' | 'Mon Jan 01' | 'YYYY-MM-DD' | 'none'>('Mon Jan 01')
