@@ -4,6 +4,7 @@
  */
 import { ref, computed, watch, type Ref } from 'vue'
 import { useStorage } from './useStorage'
+import { GRID_CELL_SIZE } from '../constants/GridLayoutConfig'
 
 export interface GridLayoutItem {
   i: string
@@ -26,11 +27,9 @@ export interface EditableGridConfig {
   verticalCompact?: boolean
 }
 
-const DEFAULT_CELL_SIZE = 16
-
 export function useEditableGrid(config: EditableGridConfig) {
   const {
-    cellSize = DEFAULT_CELL_SIZE,
+    cellSize = GRID_CELL_SIZE,
     storageKey,
     defaultLayout,
     preventCollision = true,
